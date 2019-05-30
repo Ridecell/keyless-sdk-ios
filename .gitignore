@@ -22,7 +22,7 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-App\.xcodeproj/xcshareddata/xcschemes/App Dev\.xcscheme
+# App\.xcodeproj/xcshareddata/xcschemes/App Dev\.xcscheme
 
 # Misc
 .DS_Store
