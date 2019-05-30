@@ -7,7 +7,6 @@ target 'CarShare' do
   use_frameworks!
 
   pod 'Swinject'
-  pod 'SwinjectStoryboard'
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'SwiftLint'
