@@ -8,13 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A497022A058800039FCAC /* AppDelegate.swift */; };
-		1C9A497322A058800039FCAC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A497222A058800039FCAC /* ViewController.swift */; };
-		1C9A497622A058800039FCAC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497422A058800039FCAC /* Main.storyboard */; };
 		1C9A497822A058810039FCAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497722A058810039FCAC /* Assets.xcassets */; };
 		1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497922A058810039FCAC /* LaunchScreen.storyboard */; };
 		1C9A498622A058810039FCAC /* CarShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A498522A058810039FCAC /* CarShareTests.swift */; };
 		1C9A499122A058810039FCAC /* CarShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A499022A058810039FCAC /* CarShareUITests.swift */; };
 		1C9A49A322A05D790039FCAC /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A49A222A05D790039FCAC /* .swiftformat */; };
+		1C9A49A722A156BF0039FCAC /* Registrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49A622A156BF0039FCAC /* Registrar.swift */; };
+		1C9A49AA22A15AA60039FCAC /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49A922A15AA60039FCAC /* LaunchViewController.swift */; };
+		1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49AD22A164690039FCAC /* BluetoothClient.swift */; };
+		1C9A49B022A54F0E0039FCAC /* TemperatureWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */; };
 		345E7D0BF68264B927AA07A8 /* Pods_CarShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AB545E85C60F81FF225422 /* Pods_CarShareUITests.framework */; };
 		3834C5E5FE4F72024D9A8FF2 /* Pods_CarShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4433230572F7F0B120CEB080 /* Pods_CarShare.framework */; };
 		C68DDF8C2821BCDE2E226767 /* Pods_CarShareTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDCF352FFF0001CCCFD180E0 /* Pods_CarShareTests.framework */; };
@@ -41,8 +43,6 @@
 		15AEE45DC2912BB09F110498 /* Pods-CarShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareTests/Pods-CarShareTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1C9A496D22A058800039FCAC /* CarShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C9A497022A058800039FCAC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1C9A497222A058800039FCAC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		1C9A497522A058800039FCAC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1C9A497722A058810039FCAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1C9A497A22A058810039FCAC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1C9A497C22A058810039FCAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -55,6 +55,10 @@
 		1C9A499E22A059110039FCAC /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		1C9A49A122A05D6B0039FCAC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		1C9A49A222A05D790039FCAC /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
+		1C9A49A622A156BF0039FCAC /* Registrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registrar.swift; sourceTree = "<group>"; };
+		1C9A49A922A15AA60039FCAC /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		1C9A49AD22A164690039FCAC /* BluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothClient.swift; sourceTree = "<group>"; };
+		1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureWorker.swift; sourceTree = "<group>"; };
 		39FBD299C70000C0468E17CB /* Pods-CarShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareUITests/Pods-CarShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4433230572F7F0B120CEB080 /* Pods_CarShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C87353FA94E35A1A010B3AC /* Pods-CarShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare/Pods-CarShare.debug.xcconfig"; sourceTree = "<group>"; };
@@ -118,12 +122,13 @@
 		1C9A496F22A058800039FCAC /* CarShare */ = {
 			isa = PBXGroup;
 			children = (
+				1C9A49AC22A164580039FCAC /* Bluetooth */,
+				1C9A49A822A15A5B0039FCAC /* Pages */,
+				1C9A49A522A1569F0039FCAC /* DependencyInjection */,
 				1C9A49A122A05D6B0039FCAC /* .swiftlint.yml */,
 				1C9A499E22A059110039FCAC /* Podfile */,
 				1C9A49A222A05D790039FCAC /* .swiftformat */,
 				1C9A497022A058800039FCAC /* AppDelegate.swift */,
-				1C9A497222A058800039FCAC /* ViewController.swift */,
-				1C9A497422A058800039FCAC /* Main.storyboard */,
 				1C9A497722A058810039FCAC /* Assets.xcassets */,
 				1C9A497922A058810039FCAC /* LaunchScreen.storyboard */,
 				1C9A497C22A058810039FCAC /* Info.plist */,
@@ -147,6 +152,31 @@
 				1C9A499222A058810039FCAC /* Info.plist */,
 			);
 			path = CarShareUITests;
+			sourceTree = "<group>";
+		};
+		1C9A49A522A1569F0039FCAC /* DependencyInjection */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49A622A156BF0039FCAC /* Registrar.swift */,
+			);
+			path = DependencyInjection;
+			sourceTree = "<group>";
+		};
+		1C9A49A822A15A5B0039FCAC /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49A922A15AA60039FCAC /* LaunchViewController.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		1C9A49AC22A164580039FCAC /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49AD22A164690039FCAC /* BluetoothClient.swift */,
+				1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */,
+			);
+			path = Bluetooth;
 			sourceTree = "<group>";
 		};
 		5C005F3D3DCA24D86040C46C /* Pods */ = {
@@ -247,6 +277,11 @@
 				TargetAttributes = {
 					1C9A496C22A058800039FCAC = {
 						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					1C9A498022A058810039FCAC = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -286,7 +321,6 @@
 				1C9A49A322A05D790039FCAC /* .swiftformat in Resources */,
 				1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */,
 				1C9A497822A058810039FCAC /* Assets.xcassets in Resources */,
-				1C9A497622A058800039FCAC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +397,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# \"${PODS_ROOT}/SwiftLint/swiftlint\" autocorrect\n# \"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}/CarShare/\"\n";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" autocorrect\n# \"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}/CarShare/\"\n";
 		};
 		37EF554178D0C295E49B9BCE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -470,8 +504,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C9A497322A058800039FCAC /* ViewController.swift in Sources */,
+				1C9A49B022A54F0E0039FCAC /* TemperatureWorker.swift in Sources */,
 				1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */,
+				1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */,
+				1C9A49A722A156BF0039FCAC /* Registrar.swift in Sources */,
+				1C9A49AA22A15AA60039FCAC /* LaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,14 +544,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		1C9A497422A058800039FCAC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1C9A497522A058800039FCAC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		1C9A497922A058810039FCAC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
