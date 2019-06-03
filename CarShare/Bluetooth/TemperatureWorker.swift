@@ -22,18 +22,31 @@ class TemperatureWorker {
         self.bluetoothClient = bluetoothClient
     }
 
-    func printTemperature() -> Single<Float?> {
+    func findTemperature(for device: TemperatureDevice) -> Single<Float?> {
         return bluetoothClient
-            .scan(serviceId: Identifier.service)
-            .take(1).asSingle()
+            .find(peripheralId: device.identifier)
             .flatMap { peripheral in
-                self.bluetoothClient.stopScan()
-                    .andThen(self.connectToCharacteristic(for: peripheral))
+                if let peripheral = peripheral {
+                    return self.connectToCharacteristic(for: peripheral)
+                    .flatMap(self.readTemperature)
+                } else {
+                    return Single.just(nil)
+                }
             }
-            .flatMap(self.readTemperature)
+    }
+
+    func findDevices() -> Observable<TemperatureDevice> {
+        return bluetoothClient.scan(serviceId: Identifier.service)
+            .map { peripheral in
+                TemperatureDevice(
+                    identifier: peripheral.identifier.uuidString,
+                    name: peripheral.name ?? "Unknown",
+                    temperature: nil)
+            }
     }
 
     private func connectToCharacteristic(for peripheral: CBPeripheral) -> Single<CBCharacteristic> {
+        log.verbose("connecting to \(peripheral.identifier)")
         return bluetoothClient.connect(to: peripheral)
             .flatMap {
                 self.bluetoothClient.find(serviceId: Identifier.service, for: $0)
@@ -50,10 +63,10 @@ class TemperatureWorker {
                     return nil
                 }
                 let flags = value[0]
-                print(flags)
-                print("unit: \((flags & 0b1) == 0 ? "C" : "F")")
-                print("timestamp: \((flags & 0b10) == 0 ? "Not Available" : "Available")")
-                print("temp type: \((flags & 0b100) == 0 ? "Not Available" : "Available")")
+                log.debug(flags)
+                log.debug("unit: \((flags & 0b1) == 0 ? "C" : "F")")
+                log.debug("timestamp: \((flags & 0b10) == 0 ? "Not Available" : "Available")")
+                log.debug("temp type: \((flags & 0b100) == 0 ? "Not Available" : "Available")")
                 return Float(value[1]) / 10
             }
 

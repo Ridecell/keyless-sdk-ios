@@ -11,6 +11,7 @@ PODS:
     - RxSwift (~> 5)
   - SwiftFormat/CLI (0.37.2)
   - SwiftLint (0.29.2)
+  - SwiftyBeaver (1.7.0)
   - Swinject (2.5.0)
 
 DEPENDENCIES:
@@ -20,6 +21,7 @@ DEPENDENCIES:
   - RxTest
   - SwiftFormat/CLI
   - SwiftLint
+  - SwiftyBeaver
   - Swinject
 
 SPEC REPOS:
@@ -31,6 +33,7 @@ SPEC REPOS:
     - RxTest
     - SwiftFormat
     - SwiftLint
+    - SwiftyBeaver
     - Swinject
 
 SPEC CHECKSUMS:
@@ -41,8 +44,9 @@ SPEC CHECKSUMS:
   RxTest: 4349afe98f564e0a9bc19063368904622d17d49a
   SwiftFormat: abbfb26dde4c6d683923cde153c88e10da9d7881
   SwiftLint: 47df60bdea6e7e902b193b6596db8683aafd86a3
+  SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
   Swinject: 82cdb851f63f91bba974e3eca1d69780f2f7677e
 
-PODFILE CHECKSUM: 0537d16e4b908db0fdf5978f999c7135e869726d
+PODFILE CHECKSUM: 456b05672e026c37de4f4df8e2ccbf28f99818d0
 
 COCOAPODS: 1.5.3

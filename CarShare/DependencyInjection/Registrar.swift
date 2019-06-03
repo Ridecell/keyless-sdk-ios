@@ -8,9 +8,21 @@
 
 import Swinject
 
+protocol Module {
+    static func register(in container: Container)
+}
+
 enum Registrar {
+
+    private static let modules: [Module.Type] = [
+        TemperatureDeviceListModule.self
+    ]
+
     static func appContainer() -> Container {
         let container = Container()
+        Registrar.modules.forEach {
+            $0.register(in: container)
+        }
         registerAllTheThings(in: container)
         return container
     }
@@ -22,10 +34,6 @@ enum Registrar {
         container.register(BluetoothClient.self) { _ in
             CoreBluetoothClient()
         }
-        container.register(LaunchViewController.self) { r in
-            LaunchViewController.initialize(temperatureWorker: r.resolve(TemperatureWorker.self)!)
-        }
-
     }
 }
 

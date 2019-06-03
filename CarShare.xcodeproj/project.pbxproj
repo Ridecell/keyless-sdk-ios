@@ -14,9 +14,13 @@
 		1C9A499122A058810039FCAC /* CarShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A499022A058810039FCAC /* CarShareUITests.swift */; };
 		1C9A49A322A05D790039FCAC /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A49A222A05D790039FCAC /* .swiftformat */; };
 		1C9A49A722A156BF0039FCAC /* Registrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49A622A156BF0039FCAC /* Registrar.swift */; };
-		1C9A49AA22A15AA60039FCAC /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49A922A15AA60039FCAC /* LaunchViewController.swift */; };
 		1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49AD22A164690039FCAC /* BluetoothClient.swift */; };
 		1C9A49B022A54F0E0039FCAC /* TemperatureWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */; };
+		1C9A49B322A5981A0039FCAC /* TemperatureDeviceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49B222A5981A0039FCAC /* TemperatureDeviceList.swift */; };
+		1C9A49B522A59C500039FCAC /* TemperatureDeviceListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49B422A59C500039FCAC /* TemperatureDeviceListModule.swift */; };
+		1C9A49B722A59ECD0039FCAC /* TemperatureDeviceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49B622A59ECD0039FCAC /* TemperatureDeviceListViewController.swift */; };
+		1C9A49B922A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49B822A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift */; };
+		1C9A49BB22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49BA22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift */; };
 		345E7D0BF68264B927AA07A8 /* Pods_CarShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AB545E85C60F81FF225422 /* Pods_CarShareUITests.framework */; };
 		3834C5E5FE4F72024D9A8FF2 /* Pods_CarShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4433230572F7F0B120CEB080 /* Pods_CarShare.framework */; };
 		C68DDF8C2821BCDE2E226767 /* Pods_CarShareTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDCF352FFF0001CCCFD180E0 /* Pods_CarShareTests.framework */; };
@@ -56,9 +60,13 @@
 		1C9A49A122A05D6B0039FCAC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		1C9A49A222A05D790039FCAC /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		1C9A49A622A156BF0039FCAC /* Registrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registrar.swift; sourceTree = "<group>"; };
-		1C9A49A922A15AA60039FCAC /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		1C9A49AD22A164690039FCAC /* BluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothClient.swift; sourceTree = "<group>"; };
 		1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureWorker.swift; sourceTree = "<group>"; };
+		1C9A49B222A5981A0039FCAC /* TemperatureDeviceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceList.swift; sourceTree = "<group>"; };
+		1C9A49B422A59C500039FCAC /* TemperatureDeviceListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceListModule.swift; sourceTree = "<group>"; };
+		1C9A49B622A59ECD0039FCAC /* TemperatureDeviceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceListViewController.swift; sourceTree = "<group>"; };
+		1C9A49B822A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceListPresenter.swift; sourceTree = "<group>"; };
+		1C9A49BA22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceListInteractor.swift; sourceTree = "<group>"; };
 		39FBD299C70000C0468E17CB /* Pods-CarShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareUITests/Pods-CarShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4433230572F7F0B120CEB080 /* Pods_CarShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C87353FA94E35A1A010B3AC /* Pods-CarShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare/Pods-CarShare.debug.xcconfig"; sourceTree = "<group>"; };
@@ -165,7 +173,7 @@
 		1C9A49A822A15A5B0039FCAC /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				1C9A49A922A15AA60039FCAC /* LaunchViewController.swift */,
+				1C9A49B122A597FB0039FCAC /* TemperatureDeviceList */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -177,6 +185,18 @@
 				1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */,
 			);
 			path = Bluetooth;
+			sourceTree = "<group>";
+		};
+		1C9A49B122A597FB0039FCAC /* TemperatureDeviceList */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49B222A5981A0039FCAC /* TemperatureDeviceList.swift */,
+				1C9A49B422A59C500039FCAC /* TemperatureDeviceListModule.swift */,
+				1C9A49B622A59ECD0039FCAC /* TemperatureDeviceListViewController.swift */,
+				1C9A49B822A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift */,
+				1C9A49BA22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift */,
+			);
+			path = TemperatureDeviceList;
 			sourceTree = "<group>";
 		};
 		5C005F3D3DCA24D86040C46C /* Pods */ = {
@@ -481,6 +501,7 @@
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 				"${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -490,6 +511,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swinject.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,11 +526,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C9A49B322A5981A0039FCAC /* TemperatureDeviceList.swift in Sources */,
 				1C9A49B022A54F0E0039FCAC /* TemperatureWorker.swift in Sources */,
+				1C9A49B522A59C500039FCAC /* TemperatureDeviceListModule.swift in Sources */,
+				1C9A49BB22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift in Sources */,
 				1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */,
 				1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */,
+				1C9A49B722A59ECD0039FCAC /* TemperatureDeviceListViewController.swift in Sources */,
 				1C9A49A722A156BF0039FCAC /* Registrar.swift in Sources */,
-				1C9A49AA22A15AA60039FCAC /* LaunchViewController.swift in Sources */,
+				1C9A49B922A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

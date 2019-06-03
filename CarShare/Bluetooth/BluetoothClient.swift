@@ -14,6 +14,7 @@ protocol BluetoothClient {
     func stopScan() -> Completable
     func connect(to peripheral: CBPeripheral) -> Single<CBPeripheral>
     func disconnect(from peripheral: CBPeripheral) -> Completable
+    func find(peripheralId: String) -> Single<CBPeripheral?>
     func find(serviceId: String, for peripheral: CBPeripheral) -> Single<CBService>
     func find(characteristicId: String, for service: CBService) -> Single<CBCharacteristic>
     func read(_ characteristic: CBCharacteristic) -> Single<Data?>
@@ -38,6 +39,7 @@ class CoreBluetoothClient: NSObject {
         case idle
         case scanning(serviceId: String, subject: PublishSubject<CBPeripheral>)
         case connecting(peripheral: CBPeripheral, observer: (SingleEvent<CBPeripheral>) -> Void)
+        case findingPeripheral(peripheralId: String, observer: (SingleEvent<CBPeripheral?>) -> Void)
         case findingService(serviceId: String, peripheral: CBPeripheral, observer: (SingleEvent<CBService>) -> Void)
         case findingCharacteristic(characteristicId: String, service: CBService, peripheral: CBPeripheral, observer: (SingleEvent<CBCharacteristic>) -> Void)
         case readingCharacteristic(characteristic: CBCharacteristic, service: CBService, peripheral: CBPeripheral, observer: (SingleEvent<Data?>) -> Void)
@@ -52,7 +54,7 @@ extension CoreBluetoothClient: BluetoothClient {
         let subject = PublishSubject<CBPeripheral>()
         return subject
             .do(onSubscribe: {
-                print("scan now!")
+                log.debug("scan now!")
                 self.state = .scanning(serviceId: serviceId, subject: subject)
                 self.centralManagerDidUpdateState(self.bluetoothManager)
             })
@@ -65,7 +67,7 @@ extension CoreBluetoothClient: BluetoothClient {
             if case let .scanning(_, subject) = self.state {
                 subject.dispose()
             }
-            print("stop scan!")
+            log.debug("stop scan!")
             self.state = .idle
             self.bluetoothManager.stopScan()
             $0(.completed)
@@ -96,6 +98,13 @@ extension CoreBluetoothClient: BluetoothClient {
             .observeOn(mainScheduler)
     }
 
+    func find(peripheralId: String) -> Single<CBPeripheral?> {
+        return Single.create {
+            self.state = .findingPeripheral(peripheralId: peripheralId, observer: $0)
+            self.centralManagerDidUpdateState(self.bluetoothManager)
+            return Disposables.create()
+        }
+    }
     func find(serviceId: String, for peripheral: CBPeripheral) -> Single<CBService> {
         return Single.create {
             self.state = .findingService(serviceId: serviceId, peripheral: peripheral, observer: $0)
@@ -150,23 +159,28 @@ extension CoreBluetoothClient: BluetoothClient {
 extension CoreBluetoothClient: CBCentralManagerDelegate {
 
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        print("centralManagerDidUpdateState: \(central.state.rawValue)")
+        log.debug("centralManagerDidUpdateState: \(central.state.rawValue)")
         if case let .scanning(serviceId, _) = state, case .poweredOn = central.state {
-            print("scannnnn")
             bluetoothManager.scanForPeripherals(withServices: [CBUUID(string: serviceId)])
+        } else if case let .findingPeripheral(peripheralId, observer) = state, case .poweredOn = central.state {
+            log.verbose("Looking for \(peripheralId)")
+            let peripherals = bluetoothManager.retrievePeripherals(withIdentifiers: [UUID(uuidString: peripheralId)!])
+            state = .idle
+            observer(.success(peripherals.first))
         }
     }
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
-        print(peripheral.name ?? "No name for peripheral")
-        guard case let .scanning(_, subject) = state else {
-            return
+        log.debug(peripheral.name ?? "No name for peripheral")
+        if case let .scanning(_, subject) = state {
+            subject.onNext(peripheral)
+        } else if case let .findingPeripheral(_, observer) = state {
+
         }
-        subject.onNext(peripheral)
     }
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        print("didConnect")
+        log.debug("didConnect")
         guard case let .connecting(_, observer) = state else {
             return
         }
@@ -175,7 +189,7 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
     }
 
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        print("didFailToConnect")
+        log.debug("didFailToConnect")
         guard case let DeviceState.connecting(_, observer) = state, let error = error else {
             return
         }
@@ -184,7 +198,7 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
     }
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        print("didDisconnectPeripheral")
+        log.debug("didDisconnectPeripheral")
         state = .idle
     }
 }
@@ -192,23 +206,23 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
 extension CoreBluetoothClient: CBPeripheralDelegate {
 
     func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
-        print("peripheralDidUpdateName")
+        log.debug("peripheralDidUpdateName")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
-        print("didModifyServices")
+        log.debug("didModifyServices")
     }
 
     func peripheralDidUpdateRSSI(_ peripheral: CBPeripheral, error: Error?) {
-        print("peripheralDidUpdateRSSI")
+        log.debug("peripheralDidUpdateRSSI")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
-        print("didReadRSSI")
+        log.debug("didReadRSSI")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        print("didDiscoverServices")
+        log.debug("didDiscoverServices")
         guard case let .findingService(serviceId, _, observer) = state, let service = peripheral.services?.first(where: { service in service.uuid.uuidString == serviceId }) else {
             return
         }
@@ -217,11 +231,11 @@ extension CoreBluetoothClient: CBPeripheralDelegate {
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverIncludedServicesFor service: CBService, error: Error?) {
-        print("didDiscoverIncludedServicesFor")
+        log.debug("didDiscoverIncludedServicesFor")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        print("didDiscoverCharacteristicsFor")
+        log.debug("didDiscoverCharacteristicsFor")
         guard case let .findingCharacteristic(characteristicId, _, _, observer) = state, let characteristic = service.characteristics?.first(where: { $0.uuid.uuidString == characteristicId }) else {
             return
         }
@@ -246,26 +260,26 @@ extension CoreBluetoothClient: CBPeripheralDelegate {
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-        print("didUpdateNotificationStateFor")
+        log.debug("didUpdateNotificationStateFor")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
-        print("didDiscoverDescriptorsFor")
+        log.debug("didDiscoverDescriptorsFor")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
-        print("didUpdateValueFor")
+        log.debug("didUpdateValueFor")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
-        print("didWriteValueFor")
+        log.debug("didWriteValueFor")
     }
 
     func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
-        print("peripheralIsReady")
+        log.debug("peripheralIsReady")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didOpen channel: CBL2CAPChannel?, error: Error?) {
-        print("didOpen")
+        log.debug("didOpen")
     }
 }

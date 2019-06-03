@@ -9,6 +9,7 @@ target 'CarShare' do
   pod 'Swinject'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'SwiftyBeaver'
   pod 'SwiftLint'
   pod 'SwiftFormat/CLI'
 
