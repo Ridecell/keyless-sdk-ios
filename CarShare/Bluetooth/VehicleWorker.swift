@@ -23,20 +23,33 @@ class VehicleWorker {
     }
 
     var nearbyVehicles: Observable<[Vehicle]> {
-        return bluetoothClient
+        return Observable.combineLatest(
+            Observable<Int>.timer(.seconds(0), period: .seconds(20), scheduler: MainScheduler.instance),
+            bluetoothClient
             .scan(serviceId: Identifier.service)
-            .map { _ in
+            .map { _ -> Vehicle in
                 Vehicle(vehicleId: "v1", vehicleName: "2001 Honda Civic")
             }
-            .scan(into: []) { list, vehicle in
-                if let index = list.firstIndex(where: { $0.vehicleId == vehicle.vehicleId }) {
-                    list[index] = vehicle
+            .scan(into: Array<TimedVehicle>()) { list, vehicle in
+                if let index = list.firstIndex(where: { $0.vehicle.vehicleId == vehicle.vehicleId }) {
+                    list[index] = TimedVehicle(vehicle: vehicle, timestamp: Date().timeIntervalSince1970)
                 } else {
-                    list.append(vehicle)
+                    list.append(TimedVehicle(vehicle: vehicle, timestamp: Date().timeIntervalSince1970))
+                }
+            })
+            .map { _, timedVehicles in
+                timedVehicles.reduce(into: Array<Vehicle>()) { list, timedVehicle in
+                    if timedVehicle.timestamp > Date().timeIntervalSince1970 - 20 {
+                        list.append(timedVehicle.vehicle)
+                    }
                 }
             }
             .startWith([])
-            .debug()
 
+    }
+
+    private struct TimedVehicle {
+        let vehicle: Vehicle
+        let timestamp: Double
     }
 }

@@ -83,6 +83,7 @@
 		1C9A49C822A6C6F00039FCAC /* VehicleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleWorker.swift; sourceTree = "<group>"; };
 		1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListViewController.swift; sourceTree = "<group>"; };
 		1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListModule.swift; sourceTree = "<group>"; };
+		1C9A49CE22A6ECE90039FCAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		39FBD299C70000C0468E17CB /* Pods-CarShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareUITests/Pods-CarShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4433230572F7F0B120CEB080 /* Pods_CarShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C87353FA94E35A1A010B3AC /* Pods-CarShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare/Pods-CarShare.debug.xcconfig"; sourceTree = "<group>"; };
@@ -227,6 +228,7 @@
 				1C9A49C322A6C05E0039FCAC /* ReservationListInteractor.swift */,
 				1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */,
 				1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */,
+				1C9A49CE22A6ECE90039FCAC /* README.md */,
 			);
 			path = ReservationList;
 			sourceTree = "<group>";

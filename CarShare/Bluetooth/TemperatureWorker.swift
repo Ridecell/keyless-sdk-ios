@@ -37,10 +37,10 @@ class TemperatureWorker {
 
     func findDevices() -> Observable<TemperatureDevice> {
         return bluetoothClient.scan(serviceId: Identifier.service)
-            .map { peripheral in
+            .map { scanned in
                 TemperatureDevice(
-                    identifier: peripheral.identifier.uuidString,
-                    name: peripheral.name ?? "Unknown",
+                    identifier: scanned.peripheral.identifier.uuidString,
+                    name: scanned.peripheral.name ?? "Unknown",
                     temperature: nil)
             }
     }

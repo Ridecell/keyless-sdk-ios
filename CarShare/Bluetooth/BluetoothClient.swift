@@ -10,7 +10,7 @@ import CoreBluetooth
 import RxSwift
 
 protocol BluetoothClient {
-    func scan(serviceId: String) -> Observable<CBPeripheral>
+    func scan(serviceId: String) -> Observable<(peripheral: CBPeripheral, advertisementData: [String: Any])>
     func stopScan() -> Completable
     func connect(to peripheral: CBPeripheral) -> Single<CBPeripheral>
     func disconnect(from peripheral: CBPeripheral) -> Completable
@@ -37,7 +37,7 @@ class CoreBluetoothClient: NSObject {
 
     enum DeviceState {
         case idle
-        case scanning(serviceId: String, subject: PublishSubject<CBPeripheral>)
+        case scanning(serviceId: String, subject: PublishSubject<(peripheral: CBPeripheral, advertisementData: [String: Any])>)
         case connecting(peripheral: CBPeripheral, observer: (SingleEvent<CBPeripheral>) -> Void)
         case findingPeripheral(peripheralId: String, observer: (SingleEvent<CBPeripheral?>) -> Void)
         case findingService(serviceId: String, peripheral: CBPeripheral, observer: (SingleEvent<CBService>) -> Void)
@@ -50,8 +50,8 @@ class CoreBluetoothClient: NSObject {
 
 extension CoreBluetoothClient: BluetoothClient {
 
-    func scan(serviceId: String) -> Observable<CBPeripheral> {
-        let subject = PublishSubject<CBPeripheral>()
+    func scan(serviceId: String) -> Observable<(peripheral: CBPeripheral, advertisementData: [String: Any])> {
+        let subject = PublishSubject<(peripheral: CBPeripheral, advertisementData: [String: Any])>()
         return subject
             .do(onSubscribe: {
                 log.debug("scan now!")
@@ -110,6 +110,7 @@ extension CoreBluetoothClient: BluetoothClient {
             return Disposables.create()
         }
     }
+
     func find(serviceId: String, for peripheral: CBPeripheral) -> Single<CBService> {
         return Single.create {
             self.state = .findingService(serviceId: serviceId, peripheral: peripheral, observer: $0)
@@ -166,7 +167,9 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         log.debug("centralManagerDidUpdateState: \(central.state.rawValue)")
         if case let .scanning(serviceId, _) = state, case .poweredOn = central.state {
-            bluetoothManager.scanForPeripherals(withServices: [CBUUID(string: serviceId)])
+            bluetoothManager.scanForPeripherals(withServices: [CBUUID(string: serviceId)], options: [
+                CBCentralManagerScanOptionAllowDuplicatesKey: NSNumber(booleanLiteral: true)
+            ])
         } else if case let .findingPeripheral(peripheralId, observer) = state, case .poweredOn = central.state {
             log.verbose("Looking for \(peripheralId)")
             let peripherals = bluetoothManager.retrievePeripherals(withIdentifiers: [UUID(uuidString: peripheralId)!])
@@ -180,7 +183,7 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
         guard case let .scanning(_, subject) = state else {
             return
         }
-        subject.onNext(peripheral)
+        subject.onNext((peripheral, advertisementData))
     }
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
