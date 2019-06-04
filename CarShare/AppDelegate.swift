@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func createWindow() -> UIWindow {
-        guard let view = container.resolve(TemperatureDeviceListView.self) as? UIViewController else {
+        guard let view = container.resolve(LaunchViewController.self) else {
             fatalError("First view is missing!")
         }
         let window = UIWindow(frame: UIScreen.main.bounds)

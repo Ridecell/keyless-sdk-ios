@@ -57,6 +57,11 @@ extension CoreBluetoothClient: BluetoothClient {
                 log.debug("scan now!")
                 self.state = .scanning(serviceId: serviceId, subject: subject)
                 self.centralManagerDidUpdateState(self.bluetoothManager)
+            }, onDispose: {
+                if case .scanning = self.state {
+                    self.state = .idle
+                    self.bluetoothManager.stopScan()
+                }
             })
             .subscribeOn(bluetoothScheduler)
             .observeOn(mainScheduler)
@@ -172,11 +177,10 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
         log.debug(peripheral.name ?? "No name for peripheral")
-        if case let .scanning(_, subject) = state {
-            subject.onNext(peripheral)
-        } else if case let .findingPeripheral(_, observer) = state {
-
+        guard case let .scanning(_, subject) = state else {
+            return
         }
+        subject.onNext(peripheral)
     }
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {

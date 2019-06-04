@@ -8,14 +8,6 @@
 
 import RxSwift
 
-extension Array {
-    func appending(_ element: Element) -> Array<Element> {
-        var array = self
-        array.append(element)
-        return array
-    }
-}
-
 class DefaultTemperatureDeviceListInteractor: TemperatureDeviceListInteractor {
 
     private let temperatureWorker: TemperatureWorker
@@ -24,10 +16,14 @@ class DefaultTemperatureDeviceListInteractor: TemperatureDeviceListInteractor {
         self.temperatureWorker = temperatureWorker
     }
 
+    deinit {
+        log.verbose("deinit")
+    }
+
     func scanForDevices() -> Observable<[TemperatureDevice]> {
         return temperatureWorker.findDevices()
-            .scan([]) { list, device in
-                list.appending(device)
+            .scan(into: []) { list, device in
+                list.append(device)
             }
     }
 

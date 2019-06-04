@@ -26,6 +26,10 @@ class TemperatureDeviceListViewController: UITableViewController {
         }
     }
 
+    deinit {
+        log.verbose("deinit")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

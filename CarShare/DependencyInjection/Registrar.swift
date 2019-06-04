@@ -15,7 +15,8 @@ protocol Module {
 enum Registrar {
 
     private static let modules: [Module.Type] = [
-        TemperatureDeviceListModule.self
+        TemperatureDeviceListModule.self,
+        ReservationListModule.self
     ]
 
     static func appContainer() -> Container {
@@ -28,11 +29,28 @@ enum Registrar {
     }
 
     private static func registerAllTheThings(in container: Container) {
-        container.register(TemperatureWorker.self) { r in
-            TemperatureWorker(bluetoothClient: r.resolve(BluetoothClient.self)!)
-        }
-        container.register(BluetoothClient.self) { _ in
-            CoreBluetoothClient()
+        container
+            .register(TemperatureWorker.self) { r in
+                TemperatureWorker(bluetoothClient: r.resolve(BluetoothClient.self)!)
+            }
+            .inObjectScope(.container)
+        container
+            .register(LocationWorker.self) { _ in
+                LocationWorker()
+            }
+            .inObjectScope(.container)
+        container
+            .register(VehicleWorker.self) { r in
+                VehicleWorker(bluetoothClient: r.resolve(BluetoothClient.self)!)
+            }
+            .inObjectScope(.container)
+        container
+            .register(BluetoothClient.self) { _ in
+                CoreBluetoothClient()
+            }
+            .inObjectScope(.container)
+        container.register(LaunchViewController.self) { _ in
+            LaunchViewController()
         }
     }
 }

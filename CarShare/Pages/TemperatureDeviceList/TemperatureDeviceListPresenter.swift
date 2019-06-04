@@ -17,26 +17,28 @@ class DefaultTemperatureDeviceListPresenter: TemperatureDeviceListPresenter {
         self.interactor = interactor
     }
 
+    deinit {
+        log.verbose("deinit")
+    }
+
     func viewDidLoad(view: TemperatureDeviceListView) {
         interactor.scanForDevices()
-            .subscribe(onNext: view.show)
+            .subscribe(onNext: { [weak view] devices in
+                view?.show(devices)
+            })
             .disposed(by: disposeBag)
     }
 
     func view(_ view: TemperatureDeviceListView, didTapDevice device: TemperatureDevice) {
         interactor.updateTemperature(for: device)
-            .subscribe(onSuccess: { device in
+            .subscribe(onSuccess: { [weak view] device in
                 if let temperature = device.temperature {
-                    view.showTemperature(value: temperature)
+                    view?.showTemperature(value: temperature)
                 } else {
-                    view.showError(message: "ah!!!")
+                    view?.showError(message: "ah!!!")
                 }
             })
             .disposed(by: disposeBag)
-    }
-
-    deinit {
-        log.verbose("deinit")
     }
 
 }
