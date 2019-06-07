@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C5A963A22AAD631009B237C /* CertificateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5A963922AAD631009B237C /* CertificateValidator.swift */; };
+		1C5A964422AAEA4E009B237C /* fake.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964322AAEA4E009B237C /* fake.cer */; };
+		1C5A964822AAEBD9009B237C /* intermediate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964522AAEBD8009B237C /* intermediate.cer */; };
+		1C5A964922AAEBD9009B237C /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964622AAEBD8009B237C /* leaf.cer */; };
+		1C5A964A22AAEBD9009B237C /* root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964722AAEBD9009B237C /* root.cer */; };
 		1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A497022A058800039FCAC /* AppDelegate.swift */; };
 		1C9A497822A058810039FCAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497722A058810039FCAC /* Assets.xcassets */; };
 		1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497922A058810039FCAC /* LaunchScreen.storyboard */; };
@@ -29,6 +34,7 @@
 		1C9A49C922A6C6F00039FCAC /* VehicleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49C822A6C6F00039FCAC /* VehicleWorker.swift */; };
 		1C9A49CB22A6CCA50039FCAC /* ReservationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */; };
 		1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */; };
+		1CE4C3CF22A9426E005CAC6B /* BeaconClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */; };
 		345E7D0BF68264B927AA07A8 /* Pods_CarShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AB545E85C60F81FF225422 /* Pods_CarShareUITests.framework */; };
 		3834C5E5FE4F72024D9A8FF2 /* Pods_CarShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4433230572F7F0B120CEB080 /* Pods_CarShare.framework */; };
 		C68DDF8C2821BCDE2E226767 /* Pods_CarShareTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDCF352FFF0001CCCFD180E0 /* Pods_CarShareTests.framework */; };
@@ -53,6 +59,11 @@
 
 /* Begin PBXFileReference section */
 		15AEE45DC2912BB09F110498 /* Pods-CarShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareTests/Pods-CarShareTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1C5A963922AAD631009B237C /* CertificateValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateValidator.swift; sourceTree = "<group>"; };
+		1C5A964322AAEA4E009B237C /* fake.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = fake.cer; sourceTree = "<group>"; };
+		1C5A964522AAEBD8009B237C /* intermediate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = intermediate.cer; sourceTree = "<group>"; };
+		1C5A964622AAEBD8009B237C /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
+		1C5A964722AAEBD9009B237C /* root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = root.cer; sourceTree = "<group>"; };
 		1C9A496D22A058800039FCAC /* CarShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C9A497022A058800039FCAC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1C9A497722A058810039FCAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -84,6 +95,7 @@
 		1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListViewController.swift; sourceTree = "<group>"; };
 		1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListModule.swift; sourceTree = "<group>"; };
 		1C9A49CE22A6ECE90039FCAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconClient.swift; sourceTree = "<group>"; };
 		39FBD299C70000C0468E17CB /* Pods-CarShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareUITests/Pods-CarShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4433230572F7F0B120CEB080 /* Pods_CarShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C87353FA94E35A1A010B3AC /* Pods-CarShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare/Pods-CarShare.debug.xcconfig"; sourceTree = "<group>"; };
@@ -122,6 +134,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C5A964B22AAEBE0009B237C /* Certificates */ = {
+			isa = PBXGroup;
+			children = (
+				1C5A964522AAEBD8009B237C /* intermediate.cer */,
+				1C5A964622AAEBD8009B237C /* leaf.cer */,
+				1C5A964722AAEBD9009B237C /* root.cer */,
+				1C5A964322AAEA4E009B237C /* fake.cer */,
+				1C5A963922AAD631009B237C /* CertificateValidator.swift */,
+			);
+			path = Certificates;
+			sourceTree = "<group>";
+		};
 		1C9A496422A0587F0039FCAC = {
 			isa = PBXGroup;
 			children = (
@@ -158,6 +182,7 @@
 				1C9A497722A058810039FCAC /* Assets.xcassets */,
 				1C9A497922A058810039FCAC /* LaunchScreen.storyboard */,
 				1C9A497C22A058810039FCAC /* Info.plist */,
+				1C5A964B22AAEBE0009B237C /* Certificates */,
 			);
 			path = CarShare;
 			sourceTree = "<group>";
@@ -204,6 +229,7 @@
 				1C9A49AD22A164690039FCAC /* BluetoothClient.swift */,
 				1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */,
 				1C9A49C822A6C6F00039FCAC /* VehicleWorker.swift */,
+				1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */,
 			);
 			path = Bluetooth;
 			sourceTree = "<group>";
@@ -381,7 +407,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C9A49A322A05D790039FCAC /* .swiftformat in Resources */,
+				1C5A964822AAEBD9009B237C /* intermediate.cer in Resources */,
+				1C5A964422AAEA4E009B237C /* fake.cer in Resources */,
+				1C5A964A22AAEBD9009B237C /* root.cer in Resources */,
 				1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */,
+				1C5A964922AAEBD9009B237C /* leaf.cer in Resources */,
 				1C9A497822A058810039FCAC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -582,9 +612,11 @@
 				1C9A49BB22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift in Sources */,
 				1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */,
 				1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */,
+				1CE4C3CF22A9426E005CAC6B /* BeaconClient.swift in Sources */,
 				1C9A49B722A59ECD0039FCAC /* TemperatureDeviceListViewController.swift in Sources */,
 				1C9A49A722A156BF0039FCAC /* Registrar.swift in Sources */,
 				1C9A49B922A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift in Sources */,
+				1C5A963A22AAD631009B237C /* CertificateValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

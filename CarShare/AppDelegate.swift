@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     let container = Registrar.appContainer()
+    let beaconClient = BeaconClient()
 
     func application(
         _: UIApplication,
@@ -28,7 +29,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window = createWindow()
 
+//        beaconClient.startAdvertising("com.geotab.bleRegion")
+
+        validateCertificate("leaf")
+        validateCertificate("intermediate")
+        validateCertificate("root")
+        validateCertificate("fake")
+
         return true
+    }
+
+    private func validateCertificate(_ name: String) {
+        guard let filePath = Bundle.main.url(forResource: name, withExtension: "cer") else {
+            return
+        }
+        guard let data = try? Data(contentsOf: filePath) else {
+            return
+        }
+        print(data)
+        let validator = CertificateValidator()
+        print(validator.validate(data))
     }
 
     private func createWindow() -> UIWindow {
