@@ -9,19 +9,7 @@
 import CoreBluetooth
 import RxSwift
 
-protocol BluetoothClient {
-    func scan(serviceId: String) -> Observable<(peripheral: CBPeripheral, advertisementData: [String: Any])>
-    func stopScan() -> Completable
-    func connect(to peripheral: CBPeripheral) -> Single<CBPeripheral>
-    func disconnect(from peripheral: CBPeripheral) -> Completable
-    func find(peripheralId: String) -> Single<CBPeripheral?>
-    func find(serviceId: String, for peripheral: CBPeripheral) -> Single<CBService>
-    func find(characteristicId: String, for service: CBService) -> Single<CBCharacteristic>
-    func read(_ characteristic: CBCharacteristic) -> Single<Data?>
-    func write(data: Data, to characteristic: CBCharacteristic) -> Completable
-}
-
-class CoreBluetoothClient: NSObject {
+class ChunkingBluetoothClient: NSObject {
     private lazy var bluetoothManager = CBCentralManager(
         delegate: self,
         queue: self.bluetoothQueue,
@@ -42,13 +30,13 @@ class CoreBluetoothClient: NSObject {
         case findingPeripheral(peripheralId: String, observer: (SingleEvent<CBPeripheral?>) -> Void)
         case findingService(serviceId: String, peripheral: CBPeripheral, observer: (SingleEvent<CBService>) -> Void)
         case findingCharacteristic(characteristicId: String, service: CBService, peripheral: CBPeripheral, observer: (SingleEvent<CBCharacteristic>) -> Void)
-        case readingCharacteristic(characteristic: CBCharacteristic, service: CBService, peripheral: CBPeripheral, observer: (SingleEvent<Data?>) -> Void)
-        case writingCharacteristic(value: Data, characteristic: CBCharacteristic, service: CBService, peripheral: CBPeripheral, observer: (CompletableEvent) -> Void)
+        case readingCharacteristic(characteristic: CBCharacteristic, service: CBService, peripheral: CBPeripheral, chunks: [Data?]?, observer: (SingleEvent<Data?>) -> Void)
+        case writingCharacteristic(remainingChunks: [Data], characteristic: CBCharacteristic, service: CBService, peripheral: CBPeripheral, observer: (CompletableEvent) -> Void)
         case connected(peripheral: CBPeripheral)
     }
 }
 
-extension CoreBluetoothClient: BluetoothClient {
+extension ChunkingBluetoothClient: BluetoothClient {
 
     func scan(serviceId: String) -> Observable<(peripheral: CBPeripheral, advertisementData: [String: Any])> {
         let subject = PublishSubject<(peripheral: CBPeripheral, advertisementData: [String: Any])>()
@@ -138,7 +126,7 @@ extension CoreBluetoothClient: BluetoothClient {
         return Single.create {
             let peripheral = characteristic.service.peripheral
             let service = characteristic.service
-            self.state = DeviceState.readingCharacteristic(characteristic: characteristic, service: service, peripheral: peripheral, observer: $0)
+            self.state = DeviceState.readingCharacteristic(characteristic: characteristic, service: service, peripheral: peripheral, chunks: nil, observer: $0)
             peripheral.delegate = self
             peripheral.readValue(for: characteristic)
             return Disposables.create()
@@ -151,9 +139,19 @@ extension CoreBluetoothClient: BluetoothClient {
         return Completable.create {
             let peripheral = characteristic.service.peripheral
             let service = characteristic.service
-            self.state = DeviceState.writingCharacteristic(value: data, characteristic: characteristic, service: service, peripheral: peripheral, observer: $0)
+            var chunks: [Data] = []
+
+            let chunkSize = 25
+            let totalChunks = Int(ceil(Double(data.count) / Double(chunkSize)))
+            for i in 0..<totalChunks {
+                var chunk = Data(bytes: [UInt8(totalChunks), UInt8(i)], count: 2)
+                chunk.append(data.subdata(in: i * chunkSize..<min((i * chunkSize + chunkSize), data.count)))
+                chunks.append(chunk)
+            }
+
+            self.state = DeviceState.writingCharacteristic(remainingChunks: chunks, characteristic: characteristic, service: service, peripheral: peripheral, observer: $0)
             peripheral.delegate = self
-            peripheral.writeValue(data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
+            self.peripheral(peripheral, didWriteValueFor: characteristic, error: nil)
             return Disposables.create()
         }
             .subscribeOn(bluetoothScheduler)
@@ -162,7 +160,7 @@ extension CoreBluetoothClient: BluetoothClient {
 
 }
 
-extension CoreBluetoothClient: CBCentralManagerDelegate {
+extension ChunkingBluetoothClient: CBCentralManagerDelegate {
 
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         log.debug("centralManagerDidUpdateState: \(central.state.rawValue)")
@@ -191,6 +189,7 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
         guard case let .connecting(_, observer) = state else {
             return
         }
+        log.info("connected to \(peripheral)")
         state = .connected(peripheral: peripheral)
         observer(.success(peripheral))
     }
@@ -210,7 +209,7 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
     }
 }
 
-extension CoreBluetoothClient: CBPeripheralDelegate {
+extension ChunkingBluetoothClient: CBPeripheralDelegate {
 
     func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
         log.debug("peripheralDidUpdateName")
@@ -233,6 +232,7 @@ extension CoreBluetoothClient: CBPeripheralDelegate {
         guard case let .findingService(serviceId, _, observer) = state, let service = peripheral.services?.first(where: { service in service.uuid.uuidString.lowercased() == serviceId.lowercased() }) else {
             return
         }
+        log.info("connected with services")
         state = .connected(peripheral: peripheral)
         observer(.success(service))
     }
@@ -251,19 +251,43 @@ extension CoreBluetoothClient: CBPeripheralDelegate {
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard case let .readingCharacteristic(_, _, _, observer) = state else {
+        guard case let .readingCharacteristic(_, service, peripheral, chunksOrNil, observer) = state else {
             return
         }
-        state = .connected(peripheral: peripheral)
-        observer(.success(characteristic.value))
+        guard let chunk = characteristic.value, chunk.count >= 2 else {
+            observer(.success(nil))
+            return
+        }
+        var chunks: [Data?] = chunksOrNil ?? Array(repeating: nil, count: Int(chunk[0]))
+
+        let index = Int(chunk[1])
+        chunks[index] = chunk.dropFirst(2)
+
+        if let nonEmptyChunks = chunks as? [Data] {
+            let data = nonEmptyChunks.reduce(into: Data()) { data, chunk in
+                data.append(chunk)
+            }
+            state = .connected(peripheral: peripheral)
+            observer(.success(data))
+        } else {
+            state = .readingCharacteristic(characteristic: characteristic, service: service, peripheral: peripheral, chunks: chunks, observer: observer)
+            //            peripheral.readValue(for: characteristic)
+        }
     }
 
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard case let DeviceState.writingCharacteristic(_, _, _, _, observer) = state else {
+        guard case let DeviceState.writingCharacteristic(chunks, _, service, _, observer) = state else {
             return
         }
-        state = .connected(peripheral: peripheral)
-        observer(.completed)
+        guard !chunks.isEmpty else {
+            state = .connected(peripheral: peripheral)
+            observer(.completed)
+            return
+        }
+        var remainingChunks = chunks
+        let chunk = remainingChunks.removeFirst()
+        state = .writingCharacteristic(remainingChunks: remainingChunks, characteristic: characteristic, service: service, peripheral: peripheral, observer: observer)
+        peripheral.writeValue(chunk, for: characteristic, type: CBCharacteristicWriteType.withResponse)
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {

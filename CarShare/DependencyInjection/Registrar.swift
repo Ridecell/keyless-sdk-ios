@@ -49,9 +49,13 @@ enum Registrar {
                 CoreBluetoothClient()
             }
             .inObjectScope(.container)
-        container.register(LaunchViewController.self) { _ in
-            LaunchViewController()
+        container.register(LaunchViewController.self) { r in
+            LaunchViewController.initialize(grootWorker: r.resolve(GrootWorker.self)!)
         }
+        container.register(GrootWorker.self) { r in
+            GrootWorker(bluetoothClient: r.resolve(BluetoothClient.self)!)
+        }
+        .inObjectScope(.container)
     }
 }
 

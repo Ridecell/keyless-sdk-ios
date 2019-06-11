@@ -17,9 +17,19 @@ class CertificateValidator {
         }
 
         var optionalTrust: SecTrust?
-        let status = SecTrustCreateWithCertificates(certificate, SecPolicyCreateSSL(true, nil), &optionalTrust)
-        guard status == 0, let trust = optionalTrust else {
+        let trustStatus = SecTrustCreateWithCertificates(certificate, SecPolicyCreateSSL(true, nil), &optionalTrust)
+        guard trustStatus == 0, let trust = optionalTrust else {
             log.error("couldn't create trust")
+            return false
+        }
+
+        guard let rootCertificate = getRootCertificate() else {
+            log.error("couldn't create root certificate")
+            return false
+        }
+
+        guard SecTrustSetAnchorCertificates(trust, [rootCertificate] as CFArray) == 0 else {
+            log.error("Couldn't anchor root")
             return false
         }
 
@@ -30,5 +40,16 @@ class CertificateValidator {
             return false
         }
         return [.proceed, .unspecified].contains(result)
+    }
+
+    private func getRootCertificate() -> SecCertificate? {
+        guard let filePath = Bundle.main.url(forResource: "matt-root", withExtension: "cer") else {
+            return nil
+        }
+        guard let data = try? Data(contentsOf: filePath) else {
+            return nil
+        }
+
+        return SecCertificateCreateWithData(nil, data as CFData)
     }
 }

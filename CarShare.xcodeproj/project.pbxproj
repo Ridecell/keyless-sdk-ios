@@ -12,6 +12,10 @@
 		1C5A964822AAEBD9009B237C /* intermediate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964522AAEBD8009B237C /* intermediate.cer */; };
 		1C5A964922AAEBD9009B237C /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964622AAEBD8009B237C /* leaf.cer */; };
 		1C5A964A22AAEBD9009B237C /* root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964722AAEBD9009B237C /* root.cer */; };
+		1C80BE3322AE8CC2000E2B66 /* matt-root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C80BE3122AE8CC2000E2B66 /* matt-root.cer */; };
+		1C80BE3422AE8CC2000E2B66 /* matt-leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */; };
+		1C80BE3722AEA34C000E2B66 /* TLSBluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */; };
+		1C80BE3922AEA7CD000E2B66 /* GrootWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C80BE3822AEA7CD000E2B66 /* GrootWorker.swift */; };
 		1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A497022A058800039FCAC /* AppDelegate.swift */; };
 		1C9A497822A058810039FCAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497722A058810039FCAC /* Assets.xcassets */; };
 		1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497922A058810039FCAC /* LaunchScreen.storyboard */; };
@@ -34,6 +38,10 @@
 		1C9A49C922A6C6F00039FCAC /* VehicleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49C822A6C6F00039FCAC /* VehicleWorker.swift */; };
 		1C9A49CB22A6CCA50039FCAC /* ReservationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */; };
 		1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */; };
+		1CAF724522AFF17F002DED9B /* TLSSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF724422AFF17F002DED9B /* TLSSocket.swift */; };
+		1CAF724722B00290002DED9B /* GrootPeripheralWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */; };
+		1CE3289B22AEEC76004C3082 /* ChunkingBluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */; };
+		1CE3289D22AFD699004C3082 /* InMemoryTLSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */; };
 		1CE4C3CF22A9426E005CAC6B /* BeaconClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */; };
 		345E7D0BF68264B927AA07A8 /* Pods_CarShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AB545E85C60F81FF225422 /* Pods_CarShareUITests.framework */; };
 		3834C5E5FE4F72024D9A8FF2 /* Pods_CarShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4433230572F7F0B120CEB080 /* Pods_CarShare.framework */; };
@@ -64,6 +72,10 @@
 		1C5A964522AAEBD8009B237C /* intermediate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = intermediate.cer; sourceTree = "<group>"; };
 		1C5A964622AAEBD8009B237C /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
 		1C5A964722AAEBD9009B237C /* root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = root.cer; sourceTree = "<group>"; };
+		1C80BE3122AE8CC2000E2B66 /* matt-root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matt-root.cer"; sourceTree = "<group>"; };
+		1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matt-leaf.cer"; sourceTree = "<group>"; };
+		1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSBluetoothClient.swift; sourceTree = "<group>"; };
+		1C80BE3822AEA7CD000E2B66 /* GrootWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrootWorker.swift; sourceTree = "<group>"; };
 		1C9A496D22A058800039FCAC /* CarShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C9A497022A058800039FCAC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1C9A497722A058810039FCAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -95,6 +107,10 @@
 		1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListViewController.swift; sourceTree = "<group>"; };
 		1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListModule.swift; sourceTree = "<group>"; };
 		1C9A49CE22A6ECE90039FCAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		1CAF724422AFF17F002DED9B /* TLSSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSSocket.swift; sourceTree = "<group>"; };
+		1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrootPeripheralWorker.swift; sourceTree = "<group>"; };
+		1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChunkingBluetoothClient.swift; sourceTree = "<group>"; };
+		1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryTLSClient.swift; sourceTree = "<group>"; };
 		1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconClient.swift; sourceTree = "<group>"; };
 		39FBD299C70000C0468E17CB /* Pods-CarShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareUITests/Pods-CarShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4433230572F7F0B120CEB080 /* Pods_CarShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +153,8 @@
 		1C5A964B22AAEBE0009B237C /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
+				1C80BE3122AE8CC2000E2B66 /* matt-root.cer */,
+				1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */,
 				1C5A964522AAEBD8009B237C /* intermediate.cer */,
 				1C5A964622AAEBD8009B237C /* leaf.cer */,
 				1C5A964722AAEBD9009B237C /* root.cer */,
@@ -144,6 +162,16 @@
 				1C5A963922AAD631009B237C /* CertificateValidator.swift */,
 			);
 			path = Certificates;
+			sourceTree = "<group>";
+		};
+		1C80BE3522AEA335000E2B66 /* TLS */ = {
+			isa = PBXGroup;
+			children = (
+				1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */,
+				1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */,
+				1CAF724422AFF17F002DED9B /* TLSSocket.swift */,
+			);
+			path = TLS;
 			sourceTree = "<group>";
 		};
 		1C9A496422A0587F0039FCAC = {
@@ -171,6 +199,7 @@
 		1C9A496F22A058800039FCAC /* CarShare */ = {
 			isa = PBXGroup;
 			children = (
+				1C80BE3522AEA335000E2B66 /* TLS */,
 				1C9A49C522A6C09B0039FCAC /* Location */,
 				1C9A49AC22A164580039FCAC /* Bluetooth */,
 				1C9A49A822A15A5B0039FCAC /* Pages */,
@@ -227,9 +256,12 @@
 			isa = PBXGroup;
 			children = (
 				1C9A49AD22A164690039FCAC /* BluetoothClient.swift */,
+				1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */,
 				1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */,
 				1C9A49C822A6C6F00039FCAC /* VehicleWorker.swift */,
 				1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */,
+				1C80BE3822AEA7CD000E2B66 /* GrootWorker.swift */,
+				1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */,
 			);
 			path = Bluetooth;
 			sourceTree = "<group>";
@@ -406,10 +438,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C80BE3422AE8CC2000E2B66 /* matt-leaf.cer in Resources */,
 				1C9A49A322A05D790039FCAC /* .swiftformat in Resources */,
 				1C5A964822AAEBD9009B237C /* intermediate.cer in Resources */,
 				1C5A964422AAEA4E009B237C /* fake.cer in Resources */,
 				1C5A964A22AAEBD9009B237C /* root.cer in Resources */,
+				1C80BE3322AE8CC2000E2B66 /* matt-root.cer in Resources */,
 				1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */,
 				1C5A964922AAEBD9009B237C /* leaf.cer in Resources */,
 				1C9A497822A058810039FCAC /* Assets.xcassets in Resources */,
@@ -602,16 +636,22 @@
 				1C9A49B322A5981A0039FCAC /* TemperatureDeviceList.swift in Sources */,
 				1C9A49BD22A5FC450039FCAC /* LaunchViewController.swift in Sources */,
 				1C9A49CB22A6CCA50039FCAC /* ReservationListViewController.swift in Sources */,
+				1C80BE3722AEA34C000E2B66 /* TLSBluetoothClient.swift in Sources */,
+				1CAF724722B00290002DED9B /* GrootPeripheralWorker.swift in Sources */,
 				1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */,
 				1C9A49C022A600850039FCAC /* ReservationList.swift in Sources */,
 				1C9A49C922A6C6F00039FCAC /* VehicleWorker.swift in Sources */,
 				1C9A49C222A607F20039FCAC /* ReservationListPresenter.swift in Sources */,
 				1C9A49B022A54F0E0039FCAC /* TemperatureWorker.swift in Sources */,
 				1C9A49C422A6C05E0039FCAC /* ReservationListInteractor.swift in Sources */,
+				1CE3289D22AFD699004C3082 /* InMemoryTLSClient.swift in Sources */,
+				1C80BE3922AEA7CD000E2B66 /* GrootWorker.swift in Sources */,
 				1C9A49B522A59C500039FCAC /* TemperatureDeviceListModule.swift in Sources */,
+				1CAF724522AFF17F002DED9B /* TLSSocket.swift in Sources */,
 				1C9A49BB22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift in Sources */,
 				1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */,
 				1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */,
+				1CE3289B22AEEC76004C3082 /* ChunkingBluetoothClient.swift in Sources */,
 				1CE4C3CF22A9426E005CAC6B /* BeaconClient.swift in Sources */,
 				1C9A49B722A59ECD0039FCAC /* TemperatureDeviceListViewController.swift in Sources */,
 				1C9A49A722A156BF0039FCAC /* Registrar.swift in Sources */,

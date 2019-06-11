@@ -31,12 +31,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //        beaconClient.startAdvertising("com.geotab.bleRegion")
 
-        validateCertificate("leaf")
-        validateCertificate("intermediate")
-        validateCertificate("root")
-        validateCertificate("fake")
+//        validateCertificate("leaf")
+//        validateCertificate("intermediate")
+//        validateCertificate("root")
+//        validateCertificate("fake")
+//        validateCertificate("matt-leaf")
+
+//        connect()
+
+//        print(getCNforSSL(at: URL(string: "https://www.geotab.com")!, port: 443)!)
 
         return true
+    }
+
+    private func connect() {
+        let client = InMemoryTLSClient()
+        client.connect()
     }
 
     private func validateCertificate(_ name: String) {
