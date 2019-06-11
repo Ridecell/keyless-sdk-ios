@@ -37,7 +37,7 @@ class BeaconClient: NSObject {
 
             var data = region.peripheralData(withMeasuredPower: nil) as! [String: Any]
             data[CBAdvertisementDataLocalNameKey] = localName
-            data[CBAdvertisementDataServiceUUIDsKey] = CBUUID(string: serviceId)
+            data[CBAdvertisementDataServiceUUIDsKey] = [CBUUID(string: serviceId)] as CFArray
 
             self.state = .initializing(
                 context: PeripheralContext(
@@ -75,10 +75,12 @@ extension BeaconClient: CBPeripheralManagerDelegate {
                 value: nil,
                 permissions: [.readable, .writeable])
         ]
+        log.verbose("adding service")
         peripheral.add(service)
     }
 
     func peripheralManager(_ peripheral: CBPeripheralManager, didAdd service: CBService, error: Error?) {
+        log.verbose("service added")
         guard case let .initializing(context, _) = state else {
             return
         }
@@ -86,9 +88,11 @@ extension BeaconClient: CBPeripheralManagerDelegate {
     }
 
     func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
-        guard case let .initializing(_, observer) = state else {
+        log.verbose("advertising started")
+        guard case let .initializing(advertisingData, observer) = state else {
             return
         }
+        dump(advertisingData)
         state = .advertising(peripheral: peripheral)
         observer(.success(peripheral))
     }
@@ -99,10 +103,8 @@ extension BeaconClient: CBPeripheralManagerDelegate {
 
     func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
         log.info("didReceiveRead")
-        let temperature: [UInt8] = [
-            0, 194, 0, 0, 255
-        ]
-        request.value = Data(bytes: temperature, count: 5)
+
+        request.value = "Hello, this is Matt's phone".data(using: .utf8)
         peripheral.respond(to: request, withResult: .success)
     }
 
