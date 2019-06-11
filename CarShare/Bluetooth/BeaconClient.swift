@@ -35,15 +35,13 @@ class BeaconClient: NSObject {
 
             let peripheral = CBPeripheralManager(delegate: self, queue: self.peripheralQueue)
 
-            var data = region.peripheralData(withMeasuredPower: nil) as! [String: Any]
-            data[CBAdvertisementDataLocalNameKey] = localName
-            data[CBAdvertisementDataServiceUUIDsKey] = [CBUUID(string: serviceId)] as CFArray
-
             self.state = .initializing(
                 context: PeripheralContext(
                     region: region,
                     peripheral: peripheral,
-                    advertisingData: data,
+                    advertisingData: [
+                        CBAdvertisementDataServiceUUIDsKey: [CBUUID(string: serviceId)]
+                    ],
                     serviceId: serviceId,
                     characteristicId: characteristicId),
                 observer: observer)
