@@ -9,13 +9,7 @@
 import Foundation
 
 class CertificateValidator {
-    func validate(_ data: Data) -> Bool {
-
-        guard let certificate = SecCertificateCreateWithData(nil, data as CFData) else {
-            log.error("couldn't create cert")
-            return false
-        }
-
+    func validate(_ certificate: SecCertificate) -> Bool {
         var optionalTrust: SecTrust?
         let trustStatus = SecTrustCreateWithCertificates(certificate, SecPolicyCreateSSL(true, nil), &optionalTrust)
         guard trustStatus == 0, let trust = optionalTrust else {
@@ -40,6 +34,16 @@ class CertificateValidator {
             return false
         }
         return [.proceed, .unspecified].contains(result)
+    }
+
+    func validate(_ data: Data) -> Bool {
+
+        guard let certificate = SecCertificateCreateWithData(nil, data as CFData) else {
+            log.error("couldn't create cert")
+            return false
+        }
+
+        return validate(certificate)
     }
 
     private func getRootCertificate() -> SecCertificate? {
