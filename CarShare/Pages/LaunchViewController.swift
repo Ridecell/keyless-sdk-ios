@@ -13,8 +13,8 @@ import UIKit
 class LaunchViewController: UIViewController {
 
     private enum BLeIdentifier {
-        static let service = "cbc01049-b414-473c-a0a3-d6841485e49a"
-        static let characteristic = "36eefdae-3a30-40b7-acaa-b8eb497cd1ef"
+        static let service = "cbc01049-b414-473c-a0a3-d6841485e49a".uppercased()
+        static let characteristic = "36eefdae-3a30-40b7-acaa-b8eb497cd1ef".uppercased()
     }
 
     static func initialize(grootWorker: GrootWorker) -> LaunchViewController {
@@ -48,6 +48,22 @@ class LaunchViewController: UIViewController {
 
     }
 
+    private func blockPrint() {
+        DispatchQueue.global(qos: .default).async {
+            var i = 0
+            print("start \(i)")
+            let semaphore = DispatchSemaphore(value: 0)
+            DispatchQueue.global(qos: .background).async {
+                i += 1
+                print("middle \(i)")
+                semaphore.signal()
+            }
+            semaphore.wait()
+            i += 1
+            print("end \(i)")
+        }
+    }
+
     @objc func didTapCentral() {
         grootWorker.fetchGreeting()
             .subscribe { event in
@@ -62,21 +78,28 @@ class LaunchViewController: UIViewController {
     }
 
     @objc func didTapPeripheral() {
-        let uuid = UUID()
-        let region = CLBeaconRegion(
-            proximityUUID: uuid,
-            identifier: uuid.uuidString)
+        print("start")
+        let semaphore = DispatchSemaphore(value: 0)
+
+        let uuid = UUID(uuidString: "629e1b55-a1c8-4e68-ba5e-8b8892d5397a")!
+
+        let region = CLBeaconRegion(proximityUUID: uuid, major: 111, minor: 11, identifier: "matt-phone")
 
         beaconClient.startAdvertising(
             in: region,
             localName: "car-share-beacon-ios",
             serviceId: BLeIdentifier.service,
             characteristicId: BLeIdentifier.characteristic)
+            .observeOn(SerialDispatchQueueScheduler(qos: .background))
             .subscribe { event in
                 if case let .success(peripheral) = event {
                     log.info("Advertising started! \(peripheral)")
                 }
+                print("signal")
+                semaphore.signal()
             }
             .disposed(by: disposeBag)
+        semaphore.wait()
+        print("end")
     }
 }

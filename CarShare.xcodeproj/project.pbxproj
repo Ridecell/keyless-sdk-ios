@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C56728922B1475100ABD58C /* TLSBeaconClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C56728822B1475100ABD58C /* TLSBeaconClient.swift */; };
 		1C5A963A22AAD631009B237C /* CertificateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5A963922AAD631009B237C /* CertificateValidator.swift */; };
 		1C5A964422AAEA4E009B237C /* fake.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964322AAEA4E009B237C /* fake.cer */; };
 		1C5A964822AAEBD9009B237C /* intermediate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964522AAEBD8009B237C /* intermediate.cer */; };
@@ -40,6 +41,7 @@
 		1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */; };
 		1CAF724522AFF17F002DED9B /* TLSSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF724422AFF17F002DED9B /* TLSSocket.swift */; };
 		1CAF724722B00290002DED9B /* GrootPeripheralWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */; };
+		1CC391BE22B14FE400DD900D /* CertificatePutter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391BD22B14FE400DD900D /* CertificatePutter.swift */; };
 		1CE3289B22AEEC76004C3082 /* ChunkingBluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */; };
 		1CE3289D22AFD699004C3082 /* InMemoryTLSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */; };
 		1CE4C3CF22A9426E005CAC6B /* BeaconClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */; };
@@ -67,6 +69,7 @@
 
 /* Begin PBXFileReference section */
 		15AEE45DC2912BB09F110498 /* Pods-CarShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareTests/Pods-CarShareTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1C56728822B1475100ABD58C /* TLSBeaconClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSBeaconClient.swift; sourceTree = "<group>"; };
 		1C5A963922AAD631009B237C /* CertificateValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateValidator.swift; sourceTree = "<group>"; };
 		1C5A964322AAEA4E009B237C /* fake.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = fake.cer; sourceTree = "<group>"; };
 		1C5A964522AAEBD8009B237C /* intermediate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = intermediate.cer; sourceTree = "<group>"; };
@@ -109,6 +112,7 @@
 		1C9A49CE22A6ECE90039FCAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1CAF724422AFF17F002DED9B /* TLSSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSSocket.swift; sourceTree = "<group>"; };
 		1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrootPeripheralWorker.swift; sourceTree = "<group>"; };
+		1CC391BD22B14FE400DD900D /* CertificatePutter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificatePutter.swift; sourceTree = "<group>"; };
 		1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChunkingBluetoothClient.swift; sourceTree = "<group>"; };
 		1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryTLSClient.swift; sourceTree = "<group>"; };
 		1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconClient.swift; sourceTree = "<group>"; };
@@ -160,6 +164,7 @@
 				1C5A964722AAEBD9009B237C /* root.cer */,
 				1C5A964322AAEA4E009B237C /* fake.cer */,
 				1C5A963922AAD631009B237C /* CertificateValidator.swift */,
+				1CC391BD22B14FE400DD900D /* CertificatePutter.swift */,
 			);
 			path = Certificates;
 			sourceTree = "<group>";
@@ -170,6 +175,7 @@
 				1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */,
 				1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */,
 				1CAF724422AFF17F002DED9B /* TLSSocket.swift */,
+				1C56728822B1475100ABD58C /* TLSBeaconClient.swift */,
 			);
 			path = TLS;
 			sourceTree = "<group>";
@@ -523,7 +529,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" autocorrect\n# \"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}/CarShare/\"\n";
+			shellScript = "# \"${PODS_ROOT}/SwiftLint/swiftlint\" autocorrect\n# \"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}/CarShare/\"\n";
 		};
 		37EF554178D0C295E49B9BCE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -637,6 +643,7 @@
 				1C9A49BD22A5FC450039FCAC /* LaunchViewController.swift in Sources */,
 				1C9A49CB22A6CCA50039FCAC /* ReservationListViewController.swift in Sources */,
 				1C80BE3722AEA34C000E2B66 /* TLSBluetoothClient.swift in Sources */,
+				1CC391BE22B14FE400DD900D /* CertificatePutter.swift in Sources */,
 				1CAF724722B00290002DED9B /* GrootPeripheralWorker.swift in Sources */,
 				1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */,
 				1C9A49C022A600850039FCAC /* ReservationList.swift in Sources */,
@@ -646,6 +653,7 @@
 				1C9A49C422A6C05E0039FCAC /* ReservationListInteractor.swift in Sources */,
 				1CE3289D22AFD699004C3082 /* InMemoryTLSClient.swift in Sources */,
 				1C80BE3922AEA7CD000E2B66 /* GrootWorker.swift in Sources */,
+				1C56728922B1475100ABD58C /* TLSBeaconClient.swift in Sources */,
 				1C9A49B522A59C500039FCAC /* TemperatureDeviceListModule.swift in Sources */,
 				1CAF724522AFF17F002DED9B /* TLSSocket.swift in Sources */,
 				1C9A49BB22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift in Sources */,

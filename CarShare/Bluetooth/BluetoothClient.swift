@@ -54,7 +54,7 @@ extension CoreBluetoothClient: BluetoothClient {
         let subject = PublishSubject<(peripheral: CBPeripheral, advertisementData: [String: Any])>()
         return subject
             .do(onSubscribe: {
-                log.debug("scan now!")
+                log.debug("scan now! \(serviceId)")
                 self.state = .scanning(serviceId: serviceId, subject: subject)
                 self.centralManagerDidUpdateState(self.bluetoothManager)
             }, onDispose: {
@@ -115,7 +115,9 @@ extension CoreBluetoothClient: BluetoothClient {
         return Single.create {
             self.state = .findingService(serviceId: serviceId, peripheral: peripheral, observer: $0)
             peripheral.delegate = self
-            peripheral.discoverServices([CBUUID(string: serviceId)])
+            peripheral.discoverServices([
+                CBUUID(string: serviceId)
+            ])
             return Disposables.create()
         }
             .subscribeOn(bluetoothScheduler)
@@ -167,9 +169,9 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         log.debug("centralManagerDidUpdateState: \(central.state.rawValue)")
         if case let .scanning(serviceId, _) = state, case .poweredOn = central.state {
-            bluetoothManager.scanForPeripherals(withServices: [CBUUID(string: serviceId)], options: [
-                CBCentralManagerScanOptionAllowDuplicatesKey: NSNumber(booleanLiteral: true)
-            ])
+            bluetoothManager.scanForPeripherals(
+                withServices: [CBUUID(string: serviceId)],
+                options: nil)
         } else if case let .findingPeripheral(peripheralId, observer) = state, case .poweredOn = central.state {
             log.verbose("Looking for \(peripheralId)")
             let peripherals = bluetoothManager.retrievePeripherals(withIdentifiers: [UUID(uuidString: peripheralId)!])
@@ -183,6 +185,7 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
         guard case let .scanning(_, subject) = state else {
             return
         }
+
         subject.onNext((peripheral, advertisementData))
     }
 
