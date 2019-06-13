@@ -9,23 +9,26 @@
 import CoreLocation
 import RxSwift
 import UIKit
+import CoreBluetooth
 
 class LaunchViewController: UIViewController {
 
     private enum BLeIdentifier {
-        static let service = "cbc01049-b414-473c-a0a3-d6841485e49a".uppercased()
+        static let service = "cbc01049-b414-473c-a0a3-d6841485e49b" // "cbc01049-b414-473c-a0a3-d6841485e49a".uppercased()
         static let characteristic = "36eefdae-3a30-40b7-acaa-b8eb497cd1ef".uppercased()
     }
 
     static func initialize(grootWorker: GrootWorker) -> LaunchViewController {
         let viewController = LaunchViewController()
-        viewController.grootWorker = grootWorker
         return viewController
     }
 
-    private var grootWorker: GrootWorker!
-    private let beaconClient = BeaconClient()
-    private let disposeBag = DisposeBag()
+//    private var grootWorker: GrootWorker!
+//    private let beaconClient = BeaconClient()
+//    private let disposeBag = DisposeBag()
+
+    let peripheralSocket = PeripheralSocket()
+    let centralSocket = CentralSocket()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +47,7 @@ class LaunchViewController: UIViewController {
         view.addSubview(peripheralButton)
         peripheralButton.translatesAutoresizingMaskIntoConstraints = false
         peripheralButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        peripheralButton.topAnchor.constraint(equalTo: centralButton.bottomAnchor).isActive = true
+        peripheralButton.topAnchor.constraint(equalTo: centralButton.bottomAnchor, constant: 32).isActive = true
 
     }
 
@@ -65,41 +68,52 @@ class LaunchViewController: UIViewController {
     }
 
     @objc func didTapCentral() {
-        grootWorker.fetchGreeting()
-            .subscribe { event in
-                if case let .success(greeting) = event {
-                    let alert = UIAlertController(title: "Ble Message", message: greeting, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                    log.info(greeting)
-                }
-            }
-            .disposed(by: disposeBag)
+        peripheralSocket.close()
+        centralSocket.delegate = self
+        centralSocket.scan(for: BLeIdentifier.service)
     }
 
     @objc func didTapPeripheral() {
-        print("start")
-        let semaphore = DispatchSemaphore(value: 0)
-
+        centralSocket.close()
         let uuid = UUID(uuidString: "629e1b55-a1c8-4e68-ba5e-8b8892d5397a")!
 
         let region = CLBeaconRegion(proximityUUID: uuid, major: 111, minor: 11, identifier: "matt-phone")
 
-        beaconClient.startAdvertising(
-            in: region,
-            localName: "car-share-beacon-ios",
-            serviceId: BLeIdentifier.service,
-            characteristicId: BLeIdentifier.characteristic)
-            .observeOn(SerialDispatchQueueScheduler(qos: .background))
-            .subscribe { event in
-                if case let .success(peripheral) = event {
-                    log.info("Advertising started! \(peripheral)")
-                }
-                print("signal")
-                semaphore.signal()
-            }
-            .disposed(by: disposeBag)
-        semaphore.wait()
-        print("end")
+        peripheralSocket.delegate = self
+        peripheralSocket.advertiseL2CAPChannel(in: region, serviceId: BLeIdentifier.service, characteristicId: BLeIdentifier.characteristic)
+
+    }
+}
+
+extension LaunchViewController: CentralSocketDelegate, PeripheralSocketDelegate {
+    func socketDidClose(_ socket: Socket) {
+        if socket is CentralSocket {
+            didTapCentral()
+        } else if socket is PeripheralSocket {
+            didTapPeripheral()
+        }
+    }
+
+    func socket(_ socket: Socket, didRead data: Data) {
+        let string = String(bytes: data, encoding: .utf8)!
+        if socket is CentralSocket {
+            log.info("central read: \(string)")
+        } else if socket is PeripheralSocket {
+            log.info("peripheral read: \(string)")
+            socket.write("Howdy!".data(using: .utf8)!)
+        }
+        log.warning("Message! \(string)")
+        let alert = UIAlertController(title: string, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+
+    func centralSocketDidOpen(_ centralSocket: CentralSocket) {
+        centralSocket.write("Hi!".data(using: .utf8)!)
+    }
+
+    func centralSocket(_ centralSocket: CentralSocket, didDiscover peripheral: CBPeripheral) {
+        centralSocket.stopScanning()
+        centralSocket.open(peripheral, serviceId: BLeIdentifier.service, characteristicId: BLeIdentifier.characteristic)
     }
 }
