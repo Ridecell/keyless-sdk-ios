@@ -89,6 +89,7 @@ extension LaunchViewController: CentralSocketDelegate, PeripheralSocketDelegate 
     func socketDidOpen(_ socket: Socket) {
         if socket is CentralSocket {
             log.info("central open")
+            centralSocket.write("Hi!".data(using: .utf8)!)
         } else if socket is PeripheralSocket {
             log.info("peripheral open")
         }
@@ -114,10 +115,6 @@ extension LaunchViewController: CentralSocketDelegate, PeripheralSocketDelegate 
         let alert = UIAlertController(title: string, message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
-    }
-
-    func centralSocketDidOpen(_ centralSocket: CentralSocket) {
-        centralSocket.write("Hi!".data(using: .utf8)!)
     }
 
     func centralSocket(_ centralSocket: CentralSocket, didDiscover peripheral: CBPeripheral) {

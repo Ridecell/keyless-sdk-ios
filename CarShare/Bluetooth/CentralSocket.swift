@@ -13,7 +13,14 @@ protocol CentralSocketDelegate: SocketDelegate {
     func centralSocket(_ centralSocket: CentralSocket, didDiscover peripheral: CBPeripheral)
 }
 
-class CentralSocket: NSObject, Socket {
+protocol CentralSocket: Socket {
+    var delegate: CentralSocketDelegate? { get set }
+    func scan(for serviceId: String)
+    func stopScanning()
+    func open(_ peripheral: CBPeripheral, serviceId: String, characteristicId: String)
+}
+
+class BaseCentralSocket: NSObject, CentralSocket {
 
     private enum State {
         case idle
@@ -87,7 +94,7 @@ class CentralSocket: NSObject, Socket {
     }
 }
 
-extension CentralSocket: CBCentralManagerDelegate {
+extension BaseCentralSocket: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         guard central.state == .poweredOn else {
             return
@@ -127,7 +134,7 @@ extension CentralSocket: CBCentralManagerDelegate {
     }
 }
 
-extension CentralSocket: CBPeripheralDelegate {
+extension BaseCentralSocket: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         guard case let .discoveringService(peripheral: peripheral, serviceId: serviceId, characteristicId: characteristicId) = state else {
             return
@@ -181,7 +188,7 @@ extension CentralSocket: CBPeripheralDelegate {
 
 }
 
-extension CentralSocket: StreamDelegate {
+extension BaseCentralSocket: StreamDelegate {
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         guard case .open = state else {
             return

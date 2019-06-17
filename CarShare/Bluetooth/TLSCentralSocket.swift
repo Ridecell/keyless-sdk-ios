@@ -8,10 +8,16 @@
 
 import CoreBluetooth
 
-class TLSCentralSocket: Socket {
+class TLSCentralSocket: CentralSocket {
 
-    private lazy var socket: CentralSocket = {
-        let socket = CentralSocket()
+    private enum TLSState {
+        case idle
+        case handshake
+        case open
+    }
+
+    private lazy var socket: BaseCentralSocket = {
+        let socket = BaseCentralSocket()
         socket.delegate = self
         return socket
     }()
@@ -31,11 +37,12 @@ class TLSCentralSocket: Socket {
     }()
 
     var socketDelegate: SocketDelegate? {
-        return socket.delegate
+        return delegate
     }
     weak var delegate: CentralSocketDelegate?
 
-    var readData: [Data] = []
+    private var readData: [Data] = []
+    private var state: TLSState = .idle
 
     func scan(for serviceId: String) {
         socket.scan(for: serviceId)
@@ -54,7 +61,21 @@ class TLSCentralSocket: Socket {
     }
 
     func write(_ data: Data) -> Bool {
-        return false
+        let writeStatus = data.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Bool in
+            guard let pointer = buffer.baseAddress else {
+                return false
+            }
+            let processedPointer = UnsafeMutablePointer<Int>.allocate(capacity: 1)
+
+            let writeStatus = SSLWrite(self.context, pointer, data.count, processedPointer)
+            return writeStatus == 0
+        }
+        if writeStatus {
+            log.info("write ok")
+        } else {
+            log.error("woops on write")
+        }
+        return writeStatus
     }
 
     private static var read: SSLReadFunc = { connection, bytesPointer, length in
@@ -92,6 +113,17 @@ extension TLSCentralSocket: CentralSocketDelegate {
 
     func socket(_ socket: Socket, didRead data: Data) {
         readData.append(data)
+        if case .open = state {
+            let bytesPointer = UnsafeMutableRawPointer.allocate(byteCount: 1_000_000, alignment: 0)
+            let processedPointer = UnsafeMutablePointer<Int>.allocate(capacity: 1)
+            let readStatus = SSLRead(context, bytesPointer, 1_000_000, processedPointer)
+            if readStatus == 0 {
+                log.info("read ok")
+                delegate?.socket(self, didRead: Data(bytes: bytesPointer, count: processedPointer.pointee))
+            } else {
+                log.error("woops on read \(readStatus)")
+            }
+        }
     }
 
     func socketDidOpen(_ socket: Socket) {
@@ -100,6 +132,7 @@ extension TLSCentralSocket: CentralSocketDelegate {
     }
 
     private func handshake() {
+        state = .handshake
         var secTrust: SecTrust?
         let certificateValidator = CertificateValidator()
 
@@ -130,13 +163,16 @@ extension TLSCentralSocket: CentralSocketDelegate {
 
         if handshakeStatus == 0 {
             log.info("ok")
+            state = .open
+            delegate?.socketDidOpen(self)
         } else {
             log.error("woops \(handshakeStatus)")
         }
     }
 
     func socketDidClose(_ socket: Socket) {
-
+        state = .idle
+        delegate?.socketDidClose(self)
     }
 
 

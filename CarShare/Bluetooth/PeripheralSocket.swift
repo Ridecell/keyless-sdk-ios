@@ -11,7 +11,15 @@ import CoreLocation
 
 protocol PeripheralSocketDelegate: SocketDelegate {}
 
-class PeripheralSocket: NSObject, Socket {
+protocol PeripheralSocket: Socket {
+
+    var delegate: PeripheralSocketDelegate? { get set }
+
+    func advertiseL2CAPChannel(in region: CLBeaconRegion, serviceId: String, characteristicId: String)
+
+}
+
+class BasePeripheralSocket: NSObject, PeripheralSocket {
 
     private enum State {
         case idle
@@ -83,7 +91,7 @@ class PeripheralSocket: NSObject, Socket {
 
 }
 
-extension PeripheralSocket: CBPeripheralManagerDelegate {
+extension BasePeripheralSocket: CBPeripheralManagerDelegate {
 
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         guard peripheral.state == .poweredOn else {
@@ -175,7 +183,7 @@ extension PeripheralSocket: CBPeripheralManagerDelegate {
 
 }
 
-extension PeripheralSocket: StreamDelegate {
+extension BasePeripheralSocket: StreamDelegate {
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         guard case .open = state else {
             return

@@ -10,22 +10,29 @@ import CoreBluetooth
 import CoreLocation
 
 
-class TLSPeripheralSocket: Socket {
+class TLSPeripheralSocket: PeripheralSocket {
 
-    private lazy var socket: PeripheralSocket = {
-        let socket = PeripheralSocket()
+    private enum TLSState {
+        case idle
+        case handshake
+        case open
+    }
+
+    private lazy var baseSocket: BasePeripheralSocket = {
+        let socket = BasePeripheralSocket()
         socket.delegate = self
         return socket
     }()
 
     var socketDelegate: SocketDelegate? {
-        return socket.delegate
+        return delegate
     }
 
     weak var delegate: PeripheralSocketDelegate?
 
     private var readData: [Data] = []
 
+    private var state: TLSState = .idle
     private lazy var context: SSLContext = {
         guard let context = SSLCreateContext(nil, .serverSide, .streamType) else {
             log.error("no context")
@@ -50,11 +57,11 @@ class TLSPeripheralSocket: Socket {
     }()
 
     func advertiseL2CAPChannel(in region: CLBeaconRegion, serviceId: String, characteristicId: String) {
-        return socket.advertiseL2CAPChannel(in: region, serviceId: serviceId, characteristicId: characteristicId)
+        return baseSocket.advertiseL2CAPChannel(in: region, serviceId: serviceId, characteristicId: characteristicId)
     }
 
     func close() {
-        return socket.close()
+        return baseSocket.close()
     }
 
     func write(_ data: Data) -> Bool {
@@ -83,11 +90,15 @@ extension TLSPeripheralSocket: PeripheralSocketDelegate {
     }
 
     private func handshake() {
+        state = .handshake
         let handshakeStatus = SSLHandshake(context)
         if handshakeStatus == errSSLWouldBlock {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.handshake()
             }
+        } else if handshakeStatus == 0 {
+            state = .open
+            delegate?.socketDidOpen(self)
         }
     }
 
@@ -114,15 +125,28 @@ extension TLSPeripheralSocket: PeripheralSocketDelegate {
         log.error("WRITE! \(length.pointee)")
         let socket: TLSPeripheralSocket = Unmanaged<TLSPeripheralSocket>.fromOpaque(connection).takeUnretainedValue()
         let data = Data(bytes: bytesPointer, count: length.pointee)
-        return socket.socket.write(data) ? 0 : errSSLWouldBlock
+        return socket.baseSocket.write(data) ? 0 : errSSLWouldBlock
     }
 
     func socketDidClose(_ socket: Socket) {
         log.warning(#function)
+        state = .idle
+        delegate?.socketDidClose(self)
     }
 
     func socket(_ socket: Socket, didRead data: Data) {
         readData.append(data)
+        if case .open = state {
+            let bytesPointer = UnsafeMutableRawPointer.allocate(byteCount: 1_000_000, alignment: 0)
+            let processedPointer = UnsafeMutablePointer<Int>.allocate(capacity: 1)
+            let readStatus = SSLRead(context, bytesPointer, 1_000_000, processedPointer)
+            if readStatus == 0 {
+                log.info("read ok")
+                delegate?.socket(self, didRead: Data(bytes: bytesPointer, count: processedPointer.pointee))
+            } else {
+                log.error("woops on read \(readStatus)")
+            }
+        }
     }
 
 }
