@@ -13,6 +13,9 @@
 		1C5A964822AAEBD9009B237C /* intermediate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964522AAEBD8009B237C /* intermediate.cer */; };
 		1C5A964922AAEBD9009B237C /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964622AAEBD8009B237C /* leaf.cer */; };
 		1C5A964A22AAEBD9009B237C /* root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964722AAEBD9009B237C /* root.cer */; };
+		1C6C277322B3D8EF00247EC5 /* TLSPeripheralSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6C277222B3D8EF00247EC5 /* TLSPeripheralSocket.swift */; };
+		1C6C277522B3E04100247EC5 /* matt-leaf.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1C6C277422B3E04100247EC5 /* matt-leaf.p12 */; };
+		1C6C277722B3E6A600247EC5 /* TLSCentralSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6C277622B3E6A600247EC5 /* TLSCentralSocket.swift */; };
 		1C80BE3322AE8CC2000E2B66 /* matt-root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C80BE3122AE8CC2000E2B66 /* matt-root.cer */; };
 		1C80BE3422AE8CC2000E2B66 /* matt-leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */; };
 		1C80BE3722AEA34C000E2B66 /* TLSBluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */; };
@@ -41,7 +44,7 @@
 		1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */; };
 		1CAF724522AFF17F002DED9B /* TLSSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF724422AFF17F002DED9B /* TLSSocket.swift */; };
 		1CAF724722B00290002DED9B /* GrootPeripheralWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */; };
-		1CC391BE22B14FE400DD900D /* CertificatePutter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391BD22B14FE400DD900D /* CertificatePutter.swift */; };
+		1CC391BE22B14FE400DD900D /* IdentityGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391BD22B14FE400DD900D /* IdentityGenerator.swift */; };
 		1CC391C022B2802700DD900D /* PeripheralSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391BF22B2802700DD900D /* PeripheralSocket.swift */; };
 		1CC391C222B2909300DD900D /* CentralSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391C122B2909300DD900D /* CentralSocket.swift */; };
 		1CC391C422B2BC8D00DD900D /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391C322B2BC8D00DD900D /* Socket.swift */; };
@@ -78,6 +81,9 @@
 		1C5A964522AAEBD8009B237C /* intermediate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = intermediate.cer; sourceTree = "<group>"; };
 		1C5A964622AAEBD8009B237C /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
 		1C5A964722AAEBD9009B237C /* root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = root.cer; sourceTree = "<group>"; };
+		1C6C277222B3D8EF00247EC5 /* TLSPeripheralSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSPeripheralSocket.swift; sourceTree = "<group>"; };
+		1C6C277422B3E04100247EC5 /* matt-leaf.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matt-leaf.p12"; sourceTree = "<group>"; };
+		1C6C277622B3E6A600247EC5 /* TLSCentralSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSCentralSocket.swift; sourceTree = "<group>"; };
 		1C80BE3122AE8CC2000E2B66 /* matt-root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matt-root.cer"; sourceTree = "<group>"; };
 		1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matt-leaf.cer"; sourceTree = "<group>"; };
 		1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSBluetoothClient.swift; sourceTree = "<group>"; };
@@ -115,7 +121,7 @@
 		1C9A49CE22A6ECE90039FCAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1CAF724422AFF17F002DED9B /* TLSSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSSocket.swift; sourceTree = "<group>"; };
 		1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrootPeripheralWorker.swift; sourceTree = "<group>"; };
-		1CC391BD22B14FE400DD900D /* CertificatePutter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificatePutter.swift; sourceTree = "<group>"; };
+		1CC391BD22B14FE400DD900D /* IdentityGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityGenerator.swift; sourceTree = "<group>"; };
 		1CC391BF22B2802700DD900D /* PeripheralSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralSocket.swift; sourceTree = "<group>"; };
 		1CC391C122B2909300DD900D /* CentralSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralSocket.swift; sourceTree = "<group>"; };
 		1CC391C322B2BC8D00DD900D /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
@@ -163,6 +169,7 @@
 		1C5A964B22AAEBE0009B237C /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
+				1C6C277422B3E04100247EC5 /* matt-leaf.p12 */,
 				1C80BE3122AE8CC2000E2B66 /* matt-root.cer */,
 				1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */,
 				1C5A964522AAEBD8009B237C /* intermediate.cer */,
@@ -170,7 +177,7 @@
 				1C5A964722AAEBD9009B237C /* root.cer */,
 				1C5A964322AAEA4E009B237C /* fake.cer */,
 				1C5A963922AAD631009B237C /* CertificateValidator.swift */,
-				1CC391BD22B14FE400DD900D /* CertificatePutter.swift */,
+				1CC391BD22B14FE400DD900D /* IdentityGenerator.swift */,
 			);
 			path = Certificates;
 			sourceTree = "<group>";
@@ -268,8 +275,10 @@
 			isa = PBXGroup;
 			children = (
 				1CC391BF22B2802700DD900D /* PeripheralSocket.swift */,
+				1C6C277222B3D8EF00247EC5 /* TLSPeripheralSocket.swift */,
 				1CC391C322B2BC8D00DD900D /* Socket.swift */,
 				1CC391C122B2909300DD900D /* CentralSocket.swift */,
+				1C6C277622B3E6A600247EC5 /* TLSCentralSocket.swift */,
 				1C9A49AD22A164690039FCAC /* BluetoothClient.swift */,
 				1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */,
 				1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */,
@@ -460,6 +469,7 @@
 				1C5A964A22AAEBD9009B237C /* root.cer in Resources */,
 				1C80BE3322AE8CC2000E2B66 /* matt-root.cer in Resources */,
 				1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */,
+				1C6C277522B3E04100247EC5 /* matt-leaf.p12 in Resources */,
 				1C5A964922AAEBD9009B237C /* leaf.cer in Resources */,
 				1C9A497822A058810039FCAC /* Assets.xcassets in Resources */,
 			);
@@ -647,12 +657,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C6C277322B3D8EF00247EC5 /* TLSPeripheralSocket.swift in Sources */,
 				1C9A49C722A6C0A30039FCAC /* LocationWorker.swift in Sources */,
 				1C9A49B322A5981A0039FCAC /* TemperatureDeviceList.swift in Sources */,
 				1C9A49BD22A5FC450039FCAC /* LaunchViewController.swift in Sources */,
 				1C9A49CB22A6CCA50039FCAC /* ReservationListViewController.swift in Sources */,
 				1C80BE3722AEA34C000E2B66 /* TLSBluetoothClient.swift in Sources */,
-				1CC391BE22B14FE400DD900D /* CertificatePutter.swift in Sources */,
+				1CC391BE22B14FE400DD900D /* IdentityGenerator.swift in Sources */,
 				1CC391C022B2802700DD900D /* PeripheralSocket.swift in Sources */,
 				1CAF724722B00290002DED9B /* GrootPeripheralWorker.swift in Sources */,
 				1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */,
@@ -668,6 +679,7 @@
 				1C9A49B522A59C500039FCAC /* TemperatureDeviceListModule.swift in Sources */,
 				1CAF724522AFF17F002DED9B /* TLSSocket.swift in Sources */,
 				1C9A49BB22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift in Sources */,
+				1C6C277722B3E6A600247EC5 /* TLSCentralSocket.swift in Sources */,
 				1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */,
 				1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */,
 				1CC391C422B2BC8D00DD900D /* Socket.swift in Sources */,

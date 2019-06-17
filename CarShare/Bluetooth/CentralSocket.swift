@@ -11,7 +11,6 @@ import CoreLocation
 
 protocol CentralSocketDelegate: SocketDelegate {
     func centralSocket(_ centralSocket: CentralSocket, didDiscover peripheral: CBPeripheral)
-    func centralSocketDidOpen(_ centralSocket: CentralSocket)
 }
 
 class CentralSocket: NSObject, Socket {
@@ -80,11 +79,11 @@ class CentralSocket: NSObject, Socket {
         state = .idle
     }
 
-    func write(_ data: Data) {
+    func write(_ data: Data) -> Bool {
         guard case let .open(peripheral: _, channel: channel) = state else {
-            return
+            return false
         }
-        write(data, into: channel.outputStream)
+        return write(data, into: channel.outputStream)
     }
 }
 
@@ -177,7 +176,7 @@ extension CentralSocket: CBPeripheralDelegate {
         channel.outputStream.schedule(in: .main, forMode: .default)
         channel.outputStream.open()
         state = .open(peripheral: peripheral, channel: channel)
-        delegate?.centralSocketDidOpen(self)
+        delegate?.socketDidOpen(self)
     }
 
 }

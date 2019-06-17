@@ -45,6 +45,7 @@ class CoreBluetoothClient: NSObject {
         case readingCharacteristic(characteristic: CBCharacteristic, service: CBService, peripheral: CBPeripheral, observer: (SingleEvent<Data?>) -> Void)
         case writingCharacteristic(value: Data, characteristic: CBCharacteristic, service: CBService, peripheral: CBPeripheral, observer: (CompletableEvent) -> Void)
         case connected(peripheral: CBPeripheral)
+        case connectedToL2CAPChannel(peripheral: CBPeripheral, channel: CBL2CAPChannel)
     }
 }
 
@@ -191,11 +192,14 @@ extension CoreBluetoothClient: CBCentralManagerDelegate {
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         log.debug("didConnect")
-        guard case let .connecting(_, observer) = state else {
+        guard case let .connecting(_, _) = state else {
             return
         }
         state = .connected(peripheral: peripheral)
-        observer(.success(peripheral))
+
+//        observer(.success(peripheral))
+        peripheral.delegate = self
+        peripheral.openL2CAPChannel(CBL2CAPPSM(192))
     }
 
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
@@ -290,6 +294,51 @@ extension CoreBluetoothClient: CBPeripheralDelegate {
     }
 
     func peripheral(_ peripheral: CBPeripheral, didOpen channel: CBL2CAPChannel?, error: Error?) {
-        log.debug("didOpen")
+        log.debug("didOpen \(error)")
+
+        guard case let .connecting(_, observer) = state, let channel = channel else {
+            return
+        }
+
+        state = .connectedToL2CAPChannel(peripheral: peripheral, channel: channel)
+
+        channel.inputStream.delegate = self
+        channel.inputStream.schedule(in: .main, forMode: RunLoop.Mode.default)
+        channel.inputStream.open()
+
+        channel.outputStream.delegate = self
+        channel.outputStream.schedule(in: .main, forMode: RunLoop.Mode.default)
+        channel.outputStream.open()
+        observer(.success(peripheral))
+    }
+}
+
+extension CoreBluetoothClient: StreamDelegate {
+
+    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
+        log.info(#function)
+        switch eventCode {
+        case Stream.Event.openCompleted:
+            print("Stream is open")
+        case Stream.Event.endEncountered:
+            print("End Encountered")
+        case Stream.Event.hasBytesAvailable:
+            print("Bytes are available")
+            if let iStream = aStream as? InputStream {
+                let bufLength = 1024
+                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufLength)
+                let bytesRead = iStream.read(buffer, maxLength: bufLength)
+                print("bytesRead = \(bytesRead)")
+                if let string = String(bytesNoCopy: buffer, length: bytesRead, encoding: .utf8, freeWhenDone: false) {
+                    print("Received data: \(string)")
+                }
+            }
+        case Stream.Event.hasSpaceAvailable:
+            print("Space is available")
+        case Stream.Event.errorOccurred:
+            print("Stream error")
+        default:
+            print("Unknown stream event")
+        }
     }
 }

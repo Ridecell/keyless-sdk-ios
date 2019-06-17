@@ -27,8 +27,8 @@ class LaunchViewController: UIViewController {
 //    private let beaconClient = BeaconClient()
 //    private let disposeBag = DisposeBag()
 
-    let peripheralSocket = PeripheralSocket()
-    let centralSocket = CentralSocket()
+    let peripheralSocket = TLSPeripheralSocket()
+    let centralSocket = TLSCentralSocket()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +86,14 @@ class LaunchViewController: UIViewController {
 }
 
 extension LaunchViewController: CentralSocketDelegate, PeripheralSocketDelegate {
+    func socketDidOpen(_ socket: Socket) {
+        if socket is CentralSocket {
+            log.info("central open")
+        } else if socket is PeripheralSocket {
+            log.info("peripheral open")
+        }
+    }
+
     func socketDidClose(_ socket: Socket) {
         if socket is CentralSocket {
             didTapCentral()

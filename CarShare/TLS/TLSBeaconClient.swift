@@ -72,9 +72,6 @@ class TLSBeaconClient: NSObject {
 
         SSLSetConnection(context, connection)
 
-        SecIdentityRef
-        SSLSetCertificate(context, [])
-
         return context
     }
 

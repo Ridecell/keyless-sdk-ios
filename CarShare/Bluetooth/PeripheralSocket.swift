@@ -73,12 +73,12 @@ class PeripheralSocket: NSObject, Socket {
 
     }
 
-    func write(_ data: Data) {
+    func write(_ data: Data) -> Bool {
         guard case let .open(characteristic: _, psms: _, centrals: _, channel: channel) = state else {
-            return
+            return false
         }
 
-        write(data, into: channel.outputStream)
+        return write(data, into: channel.outputStream)
     }
 
 }
@@ -170,6 +170,7 @@ extension PeripheralSocket: CBPeripheralManagerDelegate {
         channel.outputStream.schedule(in: .main, forMode: .default)
         channel.outputStream.open()
         state = .open(characteristic: characteristic, psms: psms, centrals: centrals, channel: channel)
+        delegate?.socketDidOpen(self)
     }
 
 }

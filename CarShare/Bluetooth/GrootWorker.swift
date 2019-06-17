@@ -12,7 +12,7 @@ import RxSwift
 class GrootWorker {
 
     private enum Identifier {
-        static let service = "cbc01049-b414-473c-a0a3-d6841485e49a".uppercased()
+        static let service = "cbc01049-b414-473c-a0a3-d6841485e49b"//"cbc01049-b414-473c-a0a3-d6841485e49a".uppercased()
         static let characteristic = "36eefdae-3a30-40b7-acaa-b8eb497cd1ef".uppercased()
     }
 
@@ -30,8 +30,12 @@ class GrootWorker {
             .flatMap { arg in
                 log.info("found peripheral")
                 let (peripheral, _) = arg
-                return self.connectToCharacteristic(for: peripheral)
-                    .flatMap(self.readGreeting)
+                return self.bluetoothClient.connect(to: peripheral)
+                    .flatMap { _ in
+                        Single.just("connected")
+                }
+//                return self.connectToCharacteristic(for: peripheral)
+//                    .flatMap(self.readGreeting)
             }
     }
 
