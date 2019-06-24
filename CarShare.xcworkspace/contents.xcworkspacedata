@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:CarShareFramework/CarShareFramework.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:CarShare.xcodeproj">
    </FileRef>
    <FileRef
