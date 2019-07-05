@@ -1,9 +1,9 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '9.0'
+platform :ios, '11.0'
 
 inhibit_all_warnings!
 
-target 'CarShare' do
+target 'CarSharePOC' do
   use_frameworks!
 
   pod 'Swinject'
@@ -12,17 +12,6 @@ target 'CarShare' do
   pod 'SwiftyBeaver'
   pod 'SwiftLint'
   pod 'SwiftFormat/CLI'
-
-  target 'CarShareTests' do
-    inherit! :search_paths
-    pod 'RxTest'
-    pod 'RxBlocking'
-  end
-
-  target 'CarShareUITests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
 end
 

@@ -1,0 +1,688 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1C56728922B1475100ABD58C /* TLSBeaconClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C56728822B1475100ABD58C /* TLSBeaconClient.swift */; };
+		1C5A963A22AAD631009B237C /* CertificateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5A963922AAD631009B237C /* CertificateValidator.swift */; };
+		1C5A964422AAEA4E009B237C /* fake.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964322AAEA4E009B237C /* fake.cer */; };
+		1C5A964822AAEBD9009B237C /* intermediate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964522AAEBD8009B237C /* intermediate.cer */; };
+		1C5A964922AAEBD9009B237C /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964622AAEBD8009B237C /* leaf.cer */; };
+		1C5A964A22AAEBD9009B237C /* root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C5A964722AAEBD9009B237C /* root.cer */; };
+		1C6C277322B3D8EF00247EC5 /* TLSPeripheralSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6C277222B3D8EF00247EC5 /* TLSPeripheralSocket.swift */; };
+		1C6C277522B3E04100247EC5 /* matt-leaf.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1C6C277422B3E04100247EC5 /* matt-leaf.p12 */; };
+		1C6C277722B3E6A600247EC5 /* TLSCentralSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6C277622B3E6A600247EC5 /* TLSCentralSocket.swift */; };
+		1C80BE3322AE8CC2000E2B66 /* matt-root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C80BE3122AE8CC2000E2B66 /* matt-root.cer */; };
+		1C80BE3422AE8CC2000E2B66 /* matt-leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */; };
+		1C80BE3722AEA34C000E2B66 /* TLSBluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */; };
+		1C80BE3922AEA7CD000E2B66 /* GrootWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C80BE3822AEA7CD000E2B66 /* GrootWorker.swift */; };
+		1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A497022A058800039FCAC /* AppDelegate.swift */; };
+		1C9A497822A058810039FCAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497722A058810039FCAC /* Assets.xcassets */; };
+		1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A497922A058810039FCAC /* LaunchScreen.storyboard */; };
+		1C9A49A322A05D790039FCAC /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A49A222A05D790039FCAC /* .swiftformat */; };
+		1C9A49A722A156BF0039FCAC /* Registrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49A622A156BF0039FCAC /* Registrar.swift */; };
+		1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49AD22A164690039FCAC /* BluetoothClient.swift */; };
+		1C9A49B022A54F0E0039FCAC /* TemperatureWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */; };
+		1C9A49B322A5981A0039FCAC /* TemperatureDeviceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49B222A5981A0039FCAC /* TemperatureDeviceList.swift */; };
+		1C9A49B522A59C500039FCAC /* TemperatureDeviceListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49B422A59C500039FCAC /* TemperatureDeviceListModule.swift */; };
+		1C9A49B722A59ECD0039FCAC /* TemperatureDeviceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49B622A59ECD0039FCAC /* TemperatureDeviceListViewController.swift */; };
+		1C9A49B922A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49B822A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift */; };
+		1C9A49BB22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49BA22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift */; };
+		1C9A49BD22A5FC450039FCAC /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49BC22A5FC450039FCAC /* LaunchViewController.swift */; };
+		1C9A49C022A600850039FCAC /* ReservationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49BF22A600850039FCAC /* ReservationList.swift */; };
+		1C9A49C222A607F20039FCAC /* ReservationListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49C122A607F20039FCAC /* ReservationListPresenter.swift */; };
+		1C9A49C422A6C05E0039FCAC /* ReservationListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49C322A6C05E0039FCAC /* ReservationListInteractor.swift */; };
+		1C9A49C722A6C0A30039FCAC /* LocationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49C622A6C0A30039FCAC /* LocationWorker.swift */; };
+		1C9A49C922A6C6F00039FCAC /* VehicleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49C822A6C6F00039FCAC /* VehicleWorker.swift */; };
+		1C9A49CB22A6CCA50039FCAC /* ReservationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */; };
+		1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */; };
+		1CAF724522AFF17F002DED9B /* TLSSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF724422AFF17F002DED9B /* TLSSocket.swift */; };
+		1CAF724722B00290002DED9B /* GrootPeripheralWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */; };
+		1CC391BE22B14FE400DD900D /* IdentityGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391BD22B14FE400DD900D /* IdentityGenerator.swift */; };
+		1CC391C022B2802700DD900D /* PeripheralSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391BF22B2802700DD900D /* PeripheralSocket.swift */; };
+		1CC391C222B2909300DD900D /* CentralSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391C122B2909300DD900D /* CentralSocket.swift */; };
+		1CC391C422B2BC8D00DD900D /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC391C322B2BC8D00DD900D /* Socket.swift */; };
+		1CE3289B22AEEC76004C3082 /* ChunkingBluetoothClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */; };
+		1CE3289D22AFD699004C3082 /* InMemoryTLSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */; };
+		1CE4C3CF22A9426E005CAC6B /* BeaconClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */; };
+		A35CC43081E2F07D57FC63EF /* Pods_CarSharePOC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8D593814D87D33AB4248ECE /* Pods_CarSharePOC.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		096A39AFDD27BF60C39D0967 /* Pods_CarSharePOCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarSharePOCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		15AEE45DC2912BB09F110498 /* Pods-CarShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareTests/Pods-CarShareTests.debug.xcconfig"; sourceTree = "<group>"; };
+		18B65908F470F8DC349D8A1F /* Pods-CarSharePOCUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarSharePOCUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CarSharePOCUITests/Pods-CarSharePOCUITests.release.xcconfig"; sourceTree = "<group>"; };
+		1C56728822B1475100ABD58C /* TLSBeaconClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSBeaconClient.swift; sourceTree = "<group>"; };
+		1C5A963922AAD631009B237C /* CertificateValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateValidator.swift; sourceTree = "<group>"; };
+		1C5A964322AAEA4E009B237C /* fake.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = fake.cer; sourceTree = "<group>"; };
+		1C5A964522AAEBD8009B237C /* intermediate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = intermediate.cer; sourceTree = "<group>"; };
+		1C5A964622AAEBD8009B237C /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
+		1C5A964722AAEBD9009B237C /* root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = root.cer; sourceTree = "<group>"; };
+		1C6C277222B3D8EF00247EC5 /* TLSPeripheralSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSPeripheralSocket.swift; sourceTree = "<group>"; };
+		1C6C277422B3E04100247EC5 /* matt-leaf.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matt-leaf.p12"; sourceTree = "<group>"; };
+		1C6C277622B3E6A600247EC5 /* TLSCentralSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSCentralSocket.swift; sourceTree = "<group>"; };
+		1C80BE3122AE8CC2000E2B66 /* matt-root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matt-root.cer"; sourceTree = "<group>"; };
+		1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matt-leaf.cer"; sourceTree = "<group>"; };
+		1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSBluetoothClient.swift; sourceTree = "<group>"; };
+		1C80BE3822AEA7CD000E2B66 /* GrootWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrootWorker.swift; sourceTree = "<group>"; };
+		1C9A496D22A058800039FCAC /* CarSharePOC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarSharePOC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C9A497022A058800039FCAC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1C9A497722A058810039FCAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1C9A497A22A058810039FCAC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1C9A497C22A058810039FCAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1C9A499E22A059110039FCAC /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1C9A49A122A05D6B0039FCAC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
+		1C9A49A222A05D790039FCAC /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
+		1C9A49A622A156BF0039FCAC /* Registrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registrar.swift; sourceTree = "<group>"; };
+		1C9A49AD22A164690039FCAC /* BluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothClient.swift; sourceTree = "<group>"; };
+		1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureWorker.swift; sourceTree = "<group>"; };
+		1C9A49B222A5981A0039FCAC /* TemperatureDeviceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceList.swift; sourceTree = "<group>"; };
+		1C9A49B422A59C500039FCAC /* TemperatureDeviceListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceListModule.swift; sourceTree = "<group>"; };
+		1C9A49B622A59ECD0039FCAC /* TemperatureDeviceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceListViewController.swift; sourceTree = "<group>"; };
+		1C9A49B822A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceListPresenter.swift; sourceTree = "<group>"; };
+		1C9A49BA22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDeviceListInteractor.swift; sourceTree = "<group>"; };
+		1C9A49BC22A5FC450039FCAC /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		1C9A49BF22A600850039FCAC /* ReservationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationList.swift; sourceTree = "<group>"; };
+		1C9A49C122A607F20039FCAC /* ReservationListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListPresenter.swift; sourceTree = "<group>"; };
+		1C9A49C322A6C05E0039FCAC /* ReservationListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListInteractor.swift; sourceTree = "<group>"; };
+		1C9A49C622A6C0A30039FCAC /* LocationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationWorker.swift; sourceTree = "<group>"; };
+		1C9A49C822A6C6F00039FCAC /* VehicleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleWorker.swift; sourceTree = "<group>"; };
+		1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListViewController.swift; sourceTree = "<group>"; };
+		1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationListModule.swift; sourceTree = "<group>"; };
+		1C9A49CE22A6ECE90039FCAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		1CAF724422AFF17F002DED9B /* TLSSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSSocket.swift; sourceTree = "<group>"; };
+		1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrootPeripheralWorker.swift; sourceTree = "<group>"; };
+		1CC391BD22B14FE400DD900D /* IdentityGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityGenerator.swift; sourceTree = "<group>"; };
+		1CC391BF22B2802700DD900D /* PeripheralSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralSocket.swift; sourceTree = "<group>"; };
+		1CC391C122B2909300DD900D /* CentralSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralSocket.swift; sourceTree = "<group>"; };
+		1CC391C322B2BC8D00DD900D /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
+		1CCB4DF5E56E0D37F90F950C /* Pods-CarSharePOC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarSharePOC.release.xcconfig"; path = "Pods/Target Support Files/Pods-CarSharePOC/Pods-CarSharePOC.release.xcconfig"; sourceTree = "<group>"; };
+		1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChunkingBluetoothClient.swift; sourceTree = "<group>"; };
+		1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryTLSClient.swift; sourceTree = "<group>"; };
+		1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconClient.swift; sourceTree = "<group>"; };
+		39FBD299C70000C0468E17CB /* Pods-CarShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareUITests/Pods-CarShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4C87353FA94E35A1A010B3AC /* Pods-CarShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare/Pods-CarShare.debug.xcconfig"; sourceTree = "<group>"; };
+		71F338464CEB5299A4AB0CD6 /* Pods-CarSharePOCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarSharePOCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CarSharePOCTests/Pods-CarSharePOCTests.release.xcconfig"; sourceTree = "<group>"; };
+		8B7459BBC22B34B7EB3E985D /* Pods-CarShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareTests/Pods-CarShareTests.release.xcconfig"; sourceTree = "<group>"; };
+		90D89C5C07CAE8D68E6BBD12 /* Pods-CarShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare/Pods-CarShare.release.xcconfig"; sourceTree = "<group>"; };
+		A00EA828D675D2A4686AE60A /* Pods-CarShareUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShareUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CarShareUITests/Pods-CarShareUITests.release.xcconfig"; sourceTree = "<group>"; };
+		AE45B47747E817AEB388B95E /* Pods-CarSharePOCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarSharePOCTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarSharePOCTests/Pods-CarSharePOCTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B8D593814D87D33AB4248ECE /* Pods_CarSharePOC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarSharePOC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2C40EF0B180DA84E4A14054 /* Pods-CarSharePOC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarSharePOC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarSharePOC/Pods-CarSharePOC.debug.xcconfig"; sourceTree = "<group>"; };
+		C8A9609022CC98110C9BA43D /* Pods_CarSharePOCUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarSharePOCUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8B2D4CFEF814B163D1AB233 /* Pods-CarSharePOCUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarSharePOCUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarSharePOCUITests/Pods-CarSharePOCUITests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1C9A496A22A058800039FCAC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A35CC43081E2F07D57FC63EF /* Pods_CarSharePOC.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1C5A964B22AAEBE0009B237C /* Certificates */ = {
+			isa = PBXGroup;
+			children = (
+				1C6C277422B3E04100247EC5 /* matt-leaf.p12 */,
+				1C80BE3122AE8CC2000E2B66 /* matt-root.cer */,
+				1C80BE3222AE8CC2000E2B66 /* matt-leaf.cer */,
+				1C5A964522AAEBD8009B237C /* intermediate.cer */,
+				1C5A964622AAEBD8009B237C /* leaf.cer */,
+				1C5A964722AAEBD9009B237C /* root.cer */,
+				1C5A964322AAEA4E009B237C /* fake.cer */,
+				1C5A963922AAD631009B237C /* CertificateValidator.swift */,
+				1CC391BD22B14FE400DD900D /* IdentityGenerator.swift */,
+			);
+			path = Certificates;
+			sourceTree = "<group>";
+		};
+		1C80BE3522AEA335000E2B66 /* TLS */ = {
+			isa = PBXGroup;
+			children = (
+				1C80BE3622AEA34C000E2B66 /* TLSBluetoothClient.swift */,
+				1CE3289C22AFD699004C3082 /* InMemoryTLSClient.swift */,
+				1CAF724422AFF17F002DED9B /* TLSSocket.swift */,
+				1C56728822B1475100ABD58C /* TLSBeaconClient.swift */,
+			);
+			path = TLS;
+			sourceTree = "<group>";
+		};
+		1C9A496422A0587F0039FCAC = {
+			isa = PBXGroup;
+			children = (
+				1C9A496F22A058800039FCAC /* CarSharePOC */,
+				1C9A496E22A058800039FCAC /* Products */,
+				5C005F3D3DCA24D86040C46C /* Pods */,
+				D5CA28927F5F567E42958F5A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1C9A496E22A058800039FCAC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A496D22A058800039FCAC /* CarSharePOC.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1C9A496F22A058800039FCAC /* CarSharePOC */ = {
+			isa = PBXGroup;
+			children = (
+				1C80BE3522AEA335000E2B66 /* TLS */,
+				1C9A49C522A6C09B0039FCAC /* Location */,
+				1C9A49AC22A164580039FCAC /* Bluetooth */,
+				1C9A49A822A15A5B0039FCAC /* Pages */,
+				1C9A49A522A1569F0039FCAC /* DependencyInjection */,
+				1C9A49A122A05D6B0039FCAC /* .swiftlint.yml */,
+				1C9A499E22A059110039FCAC /* Podfile */,
+				1C9A49A222A05D790039FCAC /* .swiftformat */,
+				1C9A497022A058800039FCAC /* AppDelegate.swift */,
+				1C9A497722A058810039FCAC /* Assets.xcassets */,
+				1C9A497922A058810039FCAC /* LaunchScreen.storyboard */,
+				1C9A497C22A058810039FCAC /* Info.plist */,
+				1C5A964B22AAEBE0009B237C /* Certificates */,
+			);
+			path = CarSharePOC;
+			sourceTree = "<group>";
+		};
+		1C9A49A522A1569F0039FCAC /* DependencyInjection */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49A622A156BF0039FCAC /* Registrar.swift */,
+			);
+			path = DependencyInjection;
+			sourceTree = "<group>";
+		};
+		1C9A49A822A15A5B0039FCAC /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49BE22A600750039FCAC /* ReservationList */,
+				1C9A49B122A597FB0039FCAC /* TemperatureDeviceList */,
+				1C9A49BC22A5FC450039FCAC /* LaunchViewController.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		1C9A49AC22A164580039FCAC /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				1CC391BF22B2802700DD900D /* PeripheralSocket.swift */,
+				1C6C277222B3D8EF00247EC5 /* TLSPeripheralSocket.swift */,
+				1CC391C322B2BC8D00DD900D /* Socket.swift */,
+				1CC391C122B2909300DD900D /* CentralSocket.swift */,
+				1C6C277622B3E6A600247EC5 /* TLSCentralSocket.swift */,
+				1C9A49AD22A164690039FCAC /* BluetoothClient.swift */,
+				1CE3289A22AEEC76004C3082 /* ChunkingBluetoothClient.swift */,
+				1C9A49AF22A54F0E0039FCAC /* TemperatureWorker.swift */,
+				1C9A49C822A6C6F00039FCAC /* VehicleWorker.swift */,
+				1CE4C3CE22A9426E005CAC6B /* BeaconClient.swift */,
+				1C80BE3822AEA7CD000E2B66 /* GrootWorker.swift */,
+				1CAF724622B00290002DED9B /* GrootPeripheralWorker.swift */,
+			);
+			path = Bluetooth;
+			sourceTree = "<group>";
+		};
+		1C9A49B122A597FB0039FCAC /* TemperatureDeviceList */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49B222A5981A0039FCAC /* TemperatureDeviceList.swift */,
+				1C9A49B422A59C500039FCAC /* TemperatureDeviceListModule.swift */,
+				1C9A49B622A59ECD0039FCAC /* TemperatureDeviceListViewController.swift */,
+				1C9A49B822A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift */,
+				1C9A49BA22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift */,
+			);
+			path = TemperatureDeviceList;
+			sourceTree = "<group>";
+		};
+		1C9A49BE22A600750039FCAC /* ReservationList */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49BF22A600850039FCAC /* ReservationList.swift */,
+				1C9A49C122A607F20039FCAC /* ReservationListPresenter.swift */,
+				1C9A49C322A6C05E0039FCAC /* ReservationListInteractor.swift */,
+				1C9A49CA22A6CCA50039FCAC /* ReservationListViewController.swift */,
+				1C9A49CC22A6E0AF0039FCAC /* ReservationListModule.swift */,
+				1C9A49CE22A6ECE90039FCAC /* README.md */,
+			);
+			path = ReservationList;
+			sourceTree = "<group>";
+		};
+		1C9A49C522A6C09B0039FCAC /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				1C9A49C622A6C0A30039FCAC /* LocationWorker.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		5C005F3D3DCA24D86040C46C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4C87353FA94E35A1A010B3AC /* Pods-CarShare.debug.xcconfig */,
+				90D89C5C07CAE8D68E6BBD12 /* Pods-CarShare.release.xcconfig */,
+				15AEE45DC2912BB09F110498 /* Pods-CarShareTests.debug.xcconfig */,
+				8B7459BBC22B34B7EB3E985D /* Pods-CarShareTests.release.xcconfig */,
+				39FBD299C70000C0468E17CB /* Pods-CarShareUITests.debug.xcconfig */,
+				A00EA828D675D2A4686AE60A /* Pods-CarShareUITests.release.xcconfig */,
+				C2C40EF0B180DA84E4A14054 /* Pods-CarSharePOC.debug.xcconfig */,
+				1CCB4DF5E56E0D37F90F950C /* Pods-CarSharePOC.release.xcconfig */,
+				AE45B47747E817AEB388B95E /* Pods-CarSharePOCTests.debug.xcconfig */,
+				71F338464CEB5299A4AB0CD6 /* Pods-CarSharePOCTests.release.xcconfig */,
+				E8B2D4CFEF814B163D1AB233 /* Pods-CarSharePOCUITests.debug.xcconfig */,
+				18B65908F470F8DC349D8A1F /* Pods-CarSharePOCUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D5CA28927F5F567E42958F5A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B8D593814D87D33AB4248ECE /* Pods_CarSharePOC.framework */,
+				096A39AFDD27BF60C39D0967 /* Pods_CarSharePOCTests.framework */,
+				C8A9609022CC98110C9BA43D /* Pods_CarSharePOCUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1C9A496C22A058800039FCAC /* CarSharePOC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C9A499522A058810039FCAC /* Build configuration list for PBXNativeTarget "CarSharePOC" */;
+			buildPhases = (
+				4506ABC37E329C3C4D2856BA /* [CP] Check Pods Manifest.lock */,
+				1C9A49A022A05C4D0039FCAC /* Format */,
+				1C9A499F22A05B2D0039FCAC /* Lint */,
+				1C9A496922A058800039FCAC /* Sources */,
+				1C9A496A22A058800039FCAC /* Frameworks */,
+				1C9A496B22A058800039FCAC /* Resources */,
+				E3CC7E312459F71E6A0C3C2C /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CarSharePOC;
+			productName = CarShare;
+			productReference = 1C9A496D22A058800039FCAC /* CarSharePOC.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1C9A496522A0587F0039FCAC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1020;
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = "BSM Technologies Inc.";
+				TargetAttributes = {
+					1C9A496C22A058800039FCAC = {
+						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 1C9A496822A0587F0039FCAC /* Build configuration list for PBXProject "CarSharePOC" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1C9A496422A0587F0039FCAC;
+			productRefGroup = 1C9A496E22A058800039FCAC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1C9A496C22A058800039FCAC /* CarSharePOC */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1C9A496B22A058800039FCAC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C80BE3422AE8CC2000E2B66 /* matt-leaf.cer in Resources */,
+				1C9A49A322A05D790039FCAC /* .swiftformat in Resources */,
+				1C5A964822AAEBD9009B237C /* intermediate.cer in Resources */,
+				1C5A964422AAEA4E009B237C /* fake.cer in Resources */,
+				1C5A964A22AAEBD9009B237C /* root.cer in Resources */,
+				1C80BE3322AE8CC2000E2B66 /* matt-root.cer in Resources */,
+				1C9A497B22A058810039FCAC /* LaunchScreen.storyboard in Resources */,
+				1C6C277522B3E04100247EC5 /* matt-leaf.p12 in Resources */,
+				1C5A964922AAEBD9009B237C /* leaf.cer in Resources */,
+				1C9A497822A058810039FCAC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1C9A499F22A05B2D0039FCAC /* Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Lint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# \"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		1C9A49A022A05C4D0039FCAC /* Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Format;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# \"${PODS_ROOT}/SwiftLint/swiftlint\" autocorrect\n# \"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}/CarShare/\"\n";
+		};
+		4506ABC37E329C3C4D2856BA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CarSharePOC-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E3CC7E312459F71E6A0C3C2C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CarSharePOC/Pods-CarSharePOC-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CarSharePOC/Pods-CarSharePOC-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CarSharePOC/Pods-CarSharePOC-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1C9A496922A058800039FCAC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C6C277322B3D8EF00247EC5 /* TLSPeripheralSocket.swift in Sources */,
+				1C9A49C722A6C0A30039FCAC /* LocationWorker.swift in Sources */,
+				1C9A49B322A5981A0039FCAC /* TemperatureDeviceList.swift in Sources */,
+				1C9A49BD22A5FC450039FCAC /* LaunchViewController.swift in Sources */,
+				1C9A49CB22A6CCA50039FCAC /* ReservationListViewController.swift in Sources */,
+				1C80BE3722AEA34C000E2B66 /* TLSBluetoothClient.swift in Sources */,
+				1CC391BE22B14FE400DD900D /* IdentityGenerator.swift in Sources */,
+				1CC391C022B2802700DD900D /* PeripheralSocket.swift in Sources */,
+				1CAF724722B00290002DED9B /* GrootPeripheralWorker.swift in Sources */,
+				1C9A49CD22A6E0AF0039FCAC /* ReservationListModule.swift in Sources */,
+				1C9A49C022A600850039FCAC /* ReservationList.swift in Sources */,
+				1C9A49C922A6C6F00039FCAC /* VehicleWorker.swift in Sources */,
+				1C9A49C222A607F20039FCAC /* ReservationListPresenter.swift in Sources */,
+				1C9A49B022A54F0E0039FCAC /* TemperatureWorker.swift in Sources */,
+				1CC391C222B2909300DD900D /* CentralSocket.swift in Sources */,
+				1C9A49C422A6C05E0039FCAC /* ReservationListInteractor.swift in Sources */,
+				1CE3289D22AFD699004C3082 /* InMemoryTLSClient.swift in Sources */,
+				1C80BE3922AEA7CD000E2B66 /* GrootWorker.swift in Sources */,
+				1C56728922B1475100ABD58C /* TLSBeaconClient.swift in Sources */,
+				1C9A49B522A59C500039FCAC /* TemperatureDeviceListModule.swift in Sources */,
+				1CAF724522AFF17F002DED9B /* TLSSocket.swift in Sources */,
+				1C9A49BB22A5A31A0039FCAC /* TemperatureDeviceListInteractor.swift in Sources */,
+				1C6C277722B3E6A600247EC5 /* TLSCentralSocket.swift in Sources */,
+				1C9A497122A058800039FCAC /* AppDelegate.swift in Sources */,
+				1C9A49AE22A164690039FCAC /* BluetoothClient.swift in Sources */,
+				1CC391C422B2BC8D00DD900D /* Socket.swift in Sources */,
+				1CE3289B22AEEC76004C3082 /* ChunkingBluetoothClient.swift in Sources */,
+				1CE4C3CF22A9426E005CAC6B /* BeaconClient.swift in Sources */,
+				1C9A49B722A59ECD0039FCAC /* TemperatureDeviceListViewController.swift in Sources */,
+				1C9A49A722A156BF0039FCAC /* Registrar.swift in Sources */,
+				1C9A49B922A5A11B0039FCAC /* TemperatureDeviceListPresenter.swift in Sources */,
+				1C5A963A22AAD631009B237C /* CertificateValidator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		1C9A497922A058810039FCAC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1C9A497A22A058810039FCAC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1C9A499322A058810039FCAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1C9A499422A058810039FCAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1C9A499622A058810039FCAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C2C40EF0B180DA84E4A14054 /* Pods-CarSharePOC.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8BZ74MLD32;
+				INFOPLIST_FILE = CarSharePOC/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bsmtechnologies.CarSharePOC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1C9A499722A058810039FCAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1CCB4DF5E56E0D37F90F950C /* Pods-CarSharePOC.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8BZ74MLD32;
+				INFOPLIST_FILE = CarSharePOC/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bsmtechnologies.CarSharePOC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1C9A496822A0587F0039FCAC /* Build configuration list for PBXProject "CarSharePOC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C9A499322A058810039FCAC /* Debug */,
+				1C9A499422A058810039FCAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1C9A499522A058810039FCAC /* Build configuration list for PBXNativeTarget "CarSharePOC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C9A499622A058810039FCAC /* Debug */,
+				1C9A499722A058810039FCAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1C9A496522A0587F0039FCAC /* Project object */;
+}
