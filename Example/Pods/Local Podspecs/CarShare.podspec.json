@@ -1,0 +1,22 @@
+{
+  "name": "CarShare",
+  "version": "0.1.0",
+  "summary": "A short description of CarShare.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/msnow-bsm/CarShare",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "msnow-bsm": "matt.snow@bsmtechnologies.com"
+  },
+  "source": {
+    "git": "https://github.com/msnow-bsm/CarShare.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "CarShare/Classes/**/*"
+}

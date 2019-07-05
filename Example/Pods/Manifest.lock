@@ -1,0 +1,16 @@
+PODS:
+  - CarShare (0.1.0)
+
+DEPENDENCIES:
+  - CarShare (from `../`)
+
+EXTERNAL SOURCES:
+  CarShare:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CarShare: 3880b95f05d278b58194fb479ed8fdb8aa62c374
+
+PODFILE CHECKSUM: 7f3a331ae090c7f298f1dc56fb6b71f711ef8c32
+
+COCOAPODS: 1.5.3
