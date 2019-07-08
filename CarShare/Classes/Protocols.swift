@@ -1,13 +1,23 @@
 import Foundation
 
-struct BLeSocketConfiguration {
-    let serviceID: String
-    let characteristicID: String
+public struct BLeSocketConfiguration {
+    public let serviceID: String
+    public let characteristicID: String
+
+    public init(serviceID: String, characteristicID: String) {
+        self.serviceID = serviceID
+        self.characteristicID = characteristicID
+    }
 }
 
-struct Reservation {
-    let certificate: String
-    let privateKey: String
+public struct Reservation {
+    public let certificate: String
+    public let privateKey: String
+
+    public init(certificate: String, privateKey: String) {
+        self.certificate = certificate
+        self.privateKey = privateKey
+    }
 }
 
 protocol Socket: AnyObject {
@@ -57,7 +67,7 @@ protocol CommandProtocolDelegate: AnyObject {
     func `protocol`(_ protocol: CommandProtocol, command: Data, didFail error: Error)
 }
 
-protocol CarShareClient: AnyObject {
+public protocol CarShareClient: AnyObject {
     var delegate: CarShareClientConnectionDelegate? { get set }
 
     func connect(_ configuration: BLeSocketConfiguration)
@@ -69,7 +79,7 @@ protocol CarShareClient: AnyObject {
     func locate(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void)
 }
 
-protocol CarShareClientConnectionDelegate: AnyObject {
+public protocol CarShareClientConnectionDelegate: AnyObject {
     func clientDidConnect(_ client: CarShareClient)
     func clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error)
 }

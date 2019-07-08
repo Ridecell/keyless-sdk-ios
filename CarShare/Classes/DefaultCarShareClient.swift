@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
+public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
 
     private struct Message {
 
@@ -41,46 +41,50 @@ class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
 
     private var outgoingMessage: Message?
 
-    weak var delegate: CarShareClientConnectionDelegate?
+    public weak var delegate: CarShareClientConnectionDelegate?
+
+    public convenience init() {
+        self.init(commandProtocol: DefaultCommandProtocol(transportProtocol: DefaultTransportProtocol(socket: IOSSocket())))
+    }
 
     init(commandProtocol: CommandProtocol) {
         self.commandProtocol = commandProtocol
     }
 
-    func connect(_ configuration: BLeSocketConfiguration) {
+    public func connect(_ configuration: BLeSocketConfiguration) {
         commandProtocol.delegate = self
         commandProtocol.open(configuration)
     }
 
-    func disconnect() {
+    public func disconnect() {
         commandProtocol.close()
     }
 
-    func checkIn(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
+    public func checkIn(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
         let message = Message(command: .checkIn, reservation: reservation, callback: callback)
         outgoingMessage = message
         commandProtocol.send(message.data, challengeKey: reservation.privateKey)
     }
 
-    func checkOut(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
+    public func checkOut(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
         let message = Message(command: .checkOut, reservation: reservation, callback: callback)
         outgoingMessage = message
         commandProtocol.send(message.data, challengeKey: reservation.privateKey)
     }
 
-    func lock(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
+    public func lock(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
         let message = Message(command: .lock, reservation: reservation, callback: callback)
         outgoingMessage = message
         commandProtocol.send(message.data, challengeKey: reservation.privateKey)
     }
 
-    func unlock(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
+    public func unlock(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
         let message = Message(command: .unlock, reservation: reservation, callback: callback)
         outgoingMessage = message
         commandProtocol.send(message.data, challengeKey: reservation.privateKey)
     }
 
-    func locate(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
+    public func locate(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
         let message = Message(command: .locate, reservation: reservation, callback: callback)
         outgoingMessage = message
         commandProtocol.send(message.data, challengeKey: reservation.privateKey)
