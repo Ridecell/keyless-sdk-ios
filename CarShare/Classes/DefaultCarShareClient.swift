@@ -9,6 +9,10 @@ import Foundation
 
 public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
 
+    enum DefaultCarShareClientError: Error {
+        case challengeFailed
+    }
+
     private struct Message {
 
         enum Command: UInt8 {
@@ -106,8 +110,7 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
         if response == message.expectedResponseData {
             message.callback(.success(()))
         } else {
-            // fail
-//            message.callback(.failure(error))
+            message.callback(.failure(DefaultCarShareClientError.challengeFailed))
         }
     }
 

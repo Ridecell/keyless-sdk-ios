@@ -240,7 +240,7 @@ extension Go9CarShareSimulator: Go9ConnectionDelegate {
     }
 
     private func verify(_ challenge: Data, with responseData: Data) -> Bool {
-        return responseData == challenge
+        return responseData == "CHALLENGE!---PRIVATE_KEY".data(using: .utf8)
     }
 
 

@@ -18,7 +18,7 @@ class ViewController: UIViewController, CarShareClientConnectionDelegate {
         serviceID: "1c895756-2de9-4aff-87d5-598b067d4df3",
         characteristicID: "45915f82-6ffe-48f6-9568-0577bbfeca9f")
 
-    private let reservation = Reservation(certificate: "CERT", privateKey: "PRIV_KEY")
+    private let reservation = Reservation(certificate: "CERT", privateKey: "PRIVATE_KEY")
 
     override func viewDidLoad() {
         super.viewDidLoad()

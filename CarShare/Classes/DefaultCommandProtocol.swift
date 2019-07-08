@@ -110,7 +110,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
     }
 
     private func sign(_ challenge: String, with signingKey: String) -> Data? {
-        return challenge.data(using: .utf8)
+        return "\(challenge)---\(signingKey)".data(using: .utf8)
     }
 
 }
