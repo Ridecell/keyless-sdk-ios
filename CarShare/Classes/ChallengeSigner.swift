@@ -40,27 +40,8 @@ class ChallengeSigner {
     
     //challenge is bytes / Data
     func sign(_ challengeData: Data) -> Data? {
-        guard let privateKey = privateKey else {
-            print("No private key")
-            return nil
-        }
-        var signedChallenge: Data?
-        //hash the message first
-            let digestLength = Int(CC_SHA512_DIGEST_LENGTH)
-            let hashBytes = UnsafeMutablePointer<UInt8>.allocate(capacity: digestLength)
-            CC_SHA512([UInt8](challengeData), CC_LONG(challengeData.count), hashBytes)
-            
-            //sign
-            let blockSize = SecKeyGetBlockSize(privateKey) //in the case of RSA, modulus is the same as the block size
-            var signatureBytes = [UInt8](repeating:0, count:blockSize)
-            var signatureDataLength = blockSize
-            let status = SecKeyRawSign(privateKey, .PKCS1SHA512, hashBytes, digestLength, &signatureBytes, &signatureDataLength)
-            if status == noErr {
-                let data = Data(bytes: signatureBytes, count: signatureDataLength)
-                signedChallenge = data
-            }
-        
-        return signedChallenge
+        guard let challengeString = sign(challengeData.base64EncodedString()) else { return nil }
+        return Data(base64Encoded: challengeString)
     }
     
     //challenge is a base64encoded string

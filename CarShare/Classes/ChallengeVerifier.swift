@@ -37,22 +37,7 @@ class ChallengeVerifier {
     }
     
     func verify(_ challengeData: Data, withSigned response: Data) -> Bool {
-        var success = false
-        if publicKey != nil {
-            //hash the message first
-            let digestLength = Int(CC_SHA512_DIGEST_LENGTH)
-            let hashBytes = UnsafeMutablePointer<UInt8>.allocate(capacity:digestLength)
-            CC_SHA512([UInt8](challengeData), CC_LONG(challengeData.count), hashBytes)
-            
-            //verify
-            let status = response.withUnsafeBytes {signatureBytes in
-                return SecKeyRawVerify(publicKey!, .PKCS1SHA512, hashBytes, digestLength, signatureBytes, response.count)
-            }
-            if status == noErr {
-                success = true
-            }
-        }
-        return success
+        return verify(challengeData.base64EncodedString(), withSigned: response.base64EncodedString())
     }
     
     func verify(_ base64ChallengeString: String, withSigned response: String) -> Bool {
