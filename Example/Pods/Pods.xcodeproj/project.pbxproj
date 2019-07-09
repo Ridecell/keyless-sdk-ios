@@ -18,6 +18,8 @@
 		A5407FAEB79A2B8C45AF87865A6F876A /* Pods-CarShare_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F4668248618BD1642B373CF825744482 /* Pods-CarShare_Example-dummy.m */; };
 		AE556CC09285A345543D1126EEF8715A /* Pods-CarShare_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AE6F65BC4015AA9D97BEBE2B25568DF2 /* Pods-CarShare_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B0CE1985DF3906A247F01036C6815A97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6DFF15000AFE2A371BF499E7AFDA808 /* Foundation.framework */; };
+		BBAB298322D4E73A0047943A /* ChallengeSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAB298122D4E73A0047943A /* ChallengeSigner.swift */; };
+		BBAB298422D4E73A0047943A /* ChallengeVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAB298222D4E73A0047943A /* ChallengeVerifier.swift */; };
 		C0C7169B76CA18EB1D3AB34386E4B4E3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6DFF15000AFE2A371BF499E7AFDA808 /* Foundation.framework */; };
 		DF2FE71A0BDBA93FDF69059CE22FA821 /* Pods-CarShare_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 321D9F5E51EE1370C40C87DBE2E66E74 /* Pods-CarShare_Tests-dummy.m */; };
 		EB21C1B1A4D407DADDAE8289BFDDEA7C /* CarShare-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 91924EF18CAD6C9F2BEC99FEB5C019D0 /* CarShare-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -72,6 +74,8 @@
 		A562B66F95F4E4670C0EA24375965827 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE6F65BC4015AA9D97BEBE2B25568DF2 /* Pods-CarShare_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-CarShare_Example-umbrella.h"; sourceTree = "<group>"; };
 		B7FF21AB9B8501536AACD6EB2758AE41 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BBAB298122D4E73A0047943A /* ChallengeSigner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeSigner.swift; path = CarShare/Classes/ChallengeSigner.swift; sourceTree = "<group>"; };
+		BBAB298222D4E73A0047943A /* ChallengeVerifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeVerifier.swift; path = CarShare/Classes/ChallengeVerifier.swift; sourceTree = "<group>"; };
 		C972002286B1AF043CFDC4FEBF774770 /* Pods-CarShare_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CarShare_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		CEEEA25004370E5C355F3214EC999C84 /* CarShare-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CarShare-prefix.pch"; sourceTree = "<group>"; };
 		D3DDA0D00234C23FE29D278DDF12D8EF /* CarShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CarShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +216,8 @@
 				08B2D8D9211A312BD6D5F6633ACA853C /* Protocols.swift */,
 				1CFE0F2222D3730C00863B05 /* DefaultCarShareClient.swift */,
 				1CFE0F1C22CFE16700863B05 /* IOSSocket.swift */,
+				BBAB298122D4E73A0047943A /* ChallengeSigner.swift */,
+				BBAB298222D4E73A0047943A /* ChallengeVerifier.swift */,
 				1CFE0F1E22D2D0F300863B05 /* DefaultTransportProtocol.swift */,
 				1CFE0F2022D36B4B00863B05 /* DefaultCommandProtocol.swift */,
 				7C0C587374196929AA944B55BFAD1776 /* Pod */,
@@ -384,9 +390,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CFE0F2122D36B4B00863B05 /* DefaultCommandProtocol.swift in Sources */,
+				BBAB298422D4E73A0047943A /* ChallengeVerifier.swift in Sources */,
 				1CFE0F1D22CFE16700863B05 /* IOSSocket.swift in Sources */,
 				1C4ED1E12B6F989C5FAEE200B0302CA0 /* CarShare-dummy.m in Sources */,
 				1CFE0F2322D3730C00863B05 /* DefaultCarShareClient.swift in Sources */,
+				BBAB298322D4E73A0047943A /* ChallengeSigner.swift in Sources */,
 				1CFE0F1F22D2D0F400863B05 /* DefaultTransportProtocol.swift in Sources */,
 				44D07E0EF312479A0595171E21EB856B /* Protocols.swift in Sources */,
 			);
