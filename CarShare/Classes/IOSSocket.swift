@@ -18,9 +18,9 @@ class IOSSocket: NSObject, Socket {
 
     private enum State {
         case idle
-        case initializing(advertisingData: [String: Any], serviceId: CBUUID, characteristicId: CBUUID)
-        case advertising(characteristic: CBMutableCharacteristic)
-        case connected(characteristic: CBMutableCharacteristic, central: CBCentral)
+        case initializing(advertisingData: [String: Any], serviceId: CBUUID, notifyCharacteristicId: CBUUID, writeCharacteristicId: CBUUID)
+        case advertising(notifyCharacteristic: CBMutableCharacteristic, writeCharacteristic: CBMutableCharacteristic)
+        case connected(notifyCharacteristic: CBMutableCharacteristic, writeCharacteristic: CBMutableCharacteristic, central: CBCentral)
     }
 
     private lazy var peripheral: CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
@@ -30,7 +30,7 @@ class IOSSocket: NSObject, Socket {
     weak var delegate: SocketDelegate?
 
     var mtu: Int? {
-        if case let .connected(_, central) = state {
+        if case let .connected(_, _, central) = state {
             return central.maximumUpdateValueLength
         } else {
             return nil
@@ -48,7 +48,9 @@ class IOSSocket: NSObject, Socket {
         state = .initializing(
             advertisingData: advertisingData,
             serviceId: serviceId,
-            characteristicId: CBUUID(string: configuration.characteristicID))
+            notifyCharacteristicId: CBUUID(string: configuration.notifyCharacteristicID),
+            writeCharacteristicId: CBUUID(string: configuration.writeCharacteristicID)
+        )
 
         peripheralManagerDidUpdateState(peripheral)
     }
@@ -79,33 +81,38 @@ extension IOSSocket: CBPeripheralManagerDelegate {
         guard peripheral.state == .poweredOn else {
             return
         }
-        guard case let .initializing(advertisingData, serviceId, characteristicId) = state else {
+        guard case let .initializing(advertisingData, serviceId, notifyCharacteristicId, writeCharacteristicId) = state else {
             return
         }
         let service = CBMutableService(type: serviceId, primary: true)
-        let characteristic = CBMutableCharacteristic(
-            type: characteristicId,
-            properties: [.notify, .writeWithoutResponse],
+        let notifyCharacteristic = CBMutableCharacteristic(
+            type: notifyCharacteristicId,
+            properties: [.notify],
+            value: nil,
+            permissions: [])
+        let writeCharacteristic = CBMutableCharacteristic(
+            type: writeCharacteristicId,
+            properties: [.writeWithoutResponse],
             value: nil,
             permissions: [.writeable])
-        service.characteristics = [characteristic]
+        service.characteristics = [notifyCharacteristic, writeCharacteristic]
 
-        state = .advertising(characteristic: characteristic)
+        state = .advertising(notifyCharacteristic: notifyCharacteristic, writeCharacteristic: writeCharacteristic)
         peripheral.add(service)
         peripheral.startAdvertising(advertisingData)
     }
 
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
-        guard case let .advertising(characteristic) = state else {
+        guard case let .advertising(notifyCharacteristic, writeCharacteristic) = state else {
             return
         }
-        state = .connected(characteristic: characteristic, central: central)
+        state = .connected(notifyCharacteristic: notifyCharacteristic, writeCharacteristic: writeCharacteristic, central: central)
         peripheral.stopAdvertising()
         delegate?.socketDidOpen(self)
     }
 
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
-        guard case let .connected(_, connectedCentral) = state else {
+        guard case let .connected(_, _, connectedCentral) = state else {
             return
         }
         guard central == connectedCentral else {
@@ -120,13 +127,13 @@ extension IOSSocket: CBPeripheralManagerDelegate {
         guard let data = dataToSend else {
             return
         }
-        guard case let .connected(characteristic, central) = state else {
+        guard case let .connected(notifyCharacteristic, _, central) = state else {
             dataToSend = nil
             delegate?.socketDidSend(self, error: IOSSocketError.notConnected)
             return
         }
 
-        guard peripheral.updateValue(data, for: characteristic, onSubscribedCentrals: [central]) else {
+        guard peripheral.updateValue(data, for: notifyCharacteristic, onSubscribedCentrals: [central]) else {
             return
         }
         dataToSend = nil
@@ -135,7 +142,7 @@ extension IOSSocket: CBPeripheralManagerDelegate {
 
     func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {
         print(#function)
-        guard case let .connected(_, central) = state else {
+        guard case let .connected(_, _, central) = state else {
             return
         }
         guard let request = requests.first, request.central == central, let data = request.value else {

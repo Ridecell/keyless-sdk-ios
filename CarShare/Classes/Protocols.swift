@@ -2,11 +2,13 @@ import Foundation
 
 public struct BLeSocketConfiguration {
     public let serviceID: String
-    public let characteristicID: String
+    public let notifyCharacteristicID: String
+    public let writeCharacteristicID: String
 
-    public init(serviceID: String, characteristicID: String) {
+    public init(serviceID: String, notifyCharacteristicID: String, writeCharacteristicID: String) {
         self.serviceID = serviceID
-        self.characteristicID = characteristicID
+        self.notifyCharacteristicID = notifyCharacteristicID
+        self.writeCharacteristicID = writeCharacteristicID
     }
 }
 
