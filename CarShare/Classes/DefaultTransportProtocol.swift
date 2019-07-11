@@ -113,6 +113,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
     enum DefaultTransportProtocolError: Error {
         case invalidHandshake
+        case malformedData
     }
 
     private enum State {
@@ -212,7 +213,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             return
         case .connected:
             guard let message = IncomingExtendedAppDataMessage(messageData: data) else {
-                // tell delegate receive failed....
+                delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
                 return
             }
             delegate?.protocol(self, didReceive: Data(bytes: message.body, count: message.body.count))

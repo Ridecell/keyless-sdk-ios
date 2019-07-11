@@ -174,6 +174,7 @@ class DefaultTransportProtocolTests: XCTestCase {
     }
 
     func testSendingData() {
+        openSocket()
         let bytes: [UInt8] = [0x01]
         sut.send(Data(bytes: bytes, count: bytes.count))
         let expectedBytes: [UInt8] = [0x02, 0x88, 0x00, 0x01, 0x01, 0x8C, 0x2D, 0x03]
@@ -186,6 +187,13 @@ class DefaultTransportProtocolTests: XCTestCase {
         socket.delegate?.socket(socket, didReceive: Data(bytes: bytes, count: bytes.count))
         let expectedBytes: [UInt8] = [0x01]
         XCTAssertEqual(expectedBytes, [UInt8](recorder.receivedData!))
+    }
+
+    func testReceivingMalformedData() {
+        openSocket()
+        let bytes: [UInt8] = [0x01, 0x24, 0x00, 0x01, 0x01, 0x28, 0x9D, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: bytes, count: bytes.count))
+        XCTAssertNotNil(recorder.didFailToReceive)
     }
 
     private func openSocket() {
@@ -255,7 +263,7 @@ extension DefaultTransportProtocolTests {
 
         var didFailToReceive: Error?
         func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error) {
-            didFailToSend = error
+            didFailToReceive = error
         }
     }
 }
