@@ -206,8 +206,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
                 connectionState = .handshaking
                 send(HandshakeConfirmationMessage())
             } else {
-                connectionState = .idle
-                delegate?.protocolDidCloseUnexpectedly(self, error: DefaultTransportProtocolError.invalidHandshake)
+                closeUnexpectedly(with: DefaultTransportProtocolError.invalidHandshake)
             }
         case .handshaking:
             return
@@ -221,7 +220,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     }
 
     func socketDidCloseUnexpectedly(_ socket: Socket, error: Error) {
-        delegate?.protocolDidCloseUnexpectedly(self, error: error)
+        closeUnexpectedly(with: error)
     }
 
     func socketDidSend(_ socket: Socket) {
@@ -246,8 +245,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             self.incoming = nil
             delegate?.protocolDidFailToReceive(self, error: error)
         } else {
-            connectionState = .idle
-            delegate?.protocolDidCloseUnexpectedly(self, error: error)
+            closeUnexpectedly(with: error)
         }
 
     }
@@ -257,8 +255,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             outgoing = nil
             delegate?.protocolDidFailToSend(self, error: error)
         } else {
-            connectionState = .idle
-            delegate?.protocolDidCloseUnexpectedly(self, error: error)
+            closeUnexpectedly(with: error)
         }
     }
 
@@ -289,5 +286,13 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
         data.copyBytes(to: pointer, from: index..<index + chunkSize)
         return (Data(bytes: pointer, count: chunkSize), index + chunkSize)
+    }
+
+    private func closeUnexpectedly(with error: Error) {
+        connectionState = .idle
+        incoming = nil
+        outgoing = nil
+        socket.close()
+        delegate?.protocolDidCloseUnexpectedly(self, error: error)
     }
 }
