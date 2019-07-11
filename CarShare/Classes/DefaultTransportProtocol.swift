@@ -111,6 +111,10 @@ private struct IncomingExtendedAppDataMessage {
 
 class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
+    enum DefaultTransportProtocolError: Error {
+        case invalidHandshake
+    }
+
     private enum State {
         case sending(dataToSend: Data, nextByteIndex: Int)
         case receiving(dataReceived: Data, dataLength: Int)
@@ -155,7 +159,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
     private func send(_ transportMessage: TransportMessage) {
         outgoing = (transportMessage.messageData, 0)
-        socketDidSend(socket, error: nil)
+        socketDidSend(socket)
     }
 
     func socketDidOpen(_ socket: Socket) {
@@ -203,7 +207,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
                 send(HandshakeConfirmationMessage())
             } else {
                 connectionState = .idle
-//                tell delegate connection failed....
+                delegate?.protocolDidCloseUnexpectedly(self, error: DefaultTransportProtocolError.invalidHandshake)
             }
         case .handshaking:
             return
@@ -220,12 +224,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         delegate?.protocolDidCloseUnexpectedly(self, error: error)
     }
 
-    func socketDidSend(_ socket: Socket, error: Error?) {
-        if let error = error {
-            outgoing = nil
-            delegate?.protocolDidSend(self, error: error)
-            return
-        }
+    func socketDidSend(_ socket: Socket) {
         guard let outgoing = outgoing else {
             return
         }
@@ -240,7 +239,27 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             self.outgoing = nil
             handleSent()
         }
+    }
 
+    func socketDidFailToReceive(_ socket: Socket, error: Error) {
+        if case .idle = connectionState {
+            self.incoming = nil
+            delegate?.protocolDidFailToReceive(self, error: error)
+        } else {
+            connectionState = .idle
+            delegate?.protocolDidCloseUnexpectedly(self, error: error)
+        }
+
+    }
+
+    func socketDidFailToSend(_ socket: Socket, error: Error) {
+        if case .idle = connectionState {
+            outgoing = nil
+            delegate?.protocolDidFailToSend(self, error: error)
+        } else {
+            connectionState = .idle
+            delegate?.protocolDidCloseUnexpectedly(self, error: error)
+        }
     }
 
     private func handleSent() {
@@ -255,7 +274,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             connectionState = .connected
             delegate?.protocolDidOpen(self)
         case .connected:
-            delegate?.protocolDidSend(self, error: nil)
+            delegate?.protocolDidSend(self)
         }
     }
 
@@ -268,13 +287,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
         let pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: chunkSize)
 
-//        if index == 0 {
-//            pointer.assign(from: [UInt8(data.count >> 8), UInt8(data.count & 0xFF)], count: 2)
-//            data.copyBytes(to: pointer.advanced(by: 2), from: index..<chunkSize-2)
-//            return (Data(bytes: pointer, count: chunkSize), chunkSize - 2)
-//        } else {
-            data.copyBytes(to: pointer, from: index..<index + chunkSize)
-            return (Data(bytes: pointer, count: chunkSize), index + chunkSize)
-//        }
+        data.copyBytes(to: pointer, from: index..<index + chunkSize)
+        return (Data(bytes: pointer, count: chunkSize), index + chunkSize)
     }
 }

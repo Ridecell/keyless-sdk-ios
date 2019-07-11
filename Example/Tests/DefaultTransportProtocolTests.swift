@@ -40,7 +40,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         let sync: [UInt8] = [0x55]
         XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
 
-        socket.delegate?.socketDidSend(socket, error: nil)
+        socket.delegate?.socketDidSend(socket)
 
         let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
@@ -48,8 +48,130 @@ class DefaultTransportProtocolTests: XCTestCase {
         let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5D, 0x10, 0x00, 0x00, 0xF4, 0xCC, 0x03]
         XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
 
-        socket.delegate?.socketDidSend(socket, error: nil)
+        socket.delegate?.socketDidSend(socket)
         XCTAssertTrue(recorder.didOpen)
+    }
+
+    func testHandshakeFail1() {
+        let configuration = BLeSocketConfiguration(
+            serviceID: "SERVICE",
+            notifyCharacteristicID: "NOTIFY",
+            writeCharacteristicID: "WRITE")
+        sut.open(configuration)
+
+        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
+        XCTAssertTrue(socket.didOpen)
+        XCTAssertFalse(recorder.didOpen)
+
+        let error = NSError(domain: "", code: 0, userInfo: nil)
+        socket.delegate?.socketDidCloseUnexpectedly(socket, error: error)
+        XCTAssertTrue(recorder.closeError! as NSError === error)
+    }
+
+    func testHandshakeFail2() {
+        let configuration = BLeSocketConfiguration(
+            serviceID: "SERVICE",
+            notifyCharacteristicID: "NOTIFY",
+            writeCharacteristicID: "WRITE")
+        sut.open(configuration)
+
+        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
+        XCTAssertTrue(socket.didOpen)
+        XCTAssertFalse(recorder.didOpen)
+
+        socket.delegate?.socketDidOpen(socket)
+
+        let sync: [UInt8] = [0x55]
+        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+
+        let error = NSError(domain: "", code: 0, userInfo: nil)
+        socket.delegate?.socketDidFailToSend(socket, error: error)
+
+        XCTAssertNotNil(recorder.closeError)
+    }
+
+    func testHandshakeFail3() {
+        let configuration = BLeSocketConfiguration(
+            serviceID: "SERVICE",
+            notifyCharacteristicID: "NOTIFY",
+            writeCharacteristicID: "WRITE")
+        sut.open(configuration)
+
+        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
+        XCTAssertTrue(socket.didOpen)
+        XCTAssertFalse(recorder.didOpen)
+
+        socket.delegate?.socketDidOpen(socket)
+
+        let sync: [UInt8] = [0x55]
+        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+
+        socket.delegate?.socketDidSend(socket)
+
+
+        let badHandshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x04]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: badHandshake, count: 6))
+        XCTAssertNotNil(recorder.closeError)
+        //
+        //        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5D, 0x10, 0x00, 0x00, 0xF4, 0xCC, 0x03]
+        //        XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
+        //
+        //        socket.delegate?.socketDidSend(socket)
+        //        XCTAssertTrue(recorder.didOpen)
+    }
+
+    func testHandshakeFail4() {
+        let configuration = BLeSocketConfiguration(
+            serviceID: "SERVICE",
+            notifyCharacteristicID: "NOTIFY",
+            writeCharacteristicID: "WRITE")
+        sut.open(configuration)
+
+        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
+        XCTAssertTrue(socket.didOpen)
+        XCTAssertFalse(recorder.didOpen)
+
+        socket.delegate?.socketDidOpen(socket)
+
+        let sync: [UInt8] = [0x55]
+        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+
+        socket.delegate?.socketDidSend(socket)
+
+        let error = NSError(domain: "", code: 0, userInfo: nil)
+
+        socket.delegate?.socketDidFailToReceive(socket, error: error)
+        XCTAssertNotNil(recorder.closeError)
+    }
+
+    func testHandshakeFail5() {
+        let configuration = BLeSocketConfiguration(
+            serviceID: "SERVICE",
+            notifyCharacteristicID: "NOTIFY",
+            writeCharacteristicID: "WRITE")
+        sut.open(configuration)
+
+        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
+        XCTAssertTrue(socket.didOpen)
+        XCTAssertFalse(recorder.didOpen)
+
+        socket.delegate?.socketDidOpen(socket)
+
+        let sync: [UInt8] = [0x55]
+        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+
+        socket.delegate?.socketDidSend(socket)
+
+
+        let badHandshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: badHandshake, count: 6))
+
+        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5D, 0x10, 0x00, 0x00, 0xF4, 0xCC, 0x03]
+        XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
+
+        let error = NSError(domain: "", code: 0, userInfo: nil)
+        socket.delegate?.socketDidFailToSend(socket, error: error)
+        XCTAssertNotNil(recorder.closeError)
     }
 
 }
@@ -78,6 +200,7 @@ extension DefaultTransportProtocolTests {
     }
 
     class TransportRecorder: TransportProtocolDelegate {
+
         var didOpen = false
         func protocolDidOpen(_ protocol: TransportProtocol) {
             didOpen = true
@@ -94,8 +217,18 @@ extension DefaultTransportProtocolTests {
         }
 
         var didSend = false
-        func protocolDidSend(_ protocol: TransportProtocol, error: Error?) {
+        func protocolDidSend(_ protocol: TransportProtocol) {
             didSend = true
+        }
+
+        var didFailToSend: Error?
+        func protocolDidFailToSend(_ protocol: TransportProtocol, error: Error) {
+            didFailToSend = error
+        }
+
+        var didFailToReceive: Error?
+        func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error) {
+            didFailToSend = error
         }
     }
 }
