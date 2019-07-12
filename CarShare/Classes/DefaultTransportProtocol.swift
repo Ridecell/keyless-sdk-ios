@@ -39,8 +39,8 @@ private class AddonMessage: TransportMessage {
     private func checksum(for bytes: [UInt8]) -> [UInt8] {
         var check1: UInt8 = 0
         var check2: UInt8 = 0
-        for  i in 0..<bytes.count {
-            check1 = check1.addingReportingOverflow(bytes[i]).partialValue
+        for byte in bytes {
+            check1 = check1.addingReportingOverflow(byte).partialValue
             check2 = check2.addingReportingOverflow(check1).partialValue
         }
         return [check1, check2]
@@ -116,11 +116,6 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         case malformedData
     }
 
-    private enum State {
-        case sending(dataToSend: Data, nextByteIndex: Int)
-        case receiving(dataReceived: Data, dataLength: Int)
-    }
-
     private enum ConnectionState {
         case idle
         case connecting
@@ -189,9 +184,8 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         if incoming.data.count > incoming.dataLength {
             // error
         } else if incoming.data.count == incoming.dataLength {
-            let data = incoming.data
             self.incoming = nil
-            handleReceived(data)
+            handleReceived(incoming.data)
         }
     }
 
@@ -242,7 +236,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     }
 
     func socketDidFailToReceive(_ socket: Socket, error: Error) {
-        if case .idle = connectionState {
+        if case .connected = connectionState {
             self.incoming = nil
             delegate?.protocolDidFailToReceive(self, error: error)
         } else {
@@ -252,7 +246,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     }
 
     func socketDidFailToSend(_ socket: Socket, error: Error) {
-        if case .idle = connectionState {
+        if case .connected = connectionState {
             outgoing = nil
             delegate?.protocolDidFailToSend(self, error: error)
         } else {

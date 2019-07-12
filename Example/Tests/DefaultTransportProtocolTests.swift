@@ -18,9 +18,9 @@ class DefaultTransportProtocolTests: XCTestCase {
     }
 
     override func tearDown() {
-        recorder = nil
-        socket = nil
         sut = nil
+        socket = nil
+        recorder = nil
         super.tearDown()
     }
 
@@ -194,6 +194,17 @@ class DefaultTransportProtocolTests: XCTestCase {
         let bytes: [UInt8] = [0x01, 0x24, 0x00, 0x01, 0x01, 0x28, 0x9D, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: bytes, count: bytes.count))
         XCTAssertNotNil(recorder.didFailToReceive)
+    }
+
+    func testSendingMultiChunkData() {
+        openSocket()
+        let bytes: [UInt8] = [0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20]
+        sut.send(Data(bytes: bytes, count: bytes.count))
+        let expectedChunk1: [UInt8] = [0x02, 0x88, 0x00, 0x14, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16]
+        let expectedChunk2: [UInt8] = [0x17, 0x18, 0x19, 0x20, 0xB8, 0xA2, 0x03]
+        XCTAssertEqual(expectedChunk1, [UInt8](socket.dataToSend!))
+        socket.delegate?.socketDidSend(socket)
+        XCTAssertEqual(expectedChunk2, [UInt8](socket.dataToSend!))
     }
 
     private func openSocket() {
