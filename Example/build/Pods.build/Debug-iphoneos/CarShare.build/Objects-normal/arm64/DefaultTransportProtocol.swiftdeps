@@ -1,0 +1,338 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "DefaultTransportProtocol"
+provides-nominal:
+- "8CarShare24DefaultTransportProtocolC"
+provides-member:
+- ["8CarShare24DefaultTransportProtocolC", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "!="
+- !private "&"
+- !private "+"
+- !private "-"
+- !private "..<"
+- !private "<<"
+- !private "=="
+- !private ">"
+- !private ">="
+- !private ">>"
+- "AssignmentPrecedence"
+- "BLeSocketConfiguration"
+- "Data"
+- "DefaultTransportProtocol"
+- "Error"
+- !private "FloatLiteralType"
+- "Int"
+- !private "IntegerLiteralType"
+- "Socket"
+- "SocketDelegate"
+- "TransportProtocol"
+- "TransportProtocolDelegate"
+- !private "UInt8"
+- !private "UnsafeMutablePointer"
+- !private "min"
+depends-member:
+- !private ["s18AdditiveArithmeticP", "init"]
+- !private ["SK", "advanced"]
+- !private ["SK", "append"]
+- !private ["SK", "copyBytes"]
+- !private ["SK", "count"]
+- !private ["SK", "init"]
+- !private ["SK", "subscript"]
+- !private ["Sz", "init"]
+- !private ["s7CVarArgP", "advanced"]
+- !private ["s7CVarArgP", "allocate"]
+- !private ["s7CVarArgP", "assign"]
+- !private ["s7CVarArgP", "init"]
+- !private ["Sl", "advanced"]
+- !private ["Sl", "append"]
+- !private ["Sl", "copyBytes"]
+- !private ["Sl", "count"]
+- !private ["Sl", "init"]
+- !private ["Sl", "subscript"]
+- !private ["SL", "advanced"]
+- !private ["SL", "allocate"]
+- !private ["SL", "assign"]
+- !private ["SL", "init"]
+- !private ["10Foundation15ContiguousBytesP", "advanced"]
+- !private ["10Foundation15ContiguousBytesP", "append"]
+- !private ["10Foundation15ContiguousBytesP", "copyBytes"]
+- !private ["10Foundation15ContiguousBytesP", "count"]
+- !private ["10Foundation15ContiguousBytesP", "init"]
+- !private ["10Foundation15ContiguousBytesP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "advanced"]
+- !private ["s28CustomDebugStringConvertibleP", "allocate"]
+- !private ["s28CustomDebugStringConvertibleP", "append"]
+- !private ["s28CustomDebugStringConvertibleP", "assign"]
+- !private ["s28CustomDebugStringConvertibleP", "copyBytes"]
+- !private ["s28CustomDebugStringConvertibleP", "count"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s17CustomReflectableP", "advanced"]
+- !private ["s17CustomReflectableP", "allocate"]
+- !private ["s17CustomReflectableP", "append"]
+- !private ["s17CustomReflectableP", "assign"]
+- !private ["s17CustomReflectableP", "copyBytes"]
+- !private ["s17CustomReflectableP", "count"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "advanced"]
+- !private ["s23CustomStringConvertibleP", "append"]
+- !private ["s23CustomStringConvertibleP", "copyBytes"]
+- !private ["s23CustomStringConvertibleP", "count"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["10Foundation4DataV", "advanced"]
+- !private ["10Foundation4DataV", "append"]
+- !private ["10Foundation4DataV", "copyBytes"]
+- !private ["10Foundation4DataV", "count"]
+- !private ["10Foundation4DataV", "init"]
+- !private ["10Foundation4DataV", "subscript"]
+- !private ["10Foundation12DataProtocolP", "advanced"]
+- !private ["10Foundation12DataProtocolP", "append"]
+- !private ["10Foundation12DataProtocolP", "copyBytes"]
+- !private ["10Foundation12DataProtocolP", "count"]
+- !private ["10Foundation12DataProtocolP", "init"]
+- !private ["10Foundation12DataProtocolP", "subscript"]
+- !private ["Se", "advanced"]
+- !private ["Se", "append"]
+- !private ["Se", "copyBytes"]
+- !private ["Se", "count"]
+- !private ["Se", "init"]
+- !private ["Se", "subscript"]
+- ["8CarShare24DefaultTransportProtocolC", "BLeSocketConfiguration"]
+- ["8CarShare24DefaultTransportProtocolC", "Data"]
+- ["8CarShare24DefaultTransportProtocolC", "Error"]
+- ["8CarShare24DefaultTransportProtocolC", "Int"]
+- ["8CarShare24DefaultTransportProtocolC", "Socket"]
+- !private ["8CarShare24DefaultTransportProtocolC", "State"]
+- ["8CarShare24DefaultTransportProtocolC", "TransportProtocolDelegate"]
+- !private ["8CarShare24DefaultTransportProtocolC", "UInt8"]
+- !private ["8CarShare24DefaultTransportProtocolC", "UnsafeMutablePointer"]
+- !private ["8CarShare24DefaultTransportProtocolC", "chunk"]
+- ["8CarShare24DefaultTransportProtocolC", "close"]
+- ["8CarShare24DefaultTransportProtocolC", "deinit"]
+- ["8CarShare24DefaultTransportProtocolC", "delegate"]
+- !private ["8CarShare24DefaultTransportProtocolC", "incoming"]
+- ["8CarShare24DefaultTransportProtocolC", "init"]
+- !private ["8CarShare24DefaultTransportProtocolC", "min"]
+- ["8CarShare24DefaultTransportProtocolC", "open"]
+- !private ["8CarShare24DefaultTransportProtocolC", "outgoing"]
+- ["8CarShare24DefaultTransportProtocolC", "send"]
+- ["8CarShare24DefaultTransportProtocolC", "socket"]
+- ["8CarShare24DefaultTransportProtocolC", "socketDidCloseUnexpectedly"]
+- ["8CarShare24DefaultTransportProtocolC", "socketDidOpen"]
+- ["8CarShare24DefaultTransportProtocolC", "socketDidSend"]
+- !private ["SE", "advanced"]
+- !private ["SE", "append"]
+- !private ["SE", "copyBytes"]
+- !private ["SE", "count"]
+- !private ["SE", "init"]
+- !private ["SE", "subscript"]
+- !private ["SQ", "advanced"]
+- !private ["SQ", "allocate"]
+- !private ["SQ", "append"]
+- !private ["SQ", "assign"]
+- !private ["SQ", "copyBytes"]
+- !private ["SQ", "count"]
+- !private ["SQ", "init"]
+- !private ["SQ", "subscript"]
+- !private ["s27ExpressibleByIntegerLiteralP", "init"]
+- !private ["s17FixedWidthIntegerP", "init"]
+- !private ["SH", "advanced"]
+- !private ["SH", "allocate"]
+- !private ["SH", "append"]
+- !private ["SH", "assign"]
+- !private ["SH", "copyBytes"]
+- !private ["SH", "count"]
+- !private ["SH", "init"]
+- !private ["SH", "subscript"]
+- !private ["Si", "init"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["SM", "advanced"]
+- !private ["SM", "append"]
+- !private ["SM", "copyBytes"]
+- !private ["SM", "count"]
+- !private ["SM", "init"]
+- !private ["SM", "subscript"]
+- !private ["10Foundation19MutableDataProtocolP", "advanced"]
+- !private ["10Foundation19MutableDataProtocolP", "append"]
+- !private ["10Foundation19MutableDataProtocolP", "copyBytes"]
+- !private ["10Foundation19MutableDataProtocolP", "count"]
+- !private ["10Foundation19MutableDataProtocolP", "init"]
+- !private ["10Foundation19MutableDataProtocolP", "subscript"]
+- !private ["Sj", "init"]
+- !private ["Sk", "advanced"]
+- !private ["Sk", "append"]
+- !private ["Sk", "copyBytes"]
+- !private ["Sk", "count"]
+- !private ["Sk", "init"]
+- !private ["Sk", "subscript"]
+- !private ["Sm", "advanced"]
+- !private ["Sm", "append"]
+- !private ["Sm", "copyBytes"]
+- !private ["Sm", "count"]
+- !private ["Sm", "init"]
+- !private ["Sm", "subscript"]
+- !private ["10Foundation20ReferenceConvertibleP", "advanced"]
+- !private ["10Foundation20ReferenceConvertibleP", "append"]
+- !private ["10Foundation20ReferenceConvertibleP", "copyBytes"]
+- !private ["10Foundation20ReferenceConvertibleP", "count"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["10Foundation20ReferenceConvertibleP", "subscript"]
+- !private ["s10SIMDScalarP", "init"]
+- !private ["ST", "advanced"]
+- !private ["ST", "append"]
+- !private ["ST", "copyBytes"]
+- !private ["ST", "count"]
+- !private ["ST", "init"]
+- !private ["ST", "subscript"]
+- !private ["SZ", "init"]
+- !private ["s13SignedNumericP", "init"]
+- !private ["8CarShare6SocketP", "close"]
+- !private ["8CarShare6SocketP", "delegate"]
+- !private ["8CarShare6SocketP", "mtu"]
+- !private ["8CarShare6SocketP", "open"]
+- !private ["8CarShare6SocketP", "send"]
+- !private ["8CarShare14SocketDelegateP", "Data"]
+- !private ["8CarShare14SocketDelegateP", "Int"]
+- !private ["8CarShare14SocketDelegateP", "UInt8"]
+- !private ["8CarShare14SocketDelegateP", "UnsafeMutablePointer"]
+- ["8CarShare14SocketDelegateP", ""]
+- !private ["8CarShare14SocketDelegateP", "chunk"]
+- ["8CarShare14SocketDelegateP", "close"]
+- ["8CarShare14SocketDelegateP", "delegate"]
+- !private ["8CarShare14SocketDelegateP", "incoming"]
+- !private ["8CarShare14SocketDelegateP", "min"]
+- ["8CarShare14SocketDelegateP", "open"]
+- !private ["8CarShare14SocketDelegateP", "outgoing"]
+- ["8CarShare14SocketDelegateP", "send"]
+- ["8CarShare14SocketDelegateP", "socket"]
+- ["8CarShare14SocketDelegateP", "socketDidCloseUnexpectedly"]
+- ["8CarShare14SocketDelegateP", "socketDidOpen"]
+- ["8CarShare14SocketDelegateP", "socketDidSend"]
+- !private ["Sx", "advanced"]
+- !private ["Sx", "allocate"]
+- !private ["Sx", "assign"]
+- !private ["Sx", "init"]
+- !private ["8CarShare17TransportProtocolP", "Data"]
+- !private ["8CarShare17TransportProtocolP", "Int"]
+- !private ["8CarShare17TransportProtocolP", "UInt8"]
+- !private ["8CarShare17TransportProtocolP", "UnsafeMutablePointer"]
+- ["8CarShare17TransportProtocolP", ""]
+- !private ["8CarShare17TransportProtocolP", "chunk"]
+- ["8CarShare17TransportProtocolP", "close"]
+- ["8CarShare17TransportProtocolP", "delegate"]
+- !private ["8CarShare17TransportProtocolP", "incoming"]
+- !private ["8CarShare17TransportProtocolP", "min"]
+- ["8CarShare17TransportProtocolP", "open"]
+- !private ["8CarShare17TransportProtocolP", "outgoing"]
+- ["8CarShare17TransportProtocolP", "send"]
+- ["8CarShare17TransportProtocolP", "socket"]
+- ["8CarShare17TransportProtocolP", "socketDidCloseUnexpectedly"]
+- ["8CarShare17TransportProtocolP", "socketDidOpen"]
+- ["8CarShare17TransportProtocolP", "socketDidSend"]
+- !private ["8CarShare25TransportProtocolDelegateP", "protocol"]
+- !private ["8CarShare25TransportProtocolDelegateP", "protocolDidCloseUnexpectedly"]
+- !private ["8CarShare25TransportProtocolDelegateP", "protocolDidOpen"]
+- !private ["8CarShare25TransportProtocolDelegateP", "protocolDidSend"]
+- !private ["s5UInt8V", "init"]
+- !private ["Sp", "advanced"]
+- !private ["Sp", "allocate"]
+- !private ["Sp", "assign"]
+- !private ["SU", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "advanced"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "allocate"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "assign"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "advanced"]
+- !private ["s21_ObjectiveCBridgeableP", "append"]
+- !private ["s21_ObjectiveCBridgeableP", "copyBytes"]
+- !private ["s21_ObjectiveCBridgeableP", "count"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["s8_PointerP", "advanced"]
+- !private ["s8_PointerP", "allocate"]
+- !private ["s8_PointerP", "assign"]
+- !private ["s14_StringElementP", "init"]
+depends-nominal:
+- !private "s18AdditiveArithmeticP"
+- !private "SK"
+- !private "Sz"
+- !private "s7CVarArgP"
+- !private "Sl"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "10Foundation4DataV"
+- !private "10Foundation12DataProtocolP"
+- !private "Se"
+- "8CarShare24DefaultTransportProtocolC"
+- !private "SE"
+- !private "SQ"
+- !private "s27ExpressibleByIntegerLiteralP"
+- !private "s17FixedWidthIntegerP"
+- !private "SH"
+- !private "Si"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "Sj"
+- !private "Sk"
+- !private "Sm"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "s10SIMDScalarP"
+- !private "ST"
+- !private "SZ"
+- !private "s13SignedNumericP"
+- !private "8CarShare6SocketP"
+- "8CarShare14SocketDelegateP"
+- !private "Sx"
+- "8CarShare17TransportProtocolP"
+- !private "8CarShare25TransportProtocolDelegateP"
+- !private "s5UInt8V"
+- !private "Sp"
+- !private "SU"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "s8_PointerP"
+- !private "s14_StringElementP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/SwiftOnoneSupport.swiftmodule"
+- "/Users/mmaguire/Desktop/BSM/car-share-ios/Example/Pods/Target Support Files/CarShare/CarShare-umbrella.h"
+- "/Users/mmaguire/Desktop/BSM/car-share-ios/Example/build/Pods.build/Debug-iphoneos/CarShare.build/unextended-module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreBluetooth.framework/Headers/CoreBluetooth.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "0d91a2ceb3c2714cd5620ba28e66edd5"

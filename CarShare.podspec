@@ -40,5 +40,5 @@ An iOS framework that communicates with Geotab Go9 devices for car share clients
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Foundation', 'CoreBluetooth'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'SwiftProtobuf', '~> 1.0'
 end

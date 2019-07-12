@@ -1,0 +1,11 @@
+version: "Apple Swift version 5.0.1 (swiftlang-1001.0.82.4 clang-1001.0.46.5)"
+options: "4dfb9429dd4422072ddeb2a2446567c0"
+build_time: [1562784322, 335190000]
+inputs:
+  "/Users/mmaguire/Desktop/BSM/car-share-ios/CarShare/Classes/DefaultCommandProtocol.swift": [1562684073, 215144809]
+  "/Users/mmaguire/Desktop/BSM/car-share-ios/CarShare/Classes/ChallengeVerifier.swift": [9223372036, 854775807]
+  "/Users/mmaguire/Desktop/BSM/car-share-ios/CarShare/Classes/IOSSocket.swift": [1562615263, 362159740]
+  "/Users/mmaguire/Desktop/BSM/car-share-ios/CarShare/Classes/DefaultCarShareClient.swift": [1562615263, 361225946]
+  "/Users/mmaguire/Desktop/BSM/car-share-ios/CarShare/Classes/ChallengeSigner.swift": [9223372036, 854775807]
+  "/Users/mmaguire/Desktop/BSM/car-share-ios/CarShare/Classes/DefaultTransportProtocol.swift": [1562615263, 361878600]
+  "/Users/mmaguire/Desktop/BSM/car-share-ios/CarShare/Classes/Protocols.swift": [1562784245, 129994468]

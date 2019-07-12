@@ -1,6 +1,7 @@
 use_frameworks!
 
 target 'CarShare_Example' do
+  pod 'SwiftProtobuf', '~> 1.0'
   pod 'CarShare', :path => '../'
 
   target 'CarShare_Tests' do

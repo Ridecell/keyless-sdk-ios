@@ -1,0 +1,406 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "DefaultCarShareClient"
+provides-nominal:
+- "8CarShare07DefaultaB6ClientC"
+- "8CarShare07DefaultaB6ClientC0cabD5ErrorO"
+provides-member:
+- ["8CarShare07DefaultaB6ClientC", ""]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "=="
+- "AssignmentPrecedence"
+- "BLeSocketConfiguration"
+- "CarShareClient"
+- "CarShareClientConnectionDelegate"
+- "CommandProtocol"
+- "CommandProtocolDelegate"
+- "Data"
+- "DefaultCarShareClient"
+- !private "DefaultCommandProtocol"
+- !private "DefaultTransportProtocol"
+- "Error"
+- "FloatLiteralType"
+- !private "IOSSocket"
+- "IntegerLiteralType"
+- "Reservation"
+- "Result"
+- !private "StringLiteralType"
+- "UInt8"
+- "Void"
+- !private "fatalError"
+- !private "~="
+depends-member:
+- !private ["SK", "append"]
+- !private ["SK", "data"]
+- !private ["SK", "init"]
+- !private ["So27CBPeripheralManagerDelegateP", "init"]
+- !private ["s7CVarArgP", "data"]
+- !private ["s7CVarArgP", "init"]
+- !private ["8CarShare0aB6ClientP", "Data"]
+- !private ["8CarShare0aB6ClientP", "DefaultCarShareClientError"]
+- !private ["8CarShare0aB6ClientP", "DefaultCommandProtocol"]
+- !private ["8CarShare0aB6ClientP", "DefaultTransportProtocol"]
+- !private ["8CarShare0aB6ClientP", "IOSSocket"]
+- !private ["8CarShare0aB6ClientP", "Message"]
+- ["8CarShare0aB6ClientP", ""]
+- ["8CarShare0aB6ClientP", "checkIn"]
+- ["8CarShare0aB6ClientP", "checkOut"]
+- !private ["8CarShare0aB6ClientP", "commandProtocol"]
+- ["8CarShare0aB6ClientP", "connect"]
+- ["8CarShare0aB6ClientP", "delegate"]
+- ["8CarShare0aB6ClientP", "disconnect"]
+- !private ["8CarShare0aB6ClientP", "fatalError"]
+- !private ["8CarShare0aB6ClientP", "init"]
+- ["8CarShare0aB6ClientP", "locate"]
+- ["8CarShare0aB6ClientP", "lock"]
+- !private ["8CarShare0aB6ClientP", "outgoingMessage"]
+- ["8CarShare0aB6ClientP", "protocol"]
+- ["8CarShare0aB6ClientP", "protocolDidCloseUnexpectedly"]
+- ["8CarShare0aB6ClientP", "protocolDidOpen"]
+- ["8CarShare0aB6ClientP", "unlock"]
+- !private ["8CarShare0aB24ClientConnectionDelegateP", "clientDidConnect"]
+- !private ["8CarShare0aB24ClientConnectionDelegateP", "clientDidDisconnectUnexpectedly"]
+- !private ["Sl", "append"]
+- !private ["Sl", "data"]
+- !private ["Sl", "init"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "=="]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "RawValue"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "_Default_RawValue"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "_rawHashValue"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "checkIn"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "checkOut"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "deinit"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "hash"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "hashValue"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "init"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "locate"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "lock"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "rawValue"]
+- ["8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO", "unlock"]
+- !private ["8CarShare15CommandProtocolP", "close"]
+- !private ["8CarShare15CommandProtocolP", "delegate"]
+- !private ["8CarShare15CommandProtocolP", "init"]
+- !private ["8CarShare15CommandProtocolP", "open"]
+- !private ["8CarShare15CommandProtocolP", "send"]
+- !private ["8CarShare23CommandProtocolDelegateP", "Data"]
+- !private ["8CarShare23CommandProtocolDelegateP", "DefaultCarShareClientError"]
+- !private ["8CarShare23CommandProtocolDelegateP", "DefaultCommandProtocol"]
+- !private ["8CarShare23CommandProtocolDelegateP", "DefaultTransportProtocol"]
+- !private ["8CarShare23CommandProtocolDelegateP", "IOSSocket"]
+- !private ["8CarShare23CommandProtocolDelegateP", "Message"]
+- ["8CarShare23CommandProtocolDelegateP", ""]
+- ["8CarShare23CommandProtocolDelegateP", "checkIn"]
+- ["8CarShare23CommandProtocolDelegateP", "checkOut"]
+- !private ["8CarShare23CommandProtocolDelegateP", "commandProtocol"]
+- ["8CarShare23CommandProtocolDelegateP", "connect"]
+- ["8CarShare23CommandProtocolDelegateP", "delegate"]
+- ["8CarShare23CommandProtocolDelegateP", "disconnect"]
+- !private ["8CarShare23CommandProtocolDelegateP", "fatalError"]
+- !private ["8CarShare23CommandProtocolDelegateP", "init"]
+- ["8CarShare23CommandProtocolDelegateP", "locate"]
+- ["8CarShare23CommandProtocolDelegateP", "lock"]
+- !private ["8CarShare23CommandProtocolDelegateP", "outgoingMessage"]
+- ["8CarShare23CommandProtocolDelegateP", "protocol"]
+- ["8CarShare23CommandProtocolDelegateP", "protocolDidCloseUnexpectedly"]
+- ["8CarShare23CommandProtocolDelegateP", "protocolDidOpen"]
+- ["8CarShare23CommandProtocolDelegateP", "unlock"]
+- !private ["SL", "data"]
+- !private ["10Foundation15ContiguousBytesP", "append"]
+- !private ["10Foundation15ContiguousBytesP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "append"]
+- !private ["s28CustomDebugStringConvertibleP", "data"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s17CustomReflectableP", "append"]
+- !private ["s17CustomReflectableP", "data"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s23CustomStringConvertibleP", "append"]
+- !private ["s23CustomStringConvertibleP", "data"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "utf8"]
+- !private ["10Foundation4DataV", "append"]
+- !private ["10Foundation4DataV", "init"]
+- !private ["10Foundation12DataProtocolP", "append"]
+- !private ["10Foundation12DataProtocolP", "init"]
+- !private ["Se", "append"]
+- !private ["Se", "data"]
+- !private ["Se", "init"]
+- ["8CarShare07DefaultaB6ClientC", "BLeSocketConfiguration"]
+- ["8CarShare07DefaultaB6ClientC", "CarShareClientConnectionDelegate"]
+- ["8CarShare07DefaultaB6ClientC", "CommandProtocol"]
+- ["8CarShare07DefaultaB6ClientC", "Data"]
+- ["8CarShare07DefaultaB6ClientC", "DefaultCarShareClientError"]
+- !private ["8CarShare07DefaultaB6ClientC", "DefaultCommandProtocol"]
+- !private ["8CarShare07DefaultaB6ClientC", "DefaultTransportProtocol"]
+- ["8CarShare07DefaultaB6ClientC", "Error"]
+- !private ["8CarShare07DefaultaB6ClientC", "IOSSocket"]
+- ["8CarShare07DefaultaB6ClientC", "Message"]
+- ["8CarShare07DefaultaB6ClientC", "Reservation"]
+- ["8CarShare07DefaultaB6ClientC", "Result"]
+- ["8CarShare07DefaultaB6ClientC", "UInt8"]
+- ["8CarShare07DefaultaB6ClientC", "Void"]
+- ["8CarShare07DefaultaB6ClientC", "checkIn"]
+- ["8CarShare07DefaultaB6ClientC", "checkOut"]
+- !private ["8CarShare07DefaultaB6ClientC", "commandProtocol"]
+- ["8CarShare07DefaultaB6ClientC", "connect"]
+- ["8CarShare07DefaultaB6ClientC", "deinit"]
+- ["8CarShare07DefaultaB6ClientC", "delegate"]
+- ["8CarShare07DefaultaB6ClientC", "disconnect"]
+- !private ["8CarShare07DefaultaB6ClientC", "fatalError"]
+- ["8CarShare07DefaultaB6ClientC", "init"]
+- ["8CarShare07DefaultaB6ClientC", "locate"]
+- ["8CarShare07DefaultaB6ClientC", "lock"]
+- !private ["8CarShare07DefaultaB6ClientC", "outgoingMessage"]
+- ["8CarShare07DefaultaB6ClientC", "protocol"]
+- ["8CarShare07DefaultaB6ClientC", "protocolDidCloseUnexpectedly"]
+- ["8CarShare07DefaultaB6ClientC", "protocolDidOpen"]
+- ["8CarShare07DefaultaB6ClientC", "unlock"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "=="]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "__derived_enum_equals"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "_code"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "_domain"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "_getEmbeddedNSError"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "_rawHashValue"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "_userInfo"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "challengeFailed"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "deinit"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "hash"]
+- ["8CarShare07DefaultaB6ClientC0cabD5ErrorO", "hashValue"]
+- !private ["8CarShare22DefaultCommandProtocolC", "deinit"]
+- !private ["8CarShare22DefaultCommandProtocolC", "init"]
+- !private ["8CarShare24DefaultTransportProtocolC", "deinit"]
+- !private ["8CarShare24DefaultTransportProtocolC", "init"]
+- !private ["SE", "append"]
+- !private ["SE", "data"]
+- !private ["SE", "init"]
+- !private ["SS10FoundationE8EncodingV", "utf8"]
+- ["SQ", "=="]
+- ["SQ", "RawValue"]
+- ["SQ", ""]
+- ["SQ", "_Default_RawValue"]
+- ["SQ", "_code"]
+- ["SQ", "_domain"]
+- ["SQ", "_getEmbeddedNSError"]
+- ["SQ", "_rawHashValue"]
+- ["SQ", "_userInfo"]
+- !private ["SQ", "append"]
+- !private ["SQ", "challengeFailed"]
+- !private ["SQ", "checkIn"]
+- !private ["SQ", "checkOut"]
+- !private ["SQ", "data"]
+- !private ["SQ", "failure"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["SQ", "init"]
+- !private ["SQ", "locate"]
+- !private ["SQ", "lock"]
+- ["SQ", "rawValue"]
+- !private ["SQ", "success"]
+- !private ["SQ", "unlock"]
+- !private ["SQ", "utf8"]
+- ["s5ErrorP", "=="]
+- ["s5ErrorP", ""]
+- ["s5ErrorP", "_code"]
+- ["s5ErrorP", "_domain"]
+- ["s5ErrorP", "_getEmbeddedNSError"]
+- ["s5ErrorP", "_rawHashValue"]
+- ["s5ErrorP", "_userInfo"]
+- !private ["s5ErrorP", "challengeFailed"]
+- ["s5ErrorP", "hash"]
+- ["s5ErrorP", "hashValue"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "data"]
+- !private ["s32ExpressibleByStringInterpolationP", "data"]
+- !private ["s26ExpressibleByStringLiteralP", "data"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "data"]
+- ["SH", "=="]
+- ["SH", "RawValue"]
+- ["SH", ""]
+- ["SH", "_Default_RawValue"]
+- ["SH", "_code"]
+- ["SH", "_domain"]
+- ["SH", "_getEmbeddedNSError"]
+- ["SH", "_rawHashValue"]
+- ["SH", "_userInfo"]
+- !private ["SH", "append"]
+- !private ["SH", "challengeFailed"]
+- !private ["SH", "checkIn"]
+- !private ["SH", "checkOut"]
+- !private ["SH", "data"]
+- !private ["SH", "failure"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- ["SH", "init"]
+- !private ["SH", "locate"]
+- !private ["SH", "lock"]
+- ["SH", "rawValue"]
+- !private ["SH", "success"]
+- !private ["SH", "unlock"]
+- !private ["SH", "utf8"]
+- !private ["s6HasherV", "combine"]
+- !private ["8CarShare9IOSSocketC", "deinit"]
+- !private ["8CarShare9IOSSocketC", "init"]
+- !private ["s25LosslessStringConvertibleP", "data"]
+- !private ["s10MirrorPathP", "data"]
+- !private ["SM", "append"]
+- !private ["SM", "init"]
+- !private ["10Foundation19MutableDataProtocolP", "append"]
+- !private ["10Foundation19MutableDataProtocolP", "init"]
+- !private ["So8NSCodingP", "data"]
+- !private ["So9NSCopyingP", "data"]
+- !private ["So21NSItemProviderReadingP", "data"]
+- !private ["So21NSItemProviderWritingP", "data"]
+- !private ["So16NSMutableCopyingP", "data"]
+- !private ["So8NSObjectC", "data"]
+- !private ["So8NSObjectC", "init"]
+- !private ["So8NSObjectP", "data"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So14NSSecureCodingP", "data"]
+- !private ["So8NSStringC", "data"]
+- !private ["Sk", "append"]
+- !private ["Sk", "init"]
+- !private ["Sm", "append"]
+- !private ["Sm", "data"]
+- !private ["Sm", "init"]
+- ["SY", "=="]
+- ["SY", "RawValue"]
+- ["SY", ""]
+- ["SY", "_Default_RawValue"]
+- ["SY", "_rawHashValue"]
+- !private ["SY", "checkIn"]
+- !private ["SY", "checkOut"]
+- ["SY", "hash"]
+- ["SY", "hashValue"]
+- ["SY", "init"]
+- !private ["SY", "locate"]
+- !private ["SY", "lock"]
+- ["SY", "rawValue"]
+- !private ["SY", "unlock"]
+- !private ["SY", "utf8"]
+- !private ["10Foundation20ReferenceConvertibleP", "append"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["8CarShare11ReservationV", "certificate"]
+- !private ["8CarShare11ReservationV", "privateKey"]
+- !private ["s6ResultO", "failure"]
+- !private ["s6ResultO", "success"]
+- !private ["ST", "append"]
+- !private ["ST", "data"]
+- !private ["ST", "init"]
+- !private ["8CarShare6SocketP", "init"]
+- !private ["8CarShare14SocketDelegateP", "init"]
+- !private ["SS", "data"]
+- !private ["Sy", "data"]
+- !private ["s16TextOutputStreamP", "data"]
+- !private ["s20TextOutputStreamableP", "data"]
+- !private ["8CarShare17TransportProtocolP", "init"]
+- !private ["8CarShare25TransportProtocolDelegateP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "data"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "data"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "data"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "data"]
+- !private ["s19_HasContiguousBytesP", "data"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "data"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "data"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "append"]
+- !private ["s21_ObjectiveCBridgeableP", "data"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+depends-nominal:
+- !private "SK"
+- !private "So27CBPeripheralManagerDelegateP"
+- !private "s7CVarArgP"
+- "8CarShare0aB6ClientP"
+- !private "8CarShare0aB24ClientConnectionDelegateP"
+- !private "Sl"
+- "8CarShare07DefaultaB6ClientC7Message33_6BC1EE07147A337B65D49E5424F1DBFFLLV7CommandO"
+- !private "8CarShare15CommandProtocolP"
+- "8CarShare23CommandProtocolDelegateP"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "10Foundation4DataV"
+- !private "10Foundation12DataProtocolP"
+- !private "Se"
+- "8CarShare07DefaultaB6ClientC"
+- "8CarShare07DefaultaB6ClientC0cabD5ErrorO"
+- !private "8CarShare22DefaultCommandProtocolC"
+- !private "8CarShare24DefaultTransportProtocolC"
+- !private "SE"
+- !private "SS10FoundationE8EncodingV"
+- "SQ"
+- "s5ErrorP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "SH"
+- !private "s6HasherV"
+- !private "8CarShare9IOSSocketC"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "So8NSCodingP"
+- !private "So9NSCopyingP"
+- !private "So21NSItemProviderReadingP"
+- !private "So21NSItemProviderWritingP"
+- !private "So16NSMutableCopyingP"
+- !private "So8NSObjectC"
+- !private "So8NSObjectP"
+- !private "So14NSSecureCodingP"
+- !private "So8NSStringC"
+- !private "Sk"
+- !private "Sm"
+- "SY"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "8CarShare11ReservationV"
+- !private "s6ResultO"
+- !private "ST"
+- !private "8CarShare6SocketP"
+- !private "8CarShare14SocketDelegateP"
+- !private "SS"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "8CarShare17TransportProtocolP"
+- !private "8CarShare25TransportProtocolDelegateP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation27_KeyValueCodingAndObservingP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/SwiftOnoneSupport.swiftmodule"
+- "/Users/mmaguire/Desktop/BSM/car-share-ios/Example/Pods/Target Support Files/CarShare/CarShare-umbrella.h"
+- "/Users/mmaguire/Desktop/BSM/car-share-ios/Example/build/Pods.build/Debug-iphoneos/CarShare.build/unextended-module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreBluetooth.framework/Headers/CoreBluetooth.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "e18305fa107716ec9dc43c947b9df1b8"
