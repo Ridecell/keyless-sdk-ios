@@ -207,6 +207,17 @@ class DefaultTransportProtocolTests: XCTestCase {
         XCTAssertEqual(expectedChunk2, [UInt8](socket.dataToSend!))
     }
 
+    func testReceivingMultiChunkData() {
+        openSocket()
+        let chunk1: [UInt8] = [0x02, 0x24, 0x00, 0x14, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16]
+        let chunk2: [UInt8] = [0x17, 0x18, 0x19, 0x20, 0x54, 0xA6, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: chunk1, count: 20))
+        socket.delegate?.socket(socket, didReceive: Data(bytes: chunk2, count: 7))
+        let expectedBytes: [UInt8] = [0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20]
+        XCTAssertEqual(expectedBytes, [UInt8](recorder.receivedData!))
+
+    }
+
     private func openSocket() {
         let configuration = BLeSocketConfiguration(
             serviceID: "SERVICE",
