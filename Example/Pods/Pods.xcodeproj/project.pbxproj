@@ -84,9 +84,7 @@
 		B911FA46EC0C76D63E1C15BF98B3B253 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48C165F01529BF7E5F283AC541C11DF /* Protocols.swift */; };
 		BA0B9A796EAEB4C6BAB148E700D915B3 /* BinaryEncodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A30940CA21ED3788BB62B3C0DEAC4B0 /* BinaryEncodingError.swift */; };
 		BBB15C36FAFA7E356948C8552DD80D74 /* Google_Protobuf_Any+Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787BB66631641C70E9013D4DE674223A /* Google_Protobuf_Any+Registry.swift */; };
-		BBF551E622D8C9CF00824CFF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9D940727FF8FB9C785EB98E56350EF41 /* Podfile */; };
-		BBF551E822D8C9FE00824CFF /* geotab.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF551E722D8C9FE00824CFF /* geotab.pb.swift */; };
-		BBF551EA22D8CA0700824CFF /* ProtobufMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF551E922D8CA0700824CFF /* ProtobufMessageBuilder.swift */; };
+		BBF551F322DD017200824CFF /* geotab.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF551F222DD017200824CFF /* geotab.pb.swift */; };
 		BDC09EF667735FE8C290641B2A9F0EC8 /* Google_Protobuf_Timestamp+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D424B85396ABE9192AC12777844399 /* Google_Protobuf_Timestamp+Extensions.swift */; };
 		C769B3CC03B7340758389818FEF8B7E8 /* duration.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0F23D47B393D2946C7664BB79944E5 /* duration.pb.swift */; };
 		C9991FAD8959D7ADE4D314278C45F972 /* MessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1011A79326BF864D71A8B2328EA6721D /* MessageExtension.swift */; };
@@ -242,8 +240,7 @@
 		B6E8EDFD5386B145886F3312FE56CC46 /* JSONEncoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONEncoder.swift; path = Sources/SwiftProtobuf/JSONEncoder.swift; sourceTree = "<group>"; };
 		B9FB312D35560F0ECAAE3E8EFE3A041C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BA43D4271D2391B499EADF25E7CD4287 /* Pods-CarShare_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CarShare_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		BBF551E722D8C9FE00824CFF /* geotab.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = geotab.pb.swift; sourceTree = "<group>"; };
-		BBF551E922D8CA0700824CFF /* ProtobufMessageBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtobufMessageBuilder.swift; sourceTree = "<group>"; };
+		BBF551F222DD017200824CFF /* geotab.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = geotab.pb.swift; path = ../../geotab.pb.swift; sourceTree = "<group>"; };
 		BC04A69DBA014B9A506C4DA031130F5C /* CarShare-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CarShare-umbrella.h"; sourceTree = "<group>"; };
 		BC96F24292B7890111266259B0C4931E /* MathUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MathUtils.swift; path = Sources/SwiftProtobuf/MathUtils.swift; sourceTree = "<group>"; };
 		BE210F511B9F420BF4E17644DFD4E5E2 /* Message+BinaryAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+BinaryAdditions.swift"; path = "Sources/SwiftProtobuf/Message+BinaryAdditions.swift"; sourceTree = "<group>"; };
@@ -531,8 +528,7 @@
 			isa = PBXGroup;
 			children = (
 				F8C6669C6BD0AFFD52E6B50D52ECB2FE /* ChallengeSigner.swift */,
-				BBF551E922D8CA0700824CFF /* ProtobufMessageBuilder.swift */,
-				BBF551E722D8C9FE00824CFF /* geotab.pb.swift */,
+				BBF551F222DD017200824CFF /* geotab.pb.swift */,
 				D4F0C6B5A82021E3025D737CC8B40BAC /* ChallengeVerifier.swift */,
 				4A6D1965371C8F86EE5755BB1203B47F /* DefaultCarShareClient.swift */,
 				49988DB5525475F1908420C49FEF7FC3 /* DefaultCommandProtocol.swift */,
@@ -717,7 +713,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBF551E622D8C9CF00824CFF /* Podfile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,14 +826,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E013AA06E91FF61D56A3BF5F6B3D2BF /* CarShare-dummy.m in Sources */,
-				BBF551E822D8C9FE00824CFF /* geotab.pb.swift in Sources */,
+				BBF551F322DD017200824CFF /* geotab.pb.swift in Sources */,
 				D21077E0BBB4B6807A7027742D844A8A /* ChallengeSigner.swift in Sources */,
 				489E520B403384A6971C503C4231DC29 /* ChallengeVerifier.swift in Sources */,
 				E0DDAB161CD43F8576B6DDC58858020B /* DefaultCarShareClient.swift in Sources */,
 				6D76C2FE46BB67D5CEBC988EBF8DF4CF /* DefaultCommandProtocol.swift in Sources */,
 				EE6024C932A3341AD97F147CA447C540 /* DefaultTransportProtocol.swift in Sources */,
 				B2E6DCF7806AE538165A8BFCCB89D1AB /* IOSSocket.swift in Sources */,
-				BBF551EA22D8CA0700824CFF /* ProtobufMessageBuilder.swift in Sources */,
 				B911FA46EC0C76D63E1C15BF98B3B253 /* Protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
