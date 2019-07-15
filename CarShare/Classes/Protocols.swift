@@ -83,3 +83,13 @@ public protocol CarShareClientConnectionDelegate: AnyObject {
     func clientDidConnect(_ client: CarShareClient)
     func clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error)
 }
+
+public protocol Signer: AnyObject {
+    func sign(_ challengeData: Data) -> Data?
+    func sign(_ base64ChallengeString: String) -> String?
+}
+
+public protocol Verifier: AnyObject {
+    func verify(_ challengeData: Data, withSigned response: Data) -> Bool
+    func verify(_ base64ChallengeString: String, withSigned response: String) -> Bool
+}
