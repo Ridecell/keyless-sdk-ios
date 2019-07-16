@@ -93,3 +93,8 @@ public protocol Verifier: AnyObject {
     func verify(_ challengeData: Data, withSigned response: Data) -> Bool
     func verify(_ base64ChallengeString: String, withSigned response: String) -> Bool
 }
+
+public protocol Securable: AnyObject {
+    func encrypt(_ clearTextData : Data, withPassword password : String) -> Dictionary<String, Data>
+    func decryp(fromDictionary dictionary : Dictionary<String, Data>, withPassword password : String) -> Data
+}
