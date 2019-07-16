@@ -12,7 +12,7 @@ public struct BLeSocketConfiguration {
     }
 }
 
-public struct Reservation {
+public struct Reservation: Codable {
     public let certificate: String
     public let privateKey: String
 

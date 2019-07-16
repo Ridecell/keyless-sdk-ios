@@ -1,0 +1,10 @@
+framework module CarShare {
+  umbrella header "CarShare-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module CarShare.__Swift {
+    exclude header "CarShare-Swift.h"
+}

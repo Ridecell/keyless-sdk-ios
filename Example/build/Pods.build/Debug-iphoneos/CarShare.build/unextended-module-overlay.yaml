@@ -1,0 +1,13 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/mmaguire/Desktop/BSM/car-share-ios/Example/build/Debug-iphoneos/CarShare/CarShare.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/mmaguire/Desktop/BSM/car-share-ios/Example/build/Pods.build/Debug-iphoneos/CarShare.build/unextended-module.modulemap",
+    }]
+  }]
+}

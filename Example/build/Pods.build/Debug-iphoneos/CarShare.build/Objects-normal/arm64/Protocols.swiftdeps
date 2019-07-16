@@ -1,0 +1,166 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "BLeSocketConfiguration"
+- "Reservation"
+- "Socket"
+- "SocketDelegate"
+- "TransportProtocol"
+- "TransportProtocolDelegate"
+- "CommandProtocol"
+- "CommandProtocolDelegate"
+- "CarShareClient"
+- "CarShareClientConnectionDelegate"
+provides-nominal:
+- "8CarShare22BLeSocketConfigurationV"
+- "8CarShare11ReservationV"
+- "8CarShare6SocketP"
+- "8CarShare14SocketDelegateP"
+- "8CarShare17TransportProtocolP"
+- "8CarShare25TransportProtocolDelegateP"
+- "8CarShare15CommandProtocolP"
+- "8CarShare23CommandProtocolDelegateP"
+- "8CarShare0aB6ClientP"
+- "8CarShare0aB24ClientConnectionDelegateP"
+provides-member:
+- ["8CarShare22BLeSocketConfigurationV", ""]
+- ["8CarShare11ReservationV", ""]
+- ["8CarShare6SocketP", ""]
+- ["8CarShare14SocketDelegateP", ""]
+- ["8CarShare17TransportProtocolP", ""]
+- ["8CarShare25TransportProtocolDelegateP", ""]
+- ["8CarShare15CommandProtocolP", ""]
+- ["8CarShare23CommandProtocolDelegateP", ""]
+- ["8CarShare0aB6ClientP", ""]
+- ["8CarShare0aB24ClientConnectionDelegateP", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "AnyObject"
+- "AssignmentPrecedence"
+- "BLeSocketConfiguration"
+- "CarShareClient"
+- "CarShareClientConnectionDelegate"
+- "CommandProtocol"
+- "CommandProtocolDelegate"
+- "Data"
+- "Error"
+- "Int"
+- "Reservation"
+- "Result"
+- "Socket"
+- "SocketDelegate"
+- "String"
+- "TransportProtocol"
+- "TransportProtocolDelegate"
+- "Void"
+depends-member:
+- ["8CarShare22BLeSocketConfigurationV", "String"]
+- ["8CarShare22BLeSocketConfigurationV", "characteristicID"]
+- ["8CarShare22BLeSocketConfigurationV", "init"]
+- ["8CarShare22BLeSocketConfigurationV", "serviceID"]
+- ["8CarShare0aB6ClientP", "BLeSocketConfiguration"]
+- ["8CarShare0aB6ClientP", "CarShareClientConnectionDelegate"]
+- ["8CarShare0aB6ClientP", "Error"]
+- ["8CarShare0aB6ClientP", "Reservation"]
+- ["8CarShare0aB6ClientP", "Result"]
+- ["8CarShare0aB6ClientP", "Void"]
+- ["8CarShare0aB6ClientP", "checkIn"]
+- ["8CarShare0aB6ClientP", "checkOut"]
+- ["8CarShare0aB6ClientP", "connect"]
+- ["8CarShare0aB6ClientP", "delegate"]
+- ["8CarShare0aB6ClientP", "disconnect"]
+- ["8CarShare0aB6ClientP", "locate"]
+- ["8CarShare0aB6ClientP", "lock"]
+- ["8CarShare0aB6ClientP", "unlock"]
+- ["8CarShare0aB24ClientConnectionDelegateP", "CarShareClient"]
+- ["8CarShare0aB24ClientConnectionDelegateP", "Error"]
+- ["8CarShare0aB24ClientConnectionDelegateP", "clientDidConnect"]
+- ["8CarShare0aB24ClientConnectionDelegateP", "clientDidDisconnectUnexpectedly"]
+- ["8CarShare15CommandProtocolP", "BLeSocketConfiguration"]
+- ["8CarShare15CommandProtocolP", "CommandProtocolDelegate"]
+- ["8CarShare15CommandProtocolP", "Data"]
+- ["8CarShare15CommandProtocolP", "String"]
+- ["8CarShare15CommandProtocolP", "close"]
+- ["8CarShare15CommandProtocolP", "delegate"]
+- ["8CarShare15CommandProtocolP", "open"]
+- ["8CarShare15CommandProtocolP", "send"]
+- ["8CarShare23CommandProtocolDelegateP", "CommandProtocol"]
+- ["8CarShare23CommandProtocolDelegateP", "Data"]
+- ["8CarShare23CommandProtocolDelegateP", "Error"]
+- ["8CarShare23CommandProtocolDelegateP", "protocol"]
+- ["8CarShare23CommandProtocolDelegateP", "protocolDidCloseUnexpectedly"]
+- ["8CarShare23CommandProtocolDelegateP", "protocolDidOpen"]
+- ["8CarShare11ReservationV", "String"]
+- ["8CarShare11ReservationV", "certificate"]
+- ["8CarShare11ReservationV", "init"]
+- ["8CarShare11ReservationV", "privateKey"]
+- ["8CarShare6SocketP", "BLeSocketConfiguration"]
+- ["8CarShare6SocketP", "Data"]
+- ["8CarShare6SocketP", "Int"]
+- ["8CarShare6SocketP", "SocketDelegate"]
+- ["8CarShare6SocketP", "close"]
+- ["8CarShare6SocketP", "delegate"]
+- ["8CarShare6SocketP", "mtu"]
+- ["8CarShare6SocketP", "open"]
+- ["8CarShare6SocketP", "send"]
+- ["8CarShare14SocketDelegateP", "Data"]
+- ["8CarShare14SocketDelegateP", "Error"]
+- ["8CarShare14SocketDelegateP", "Socket"]
+- ["8CarShare14SocketDelegateP", "socket"]
+- ["8CarShare14SocketDelegateP", "socketDidCloseUnexpectedly"]
+- ["8CarShare14SocketDelegateP", "socketDidOpen"]
+- ["8CarShare14SocketDelegateP", "socketDidSend"]
+- ["8CarShare17TransportProtocolP", "BLeSocketConfiguration"]
+- ["8CarShare17TransportProtocolP", "Data"]
+- ["8CarShare17TransportProtocolP", "TransportProtocolDelegate"]
+- ["8CarShare17TransportProtocolP", "close"]
+- ["8CarShare17TransportProtocolP", "delegate"]
+- ["8CarShare17TransportProtocolP", "open"]
+- ["8CarShare17TransportProtocolP", "send"]
+- ["8CarShare25TransportProtocolDelegateP", "Data"]
+- ["8CarShare25TransportProtocolDelegateP", "Error"]
+- ["8CarShare25TransportProtocolDelegateP", "TransportProtocol"]
+- ["8CarShare25TransportProtocolDelegateP", "protocol"]
+- ["8CarShare25TransportProtocolDelegateP", "protocolDidCloseUnexpectedly"]
+- ["8CarShare25TransportProtocolDelegateP", "protocolDidOpen"]
+- ["8CarShare25TransportProtocolDelegateP", "protocolDidSend"]
+depends-nominal:
+- "8CarShare22BLeSocketConfigurationV"
+- "8CarShare0aB6ClientP"
+- "8CarShare0aB24ClientConnectionDelegateP"
+- "8CarShare15CommandProtocolP"
+- "8CarShare23CommandProtocolDelegateP"
+- "8CarShare11ReservationV"
+- "8CarShare6SocketP"
+- "8CarShare14SocketDelegateP"
+- "8CarShare17TransportProtocolP"
+- "8CarShare25TransportProtocolDelegateP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/SwiftOnoneSupport.swiftmodule"
+- "/Users/mmaguire/Desktop/BSM/car-share-ios/Example/Pods/Target Support Files/CarShare/CarShare-umbrella.h"
+- "/Users/mmaguire/Desktop/BSM/car-share-ios/Example/build/Pods.build/Debug-iphoneos/CarShare.build/unextended-module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreBluetooth.framework/Headers/CoreBluetooth.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "358b33d2791f55797afafa3eae0bf66a"
