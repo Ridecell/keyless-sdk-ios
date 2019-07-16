@@ -45,11 +45,43 @@ class DefaultTransportProtocolTests: XCTestCase {
         let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
 
-        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5D, 0x10, 0x00, 0x00, 0xF4, 0xCC, 0x03]
+        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5D, 0x10, 0x00, 0x01, 0xF5, 0xCD, 0x03]
         XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
 
         socket.delegate?.socketDidSend(socket)
+
+        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
         XCTAssertTrue(recorder.didOpen)
+    }
+
+    func testOpenningSocketPerformsHandshakeButNoAck() {
+        let configuration = BLeSocketConfiguration(
+            serviceID: "SERVICE",
+            notifyCharacteristicID: "NOTIFY",
+            writeCharacteristicID: "WRITE")
+        sut.open(configuration)
+
+        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
+        XCTAssertTrue(socket.didOpen)
+        XCTAssertFalse(recorder.didOpen)
+
+        socket.delegate?.socketDidOpen(socket)
+
+        let sync: [UInt8] = [0x55]
+        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+
+        socket.delegate?.socketDidSend(socket)
+
+        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
+
+        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5D, 0x10, 0x00, 0x01, 0xF5, 0xCD, 0x03]
+        XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
+
+        socket.delegate?.socketDidSend(socket)
+
+        XCTAssertFalse(recorder.didOpen)
     }
 
     func testHandshakeFail1() {
@@ -164,7 +196,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         let badHandshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: badHandshake, count: 6))
 
-        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5D, 0x10, 0x00, 0x00, 0xF4, 0xCC, 0x03]
+        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5D, 0x10, 0x00, 0x01, 0xF5, 0xCD, 0x03]
         XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
 
         let error = NSError(domain: "", code: 0, userInfo: nil)
@@ -205,6 +237,25 @@ class DefaultTransportProtocolTests: XCTestCase {
         XCTAssertEqual(expectedChunk1, [UInt8](socket.dataToSend!))
         socket.delegate?.socketDidSend(socket)
         XCTAssertEqual(expectedChunk2, [UInt8](socket.dataToSend!))
+        socket.delegate?.socketDidSend(socket)
+
+        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
+        XCTAssertTrue(recorder.didSend)
+    }
+
+    func testSendingMultiChunkDataButNoAck() {
+        openSocket()
+        let bytes: [UInt8] = [0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20]
+        sut.send(Data(bytes: bytes, count: bytes.count))
+        let expectedChunk1: [UInt8] = [0x02, 0x88, 0x00, 0x14, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16]
+        let expectedChunk2: [UInt8] = [0x17, 0x18, 0x19, 0x20, 0xB8, 0xA2, 0x03]
+        XCTAssertEqual(expectedChunk1, [UInt8](socket.dataToSend!))
+        socket.delegate?.socketDidSend(socket)
+        XCTAssertEqual(expectedChunk2, [UInt8](socket.dataToSend!))
+        socket.delegate?.socketDidSend(socket)
+
+        XCTAssertFalse(recorder.didSend)
     }
 
     func testReceivingMultiChunkData() {
@@ -229,6 +280,8 @@ class DefaultTransportProtocolTests: XCTestCase {
         let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
         socket.delegate?.socketDidSend(socket)
+        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
     }
 
 }

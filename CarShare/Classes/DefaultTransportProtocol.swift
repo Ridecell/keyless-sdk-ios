@@ -64,7 +64,7 @@ private class HandshakeConfirmationMessage: AddonMessage {
 
     private let deviceID: [UInt8] = [0x5D, 0x10]
 
-    private let flags: [UInt8] = [0x00, 0x00]
+    private let flags: [UInt8] = [0x00, 0x01]
 
     required init() {
         var body = deviceID
@@ -172,7 +172,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         } else if data.count >= 7 && data[1] == 0x24 {
             let length = Int(data[2]) << 8 + Int(data[3]) + 7
             self.incoming = (data, length)
-        } else if data.count == 6 && data[1] == 0x01 {
+        } else if data.count == 6 && (data[1] == 0x01 || data[1] == 0x02) {
             self.incoming = (data, 6)
         } else {
             // some kind of error?
@@ -204,13 +204,22 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
                 closeUnexpectedly(with: DefaultTransportProtocolError.invalidHandshake)
             }
         case .handshaking:
-            return
-        case .connected:
-            guard let message = IncomingExtendedAppDataMessage(messageData: data) else {
-                delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
-                return
+            let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
+            if data == Data(bytes: ack, count: ack.count) {
+                connectionState = .connected
+                delegate?.protocolDidOpen(self)
+            } else {
+                closeUnexpectedly(with: DefaultTransportProtocolError.invalidHandshake)
             }
-            delegate?.protocol(self, didReceive: Data(bytes: message.body, count: message.body.count))
+        case .connected:
+            let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
+            if data == Data(bytes: ack, count: ack.count) {
+                delegate?.protocolDidSend(self)
+            } else if let message = IncomingExtendedAppDataMessage(messageData: data) {
+                delegate?.protocol(self, didReceive: Data(bytes: message.body, count: message.body.count))
+            } else {
+                delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
+            }
         }
     }
 
@@ -263,10 +272,9 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         case .syncing:
             return
         case .handshaking:
-            connectionState = .connected
-            delegate?.protocolDidOpen(self)
+            return
         case .connected:
-            delegate?.protocolDidSend(self)
+            return
         }
     }
 
