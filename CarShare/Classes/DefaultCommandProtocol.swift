@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftProtobuf
 
 class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
 
@@ -45,9 +44,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
 
     func send(_ command: Data, challengeKey: String) {
         outgoingCommand = (command, challengeKey, .issuingCommand)
-        //create protobuf message to send
-        guard let resMSG = try? ReservationMessage(serializedData: command).serializedData() else { return }
-        transportProtocol.send(resMSG)
+        transportProtocol.send(command)
     }
 
     func protocolDidOpen(_ protocol: TransportProtocol) {
