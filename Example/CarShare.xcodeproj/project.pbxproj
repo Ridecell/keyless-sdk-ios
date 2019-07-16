@@ -48,7 +48,7 @@
 		830B1CAF854B8A41B0318F9D /* Pods_CarShare_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F6E1E09708ADF6E8686692 /* Pods-CarShare_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare_Tests/Pods-CarShare_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		88733455025506464A85DF0B /* Pods-CarShare_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare_Tests/Pods-CarShare_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		898C394C0C0BA3FF1053E8EE /* CarShare.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CarShare.podspec; path = ../CarShare.podspec; sourceTree = "<group>"; };
+		898C394C0C0BA3FF1053E8EE /* CarShare.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CarShare.podspec; path = ../CarShare.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
