@@ -18,10 +18,10 @@ class Go9Connection: NSObject {
 
     private enum State {
         case idle
-        case scanning(serviceId: CBUUID, characteristicId: CBUUID)
-        case connecting(peripheral: CBPeripheral, serviceId: CBUUID, characteristicId: CBUUID)
-        case connected(peripheral: CBPeripheral, service: CBService, characteristic: CBCharacteristic)
-        case receiving(peripheral: CBPeripheral, data: Data, dataLength: Int, service: CBService, characteristic: CBCharacteristic)
+        case scanning(serviceId: CBUUID, notifyCharacteristicId: CBUUID, writeCharacteristicId: CBUUID)
+        case connecting(peripheral: CBPeripheral, serviceId: CBUUID, notifyCharacteristicId: CBUUID, writeCharacteristicId: CBUUID)
+        case connected(peripheral: CBPeripheral, service: CBService, notifyCharacteristic: CBCharacteristic, writeCharacteristic: CBCharacteristic)
+        case receiving(peripheral: CBPeripheral, data: Data, dataLength: Int, service: CBService, notifyCharacteristic: CBCharacteristic, writeCharacteristic: CBCharacteristic)
     }
 
     private var state: State = .idle
@@ -30,8 +30,11 @@ class Go9Connection: NSObject {
 
     weak var delegate: Go9ConnectionDelegate?
 
-    func start(serviceID: String, characteristicID: String) {
-        state = .scanning(serviceId: CBUUID(string: serviceID), characteristicId: CBUUID(string: characteristicID))
+    func start(serviceID: String, notifyCharacteristicID: String, writeCharacteristicID: String) {
+        state = .scanning(
+            serviceId: CBUUID(string: serviceID),
+        notifyCharacteristicId: CBUUID(string: notifyCharacteristicID),
+        writeCharacteristicId: CBUUID(string: writeCharacteristicID))
         centralManagerDidUpdateState(central)
     }
 
@@ -39,11 +42,11 @@ class Go9Connection: NSObject {
         switch state {
         case .idle:
             break
-        case let .connected(peripheral, _, _):
+        case let .connected(peripheral, _, _, _):
             central.cancelPeripheralConnection(peripheral)
-        case let .connecting(peripheral, _, _):
+        case let .connecting(peripheral, _, _, _):
             central.cancelPeripheralConnection(peripheral)
-        case let .receiving(peripheral, _, _, _, _):
+        case let .receiving(peripheral, _, _, _, _, _):
             central.cancelPeripheralConnection(peripheral)
         case .scanning:
             central.stopScan()
@@ -52,10 +55,10 @@ class Go9Connection: NSObject {
     }
 
     func send(_ data: Data) {
-        guard case let .connected(peripheral, _, characteristic) = state else {
+        guard case let .connected(peripheral, _, notifyCharacteristic, writeCharacteristic) = state else {
             return
         }
-        peripheral.writeValue(data, for: characteristic, type: .withoutResponse)
+        peripheral.writeValue(data, for: writeCharacteristic, type: .withoutResponse)
     }
 }
 
@@ -65,7 +68,7 @@ extension Go9Connection: CBCentralManagerDelegate {
         guard central.state == .poweredOn else {
             return
         }
-        guard case let .scanning(serviceID, _) = state else {
+        guard case let .scanning(serviceID, _, _) = state else {
             return
         }
         central.scanForPeripherals(withServices: [serviceID], options: nil)
@@ -73,17 +76,21 @@ extension Go9Connection: CBCentralManagerDelegate {
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print(#function)
-        guard case let .scanning(serviceID, characteristicID) = state else {
+        guard case let .scanning(serviceID, notifyCharacteristicId, writeCharacteristicId) = state else {
             return
         }
-        state = .connecting(peripheral: peripheral, serviceId: serviceID, characteristicId: characteristicID)
+        state = .connecting(
+            peripheral: peripheral,
+            serviceId: serviceID,
+            notifyCharacteristicId: notifyCharacteristicId,
+            writeCharacteristicId: writeCharacteristicId)
         central.stopScan()
         central.connect(peripheral, options: nil)
     }
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print(#function)
-        guard case let .connecting(peripheral, serviceID, _) = state else {
+        guard case let .connecting(peripheral, serviceID, _, _) = state else {
             return
         }
         peripheral.delegate = self
@@ -97,12 +104,21 @@ extension Go9Connection: CBCentralManagerDelegate {
             break
         case .scanning:
             break
-        case let .connecting(_, serviceId, characteristicId):
-            start(serviceID: serviceId.uuidString, characteristicID: characteristicId.uuidString)
-        case let .connected(_, service, characteristic):
-            start(serviceID: service.uuid.uuidString, characteristicID: characteristic.uuid.uuidString)
-        case let .receiving(_, _, _, service, characteristic):
-            start(serviceID: service.uuid.uuidString, characteristicID: characteristic.uuid.uuidString)
+        case let .connecting(_, serviceId, notifyCharacteristicId, writeCharacteristicId):
+            start(
+                serviceID: serviceId.uuidString,
+                notifyCharacteristicID: notifyCharacteristicId.uuidString,
+                writeCharacteristicID: writeCharacteristicId.uuidString)
+        case let .connected(_, service, notifyCharacteristic, writeCharacteristic):
+            start(
+                serviceID: service.uuid.uuidString,
+                notifyCharacteristicID: notifyCharacteristic.uuid.uuidString,
+                writeCharacteristicID: writeCharacteristic.uuid.uuidString)
+        case let .receiving(_, _, _, service, notifyCharacteristic, writeCharacteristic):
+            start(
+                serviceID: service.uuid.uuidString,
+                notifyCharacteristicID: notifyCharacteristic.uuid.uuidString,
+            writeCharacteristicID: writeCharacteristic.uuid.uuidString)
         }
     }
 }
@@ -110,25 +126,32 @@ extension Go9Connection: CBCentralManagerDelegate {
 extension Go9Connection: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         print(#function)
-        guard case let .connecting(peripheral, serviceID, characteristicID) = state else {
+        guard case let .connecting(peripheral, serviceID, notifyCharacteristicId, writeCharacteristicId) = state else {
             return
         }
         guard let service = peripheral.services?.first(where: {$0.uuid == serviceID}) else {
             return
         }
-        peripheral.discoverCharacteristics([characteristicID], for: service)
+        peripheral.discoverCharacteristics([notifyCharacteristicId, writeCharacteristicId], for: service)
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         print(#function)
-        guard case let .connecting(peripheral, _, characteristicID) = state else {
+        guard case let .connecting(peripheral, _, notifyCharacteristicId, writeCharacteristicId) = state else {
             return
         }
-        guard let characteristic = service.characteristics?.first(where: { $0.uuid == characteristicID }) else {
+        guard let characteristics = service.characteristics else {
             return
         }
-        state = .connected(peripheral: peripheral, service: service, characteristic: characteristic)
-        peripheral.setNotifyValue(true, for: characteristic)
+        guard let notifyCharacteristic = characteristics.first(where: { $0.uuid == notifyCharacteristicId }), let writeCharacteristic = characteristics.first(where: { $0.uuid == writeCharacteristicId }) else {
+            return
+        }
+        state = .connected(
+            peripheral: peripheral,
+            service: service,
+            notifyCharacteristic: notifyCharacteristic,
+            writeCharacteristic: writeCharacteristic)
+        peripheral.setNotifyValue(true, for: notifyCharacteristic)
         delegate?.go9ConnectionDidBegin(self)
     }
 
@@ -142,31 +165,34 @@ extension Go9Connection: CBPeripheralDelegate {
         guard let data = characteristic.value else {
             return
         }
-        if case let .connected(peripheral, service, _) = state, data.count >= 2 {
+        if case let .connected(peripheral, service, notifyCharacteristic, writeCharacteristic) = state, data.count >= 2 {
             print(Date().timeIntervalSince1970)
             let length = Int(data[0]) << 8 + Int(data[1])
             let messageData = data.advanced(by: 2)
-            state = .receiving(peripheral: peripheral, data: messageData, dataLength: length, service: service, characteristic: characteristic)
-        } else if case .receiving(let peripheral, var messageData, let length, let service, _) = state {
+            state = .receiving(peripheral: peripheral, data: messageData, dataLength: length, service: service, notifyCharacteristic: notifyCharacteristic, writeCharacteristic: writeCharacteristic)
+        } else if case .receiving(let peripheral, var messageData, let length, let service, let notifyCharacteristic, let writeCharacteristic) = state {
             messageData.append(data)
-            state = .receiving(peripheral: peripheral, data: messageData, dataLength: length, service: service, characteristic: characteristic)
+            state = .receiving(
+                peripheral: peripheral,
+                data: messageData,
+                dataLength: length,
+                service: service,
+                notifyCharacteristic: notifyCharacteristic,
+                writeCharacteristic: writeCharacteristic)
         }
         handleReceivingState()
     }
 
     private func handleReceivingState() {
-        guard case let .receiving(peripheral, messageData, length, service, characteristic) = state else {
+        guard case let .receiving(peripheral, messageData, length, service, notifyCharacteristic, writeCharacteristic) = state else {
             return
         }
         guard messageData.count == length else {
             return
         }
         print(Date().timeIntervalSince1970)
-        state = .connected(peripheral: peripheral, service: service, characteristic: characteristic)
+        state = .connected(peripheral: peripheral, service: service, notifyCharacteristic: notifyCharacteristic, writeCharacteristic: writeCharacteristic)
         delegate?.go9(self, didReceive: messageData)
-//        let message = IncomingMessage(data: messageData)
-//        print(message.confirmationToken)
-//        peripheral.writeValue(Data(bytes: [UInt8(0x00), UInt8(0x01), UInt8(0x01)], count: 3), for: characteristic, type: .withoutResponse)
     }
 
 }
@@ -197,9 +223,9 @@ class Go9CarShareSimulator: NSObject {
 
     private let connection = Go9Connection()
 
-    func start(serviceID: String, characteristicID: String) {
+    func start(serviceID: String, notifyCharacteristicID: String, writeCharacteristicID: String) {
         connection.delegate = self
-        connection.start(serviceID: serviceID, characteristicID: characteristicID)
+        connection.start(serviceID: serviceID, notifyCharacteristicID: notifyCharacteristicID, writeCharacteristicID: writeCharacteristicID)
     }
 
     func stop() {

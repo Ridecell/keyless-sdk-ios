@@ -2,11 +2,13 @@ import Foundation
 
 public struct BLeSocketConfiguration {
     public let serviceID: String
-    public let characteristicID: String
+    public let notifyCharacteristicID: String
+    public let writeCharacteristicID: String
 
-    public init(serviceID: String, characteristicID: String) {
+    public init(serviceID: String, notifyCharacteristicID: String, writeCharacteristicID: String) {
         self.serviceID = serviceID
-        self.characteristicID = characteristicID
+        self.notifyCharacteristicID = notifyCharacteristicID
+        self.writeCharacteristicID = writeCharacteristicID
     }
 }
 
@@ -32,9 +34,11 @@ protocol Socket: AnyObject {
 
 protocol SocketDelegate: AnyObject {
     func socketDidOpen(_ socket: Socket)
-    func socket(_ socket: Socket, didReceive: Data)
+    func socket(_ socket: Socket, didReceive data: Data)
+    func socketDidSend(_ socket: Socket)
     func socketDidCloseUnexpectedly(_ socket: Socket, error: Error)
-    func socketDidSend(_ socket: Socket, error: Error?)
+    func socketDidFailToReceive(_ socket: Socket, error: Error)
+    func socketDidFailToSend(_ socket: Socket, error: Error)
 }
 
 protocol TransportProtocol: AnyObject {
@@ -48,8 +52,10 @@ protocol TransportProtocol: AnyObject {
 protocol TransportProtocolDelegate: AnyObject {
     func protocolDidOpen(_ protocol: TransportProtocol)
     func `protocol`(_ protocol: TransportProtocol, didReceive: Data)
+    func protocolDidSend(_ protocol: TransportProtocol)
     func protocolDidCloseUnexpectedly(_ protocol: TransportProtocol, error: Error)
-    func protocolDidSend(_ protocol: TransportProtocol, error: Error?)
+    func protocolDidFailToSend(_ protocol: TransportProtocol, error: Error)
+    func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error)
 }
 
 protocol CommandProtocol: AnyObject {
