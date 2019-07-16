@@ -16,22 +16,22 @@ class ChallengeVerifier: Verifier {
     private let publicKey: SecKey?
     
     init(publicKey: String) {
-        if let keyData = Data(base64Encoded: publicKey) {
-            let parameters : [String : AnyObject] =
-                [
-                    kSecAttrKeyType as String : kSecAttrKeyTypeRSA,
-                    kSecAttrKeyClass as String : kSecAttrKeyClassPublic,
-                    kSecAttrKeySizeInBits as String : 4096 as AnyObject,
-                    kSecReturnPersistentRef as String : true as AnyObject
-            ]
-            if #available(iOS 10.0, *) {
-                self.publicKey = SecKeyCreateWithData(keyData as CFData, parameters as CFDictionary, nil)
-            } else {
-                // Fallback on earlier versions
-                print("iOS10 not available, verifying fails")
-                self.publicKey = nil
-            }
+        //turn base64encoded public key string into SecKey
+        guard let keyData = Data(base64Encoded: publicKey) else {
+            self.publicKey = nil
+            return
+        }
+        let parameters : [String : AnyObject] = [
+            kSecAttrKeyType as String : kSecAttrKeyTypeRSA,
+            kSecAttrKeyClass as String : kSecAttrKeyClassPublic,
+            kSecAttrKeySizeInBits as String : 4096 as AnyObject,
+            kSecReturnPersistentRef as String : true as AnyObject
+        ]
+        if #available(iOS 10.0, *) {
+            self.publicKey = SecKeyCreateWithData(keyData as CFData, parameters as CFDictionary, nil)
         } else {
+            // Fallback on earlier versions
+            print("iOS10 not available, verifying fails")
             self.publicKey = nil
         }
     }
@@ -41,26 +41,19 @@ class ChallengeVerifier: Verifier {
     }
     
     func verify(_ base64ChallengeString: String, withSigned response: String) -> Bool {
-        var success = false
-        if publicKey != nil {
-            if let challengeData = Data(base64Encoded: base64ChallengeString) {
-                print("Converted challenge string to data")
-                //hash the message first
-                let digestLength = Int(CC_SHA512_DIGEST_LENGTH)
-                let hashBytes = UnsafeMutablePointer<UInt8>.allocate(capacity:digestLength)
-                CC_SHA512([UInt8](challengeData), CC_LONG(challengeData.count), hashBytes)
-                
-                //verify
-                guard let responseData = Data(base64Encoded: response) else { return false }
-                let status = responseData.withUnsafeBytes {signatureBytes in
-                    return SecKeyRawVerify(publicKey!, .PKCS1SHA512, hashBytes, digestLength, signatureBytes, responseData.count)
-                }
-                if status == noErr {
-                    success = true
-                }
-            }
+        guard let challengeData = Data(base64Encoded: base64ChallengeString), let responseData = Data(base64Encoded: response), let publicKey = publicKey else {
+            return false
         }
-        return success
+        //hash the message first
+        let digestLength = Int(CC_SHA512_DIGEST_LENGTH)
+        let hashBytes = UnsafeMutablePointer<UInt8>.allocate(capacity:digestLength)
+        CC_SHA512([UInt8](challengeData), CC_LONG(challengeData.count), hashBytes)
+        
+        //verify
+        let status = responseData.withUnsafeBytes { signatureBytes in
+            return SecKeyRawVerify(publicKey, .PKCS1SHA512, hashBytes, digestLength, signatureBytes, responseData.count)
+        }
+        return status == noErr
     }
     
 }

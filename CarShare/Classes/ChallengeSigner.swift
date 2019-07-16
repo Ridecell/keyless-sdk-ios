@@ -17,25 +17,23 @@ class ChallengeSigner: Signer {
     
     init(privateKey: String) {
         //turn base64encoded private key string into SecKey
-        if let keyData = Data(base64Encoded: privateKey) {
-            let parameters : [String : AnyObject] =
-                [
-                    kSecAttrKeyType as String : kSecAttrKeyTypeRSA,
-                    kSecAttrKeyClass as String : kSecAttrKeyClassPrivate,
-                    kSecAttrKeySizeInBits as String : 4096 as AnyObject,
-                    kSecReturnPersistentRef as String : true as AnyObject
-            ]
-            if #available(iOS 10.0, *) {
-                self.privateKey = SecKeyCreateWithData(keyData as CFData, parameters as CFDictionary, nil)
-            } else {
-                // Fallback on earlier versions
-                self.privateKey = nil
-            }
+        guard let keyData = Data(base64Encoded: privateKey) else {
+            self.privateKey = nil
+            return
+        }
+        let parameters : [String : AnyObject] = [
+            kSecAttrKeyType as String : kSecAttrKeyTypeRSA,
+            kSecAttrKeyClass as String : kSecAttrKeyClassPrivate,
+            kSecAttrKeySizeInBits as String : 4096 as AnyObject,
+            kSecReturnPersistentRef as String : true as AnyObject
+        ]
+        if #available(iOS 10.0, *) {
+            self.privateKey = SecKeyCreateWithData(keyData as CFData, parameters as CFDictionary, nil)
         } else {
+            // Fallback on earlier versions
+            print("iOS10 not available, signing fails")
             self.privateKey = nil
         }
-        
-        
     }
     
     //challenge is bytes / Data
@@ -46,29 +44,24 @@ class ChallengeSigner: Signer {
     
     //challenge is a base64encoded string
     func sign(_ base64ChallengeString: String) -> String? {
-        guard let privateKey = privateKey else {
-            print("No private key")
+        guard let challengeData = Data(base64Encoded: base64ChallengeString), let privateKey = privateKey else {
             return nil
         }
         var signedChallenge: String?
         //hash the message first
-        if let challengeData = Data(base64Encoded: base64ChallengeString) {
-            let digestLength = Int(CC_SHA512_DIGEST_LENGTH)
-            let hashBytes = UnsafeMutablePointer<UInt8>.allocate(capacity: digestLength)
-            CC_SHA512([UInt8](challengeData), CC_LONG(challengeData.count), hashBytes)
-            
-            //sign
-            let blockSize = SecKeyGetBlockSize(privateKey) //in the case of RSA, modulus is the same as the block size
-            var signatureBytes = [UInt8](repeating:0, count:blockSize)
-            var signatureDataLength = blockSize
-            let status = SecKeyRawSign(privateKey, .PKCS1SHA512, hashBytes, digestLength, &signatureBytes, &signatureDataLength)
-            if status == noErr {
-                let data = Data(bytes: signatureBytes, count: signatureDataLength)
-                signedChallenge = data.base64EncodedString()
-            }
-        }
+        let digestLength = Int(CC_SHA512_DIGEST_LENGTH)
+        let hashBytes = UnsafeMutablePointer<UInt8>.allocate(capacity: digestLength)
+        CC_SHA512([UInt8](challengeData), CC_LONG(challengeData.count), hashBytes)
         
+        //sign
+        let blockSize = SecKeyGetBlockSize(privateKey) //in the case of RSA, modulus is the same as the block size
+        var signatureBytes = [UInt8](repeating:0, count:blockSize)
+        var signatureDataLength = blockSize
+        let status = SecKeyRawSign(privateKey, .PKCS1SHA512, hashBytes, digestLength, &signatureBytes, &signatureDataLength)
+        if status == noErr {
+            let data = Data(bytes: signatureBytes, count: signatureDataLength)
+            signedChallenge = data.base64EncodedString()
+        }
         return signedChallenge
     }
-    
 }
