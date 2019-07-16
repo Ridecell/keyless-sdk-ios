@@ -72,6 +72,7 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
 
     public func checkOut(with reservation: Reservation, callback: @escaping (Result<Void, Error>) -> Void) {
         let message = Message(command: .checkOut, reservation: reservation, callback: callback)
+        
         outgoingMessage = message
         commandProtocol.send(message.data, challengeKey: reservation.privateKey)
     }
