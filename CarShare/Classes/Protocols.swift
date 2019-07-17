@@ -95,6 +95,6 @@ public protocol Verifier: AnyObject {
 }
 
 public protocol Securable: AnyObject {
-    func encrypt(_ clearTextData : Data, withPassword password : String) -> Dictionary<String, Data>
-    func decryp(fromDictionary dictionary : Dictionary<String, Data>, withPassword password : String) -> Data
+    func encrypt(_ message: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8]
+    func decrypt(_ encrypted: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8]
 }
