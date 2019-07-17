@@ -46,20 +46,76 @@ class SecurityTests: XCTestCase {
 
         let security = AESEncryptionHandler()
 
-        print(kCCKeySizeAES256)
         let salt = generateSalt()
-        dump(salt)
         let iv = generateInitializationVector()
-        dump(iv)
         let data = [UInt8](hello.data(using: .utf8)!)
         let encryptionKey = EncryptionKey(salt: salt, iv: iv, passphrase: key, iterations: 14271)
         let encrypted = security.encrypt(data, with: encryptionKey)
+        let decrypted = security.decrypt(encrypted, with: encryptionKey)
 
-        dump(encrypted)
+        XCTAssertEqual(hello, String(bytes: decrypted, encoding: .utf8))
+    }
+
+    func testDecryption() {
+        let encrypted: [UInt8] = [
+            152,
+            242,
+            236,
+            114,
+            255,
+            70,
+            237,
+            93,
+            32,
+            221,
+            94,
+            228,
+            120,
+            184,
+            185,
+            184
+        ]
+
+        let salt: [UInt8] = [
+            232,
+            96,
+            98,
+            5,
+            159,
+            228,
+            202,
+            239,
+        ]
+
+        let iv: [UInt8] = [
+            78,
+            53,
+            152,
+            113,
+            108,
+            215,
+            91,
+            102,
+            57,
+            231,
+            14,
+            6,
+            48,
+            41,
+            140,
+            104
+        ]
+
+        let encryptionKey = EncryptionKey(
+            salt: salt,
+            iv: iv,
+            passphrase: "SUPER_SECRET",
+            iterations: 14271)
+
+        let security = AESEncryptionHandler()
 
         let decrypted = security.decrypt(encrypted, with: encryptionKey)
 
-        dump(String(bytes: decrypted, encoding: .utf8))
-        XCTAssertEqual(hello, String(bytes: decrypted, encoding: .utf8))
+        XCTAssertEqual("FOO BAR BAZ", String(bytes: decrypted, encoding: .utf8))
     }
 }
