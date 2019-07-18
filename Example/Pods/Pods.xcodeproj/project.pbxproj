@@ -17,6 +17,8 @@
 		0DF5D662FEC77B1F783F70BE908CD6BC /* Google_Protobuf_Value+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7CF397158AC674878B904D8C29B239 /* Google_Protobuf_Value+Extensions.swift */; };
 		10705339BD8D1E32C6F2D3EE090B498B /* JSONMapEncodingVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D353F298B09A3C3D14AEBD62E907E /* JSONMapEncodingVisitor.swift */; };
 		12DA4248E782F102FC726F9285AD05B9 /* CustomJSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B111D35983C1A50AE57004DF57DE0BAB /* CustomJSONCodable.swift */; };
+		1CEA14B122DF669A00B1B7DB /* AESEncryptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14B022DF669A00B1B7DB /* AESEncryptionHandler.swift */; };
+		1CEA14B322DF91C400B1B7DB /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14B222DF91C400B1B7DB /* EncryptionKey.swift */; };
 		1D826DB66187FF43E6F9398824B14B32 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A46ED7BF07D97B78872A13E8948048 /* CoreBluetooth.framework */; };
 		1EB7827970682DDA43142091F4C4B1F3 /* Message+JSONArrayAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB32F23230D8C1F14F459CB9CB38D20 /* Message+JSONArrayAdditions.swift */; };
 		22D843B80B19DB96B7FBC1B37481B0EF /* SimpleExtensionMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF350CC1706CE0FC900FE151E388173 /* SimpleExtensionMap.swift */; };
@@ -153,6 +155,8 @@
 		16AA19348F2D8B7D711FFF7814E6DAEF /* Message+AnyAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+AnyAdditions.swift"; path = "Sources/SwiftProtobuf/Message+AnyAdditions.swift"; sourceTree = "<group>"; };
 		18D5F4D564FBD60ECFE0F0102F2CE852 /* Message+JSONAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+JSONAdditions.swift"; path = "Sources/SwiftProtobuf/Message+JSONAdditions.swift"; sourceTree = "<group>"; };
 		1BF4DC0A8F2DD4CC8CC18C5331D381A8 /* BinaryEncodingSizeVisitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingSizeVisitor.swift; path = Sources/SwiftProtobuf/BinaryEncodingSizeVisitor.swift; sourceTree = "<group>"; };
+		1CEA14B022DF669A00B1B7DB /* AESEncryptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AESEncryptionHandler.swift; path = CarShare/Classes/AESEncryptionHandler.swift; sourceTree = "<group>"; };
+		1CEA14B222DF91C400B1B7DB /* EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EncryptionKey.swift; path = CarShare/Classes/EncryptionKey.swift; sourceTree = "<group>"; };
 		2188C21DD265BFB3AB6FC90C9F08A142 /* Pods-CarShare_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-CarShare_Tests.modulemap"; sourceTree = "<group>"; };
 		230E7BAC061754850B329470A02BCE96 /* DefaultTransportProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultTransportProtocol.swift; path = CarShare/Classes/DefaultTransportProtocol.swift; sourceTree = "<group>"; };
 		241B7658AD8F0F31A5B7108360D81CDF /* ProtobufAPIVersionCheck.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProtobufAPIVersionCheck.swift; path = Sources/SwiftProtobuf/ProtobufAPIVersionCheck.swift; sourceTree = "<group>"; };
@@ -526,6 +530,8 @@
 		DD85C3C7330E793FFF55CD55F7552476 /* CarShare */ = {
 			isa = PBXGroup;
 			children = (
+				1CEA14B022DF669A00B1B7DB /* AESEncryptionHandler.swift */,
+				1CEA14B222DF91C400B1B7DB /* EncryptionKey.swift */,
 				F8C6669C6BD0AFFD52E6B50D52ECB2FE /* ChallengeSigner.swift */,
 				D4F0C6B5A82021E3025D737CC8B40BAC /* ChallengeVerifier.swift */,
 				4A6D1965371C8F86EE5755BB1203B47F /* DefaultCarShareClient.swift */,
@@ -827,8 +833,10 @@
 				D21077E0BBB4B6807A7027742D844A8A /* ChallengeSigner.swift in Sources */,
 				489E520B403384A6971C503C4231DC29 /* ChallengeVerifier.swift in Sources */,
 				E0DDAB161CD43F8576B6DDC58858020B /* DefaultCarShareClient.swift in Sources */,
+				1CEA14B322DF91C400B1B7DB /* EncryptionKey.swift in Sources */,
 				6D76C2FE46BB67D5CEBC988EBF8DF4CF /* DefaultCommandProtocol.swift in Sources */,
 				EE6024C932A3341AD97F147CA447C540 /* DefaultTransportProtocol.swift in Sources */,
+				1CEA14B122DF669A00B1B7DB /* AESEncryptionHandler.swift in Sources */,
 				B2E6DCF7806AE538165A8BFCCB89D1AB /* IOSSocket.swift in Sources */,
 				B911FA46EC0C76D63E1C15BF98B3B253 /* Protocols.swift in Sources */,
 			);

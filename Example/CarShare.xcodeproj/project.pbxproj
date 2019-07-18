@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1CEA14AD22D6877A00B1B7DB /* DefaultTransportProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14AC22D6877900B1B7DB /* DefaultTransportProtocolTests.swift */; };
+		1CEA14AF22DF664400B1B7DB /* SecurityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14AE22DF664400B1B7DB /* SecurityTests.swift */; };
 		1CFE0F2522D3ADCA00863B05 /* Go9CarShareSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFE0F2422D3ADCA00863B05 /* Go9CarShareSimulator.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -33,6 +34,7 @@
 		06F0A446A397DB02AD262DBF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		1483E7C6CB46CE2B016D54DC /* Pods-CarShare_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare_Example/Pods-CarShare_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		1CEA14AC22D6877900B1B7DB /* DefaultTransportProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTransportProtocolTests.swift; sourceTree = "<group>"; };
+		1CEA14AE22DF664400B1B7DB /* SecurityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityTests.swift; sourceTree = "<group>"; };
 		1CFE0F2422D3ADCA00863B05 /* Go9CarShareSimulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Go9CarShareSimulator.swift; sourceTree = "<group>"; };
 		27FD2DFC0DB995B57B203387 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		3F8401BE84B5C46710A0C8C9 /* Pods_CarShare_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +120,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				1CEA14AE22DF664400B1B7DB /* SecurityTests.swift */,
 				1CEA14AC22D6877900B1B7DB /* DefaultTransportProtocolTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
@@ -349,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CEA14AD22D6877A00B1B7DB /* DefaultTransportProtocolTests.swift in Sources */,
+				1CEA14AF22DF664400B1B7DB /* SecurityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
