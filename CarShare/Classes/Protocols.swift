@@ -63,7 +63,7 @@ protocol CommandProtocol: AnyObject {
 
     func open(_ configuration: BLeSocketConfiguration)
     func close()
-    func send(_ command: Data, challengeKey: String)
+    func send(_ command: Message, challengeKey: String)
 }
 
 protocol CommandProtocolDelegate: AnyObject {

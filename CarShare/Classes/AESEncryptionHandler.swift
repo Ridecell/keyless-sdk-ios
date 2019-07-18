@@ -6,6 +6,7 @@
 //
 
 import CommonCrypto
+import Foundation
 
 class AESEncryptionHandler: Securable {
 

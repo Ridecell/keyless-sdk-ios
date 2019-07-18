@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftProtobuf
 
 class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
 
@@ -20,7 +21,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         case waitingForResponse
     }
 
-    private var outgoingCommand: (command: Data, challengeKey: String, state: CommandState)?
+    private var outgoingCommand: (command: Message, challengeKey: String, state: CommandState)?
 
     private let transportProtocol: TransportProtocol
 
@@ -41,9 +42,12 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         transportProtocol.close()
     }
 
-    func send(_ command: Data, challengeKey: String) {
+    func send(_ command: Message, challengeKey: String) {
         outgoingCommand = (command, challengeKey, .issuingCommand)
-        transportProtocol.send(command)
+        guard let outgoingMessage = transformIntoProtobufMessage(command) else {
+            return
+        }
+        transportProtocol.send(outgoingMessage)
     }
 
     func protocolDidOpen(_ protocol: TransportProtocol) {
@@ -60,21 +64,36 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         case .waitingForChallenge:
             guard let challenge = transformIntoChallenge(data) else {
                 self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedChallenge)
+                delegate?.protocol(self, command: outgoingCommand.command.data, didFail: DefaultCommandProtocolError.malformedChallenge)
                 return
             }
             guard let responseToChallenge = sign(challenge, with: outgoingCommand.challengeKey) else {
                 self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedChallenge)
+                delegate?.protocol(self, command: outgoingCommand.command.data, didFail: DefaultCommandProtocolError.malformedChallenge)
                 return
             }
+            
+            guard let response = transformIntoProtobufResponse(responseToChallenge) else {
+                self.outgoingCommand = nil
+                delegate?.protocol(self, command: outgoingCommand.command.data, didFail: DefaultCommandProtocolError.malformedChallenge)
+                return
+            }
+            
             self.outgoingCommand?.state = .respondingToChallenge
-            transportProtocol.send(responseToChallenge)
+            transportProtocol.send(response)
         case .respondingToChallenge:
             return
         case .waitingForResponse:
             self.outgoingCommand = nil
-            delegate?.protocol(self, command: outgoingCommand.command, didSucceed: data)
+            switch transformIntoProtobufResult(data) {
+            case .success(_):
+                //assume we will never succeed to connect with a failure?
+                delegate?.protocol(self, command: outgoingCommand.command.data, didSucceed: data)
+            case .failure(let error):
+                delegate?.protocol(self, command: outgoingCommand.command.data, didFail: error)
+            }
+            //transform data into result message and succeed or fail
+            delegate?.protocol(self, command: outgoingCommand.command.data, didSucceed: data)
         }
     }
 
@@ -103,7 +122,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
             return
         }
         self.outgoingCommand = nil
-        delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+        delegate?.protocol(self, command: outgoingCommand.command.data, didFail: error)
     }
 
     func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error) {
@@ -111,16 +130,73 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
             return
         }
         self.outgoingCommand = nil
-        delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+        delegate?.protocol(self, command: outgoingCommand.command.data, didFail: error)
     }
 
-
+    private func transformIntoProtobufMessage(_ message: Message) -> Data? {
+        var protoMessage = CommandMessage()
+        protoMessage.reservationToken = message.reservation.certificate
+        switch message.command {
+        case .checkIn:
+            protoMessage.command = .checkin
+        case .checkOut:
+            protoMessage.command = .checkout
+        case .locate:
+            protoMessage.command = .locate
+        case .lock:
+            protoMessage.command = .lock
+        case .unlock:
+            protoMessage.command = .unlock
+        }
+        do {
+            return try protoMessage.serializedData()
+        } catch {
+            print("Failed to serialize data to protobuf due to error: \(error.localizedDescription)")
+        }
+        return nil
+    }
+    
+    private func transformIntoProtobufResponse(_ response: Data) -> Data? {
+        var responseMessage = ResponseMessage()
+        responseMessage.response = response
+        do {
+            return try responseMessage.serializedData()
+        } catch {
+            print("Unable to serialize challenge response due to error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    private func transformIntoProtobufResult(_ result: Data) -> Result<Bool, Error> {
+        var resultMessage: ResultMessage?
+        do {
+            try resultMessage = ResultMessage(serializedData: result)
+            guard let result = resultMessage else {
+                //impossible?
+                return .success(false)
+            }
+            return .success(result.success ? true : false)
+        } catch {
+            print("Failed to transform protobuf result data into Result Message due to error \(error.localizedDescription)")
+            return .failure(error)
+        }
+    }
+    
     private func transformIntoChallenge(_ data: Data) -> String? {
-        return String(data: data, encoding: .utf8)
+        var challengeMessage: ChallengeMessage?
+        do {
+            try challengeMessage = ChallengeMessage(serializedData: data)
+            guard let challengeData = challengeMessage?.challenge else { return nil }
+            return String(data: challengeData, encoding: .utf8)
+        } catch {
+            print("Unable to transform data into Challenge Message with error: \(error.localizedDescription)")
+            return nil
+        }
     }
-
+    
     private func sign(_ challenge: String, with signingKey: String) -> Data? {
-        return "\(challenge)---\(signingKey)".data(using: .utf8)
+        let signer = ChallengeSigner(privateKey: signingKey)
+        return signer.sign(challenge)?.data(using: .utf8)
     }
 
 }
