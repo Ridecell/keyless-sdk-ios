@@ -13,7 +13,6 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         case malformedChallenge
     }
 
-
     private enum CommandState {
         case issuingCommand
         case waitingForChallenge
@@ -79,13 +78,8 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         }
     }
 
-    func protocolDidSend(_ protocol: TransportProtocol, error: Error?) {
+    func protocolDidSend(_ protocol: TransportProtocol) {
         guard let outgoingCommand = outgoingCommand else {
-            return
-        }
-        if let error = error {
-            self.outgoingCommand = nil
-            delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
             return
         }
         switch (outgoingCommand.state) {
@@ -98,12 +92,28 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         case .waitingForResponse:
             return
         }
-
     }
 
     func protocolDidCloseUnexpectedly(_ protocol: TransportProtocol, error: Error) {
         delegate?.protocolDidCloseUnexpectedly(self, error: error)
     }
+
+    func protocolDidFailToSend(_ protocol: TransportProtocol, error: Error) {
+        guard let outgoingCommand = outgoingCommand else {
+            return
+        }
+        self.outgoingCommand = nil
+        delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+    }
+
+    func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error) {
+        guard let outgoingCommand = outgoingCommand else {
+            return
+        }
+        self.outgoingCommand = nil
+        delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+    }
+
 
     private func transformIntoChallenge(_ data: Data) -> String? {
         return String(data: data, encoding: .utf8)
