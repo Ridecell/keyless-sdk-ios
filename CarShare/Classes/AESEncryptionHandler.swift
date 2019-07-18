@@ -76,7 +76,7 @@ class AESEncryptionHandler: Securable {
         let allocatedSize = encrypted.count + Algorithm.blockSize
         let message = UnsafeMutableRawPointer.allocate(byteCount: allocatedSize, alignment: 0)
         guard CCCrypt(CCOperation(kCCDecrypt),
-                Algorithm.derivedKeyAlgorithm,
+                Algorithm.encryptionAlgorithm,
                 Algorithm.encryptionOptions,
                 derivedKey,
                 Algorithm.derivedKeySize,
