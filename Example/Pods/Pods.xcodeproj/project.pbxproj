@@ -19,6 +19,7 @@
 		12DA4248E782F102FC726F9285AD05B9 /* CustomJSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B111D35983C1A50AE57004DF57DE0BAB /* CustomJSONCodable.swift */; };
 		1CEA14B122DF669A00B1B7DB /* AESEncryptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14B022DF669A00B1B7DB /* AESEncryptionHandler.swift */; };
 		1CEA14B322DF91C400B1B7DB /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14B222DF91C400B1B7DB /* EncryptionKey.swift */; };
+		1CEA14B522E10F1400B1B7DB /* DefaultSecurityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14B422E10F1400B1B7DB /* DefaultSecurityProtocol.swift */; };
 		1D826DB66187FF43E6F9398824B14B32 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A46ED7BF07D97B78872A13E8948048 /* CoreBluetooth.framework */; };
 		1EB7827970682DDA43142091F4C4B1F3 /* Message+JSONArrayAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB32F23230D8C1F14F459CB9CB38D20 /* Message+JSONArrayAdditions.swift */; };
 		22D843B80B19DB96B7FBC1B37481B0EF /* SimpleExtensionMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF350CC1706CE0FC900FE151E388173 /* SimpleExtensionMap.swift */; };
@@ -86,6 +87,7 @@
 		B911FA46EC0C76D63E1C15BF98B3B253 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48C165F01529BF7E5F283AC541C11DF /* Protocols.swift */; };
 		BA0B9A796EAEB4C6BAB148E700D915B3 /* BinaryEncodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A30940CA21ED3788BB62B3C0DEAC4B0 /* BinaryEncodingError.swift */; };
 		BBB15C36FAFA7E356948C8552DD80D74 /* Google_Protobuf_Any+Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787BB66631641C70E9013D4DE674223A /* Google_Protobuf_Any+Registry.swift */; };
+		BBF9CA6F22E0F25D00A5C130 /* geotab2.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF9CA6E22E0F25C00A5C130 /* geotab2.pb.swift */; };
 		BDC09EF667735FE8C290641B2A9F0EC8 /* Google_Protobuf_Timestamp+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D424B85396ABE9192AC12777844399 /* Google_Protobuf_Timestamp+Extensions.swift */; };
 		C769B3CC03B7340758389818FEF8B7E8 /* duration.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0F23D47B393D2946C7664BB79944E5 /* duration.pb.swift */; };
 		C9991FAD8959D7ADE4D314278C45F972 /* MessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1011A79326BF864D71A8B2328EA6721D /* MessageExtension.swift */; };
@@ -157,6 +159,7 @@
 		1BF4DC0A8F2DD4CC8CC18C5331D381A8 /* BinaryEncodingSizeVisitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingSizeVisitor.swift; path = Sources/SwiftProtobuf/BinaryEncodingSizeVisitor.swift; sourceTree = "<group>"; };
 		1CEA14B022DF669A00B1B7DB /* AESEncryptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AESEncryptionHandler.swift; path = CarShare/Classes/AESEncryptionHandler.swift; sourceTree = "<group>"; };
 		1CEA14B222DF91C400B1B7DB /* EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EncryptionKey.swift; path = CarShare/Classes/EncryptionKey.swift; sourceTree = "<group>"; };
+		1CEA14B422E10F1400B1B7DB /* DefaultSecurityProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultSecurityProtocol.swift; path = CarShare/Classes/DefaultSecurityProtocol.swift; sourceTree = "<group>"; };
 		2188C21DD265BFB3AB6FC90C9F08A142 /* Pods-CarShare_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-CarShare_Tests.modulemap"; sourceTree = "<group>"; };
 		230E7BAC061754850B329470A02BCE96 /* DefaultTransportProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultTransportProtocol.swift; path = CarShare/Classes/DefaultTransportProtocol.swift; sourceTree = "<group>"; };
 		241B7658AD8F0F31A5B7108360D81CDF /* ProtobufAPIVersionCheck.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProtobufAPIVersionCheck.swift; path = Sources/SwiftProtobuf/ProtobufAPIVersionCheck.swift; sourceTree = "<group>"; };
@@ -167,7 +170,7 @@
 		280F3A4458337583B205D13D6DA76CCB /* SwiftProtobuf-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftProtobuf-dummy.m"; sourceTree = "<group>"; };
 		28C39FDB525F7F5D5E661BAB4371E251 /* CarShare-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CarShare-prefix.pch"; sourceTree = "<group>"; };
 		29191BA90BAEEDD997DC5C7EAE885F7E /* JSONDecoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONDecoder.swift; path = Sources/SwiftProtobuf/JSONDecoder.swift; sourceTree = "<group>"; };
-		2998BF84E1E2D9DE36A855D8D1B861A0 /* Pods_CarShare_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_CarShare_Tests.framework; path = "Pods-CarShare_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2998BF84E1E2D9DE36A855D8D1B861A0 /* Pods_CarShare_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37372C955AC31BE55010D95013F1484E /* ZigZag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZigZag.swift; path = Sources/SwiftProtobuf/ZigZag.swift; sourceTree = "<group>"; };
 		38C87F63D750A2EC442BA1F9D91FECF7 /* SwiftProtobuf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftProtobuf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		39E3943C445FBAC69BE269CABE49FE9E /* Pods-CarShare_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-CarShare_Tests-umbrella.h"; sourceTree = "<group>"; };
@@ -185,9 +188,9 @@
 		4A6D1965371C8F86EE5755BB1203B47F /* DefaultCarShareClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultCarShareClient.swift; path = CarShare/Classes/DefaultCarShareClient.swift; sourceTree = "<group>"; };
 		4D0F23D47B393D2946C7664BB79944E5 /* duration.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = duration.pb.swift; path = Sources/SwiftProtobuf/duration.pb.swift; sourceTree = "<group>"; };
 		4EB5682480BA4044BF7EF626C782BD73 /* Pods-CarShare_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-CarShare_Example-frameworks.sh"; sourceTree = "<group>"; };
-		5079A7DA39EC06BA9204D92925B84C80 /* Pods_CarShare_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_CarShare_Example.framework; path = "Pods-CarShare_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5079A7DA39EC06BA9204D92925B84C80 /* Pods_CarShare_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CarShare_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		512E1D7DF523FF2ACAC6D285FC58E226 /* StringUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StringUtils.swift; path = Sources/SwiftProtobuf/StringUtils.swift; sourceTree = "<group>"; };
-		51DA9E2166787942866EC5056A1BF325 /* CarShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CarShare.framework; path = CarShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51DA9E2166787942866EC5056A1BF325 /* CarShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CarShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5361F0D04E04E090F57260DB0ED0D264 /* BinaryDecodingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryDecodingOptions.swift; path = Sources/SwiftProtobuf/BinaryDecodingOptions.swift; sourceTree = "<group>"; };
 		5407BB12045DAAD628BD6C0DBE47F76F /* Pods-CarShare_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CarShare_Example-Info.plist"; sourceTree = "<group>"; };
 		54AAEB2C00B539F26F9D9F4BF86D6B5A /* CarShare.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CarShare.modulemap; sourceTree = "<group>"; };
@@ -206,7 +209,7 @@
 		6B801EC4D3E9843DF56E5BFD7E77938F /* Decoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Decoder.swift; path = Sources/SwiftProtobuf/Decoder.swift; sourceTree = "<group>"; };
 		6C6E2F017BD0C1EAFA52AC8BD338A3E2 /* WireFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WireFormat.swift; path = Sources/SwiftProtobuf/WireFormat.swift; sourceTree = "<group>"; };
 		6E79097D63134CADE86F2AC5A732F93A /* JSONScanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONScanner.swift; path = Sources/SwiftProtobuf/JSONScanner.swift; sourceTree = "<group>"; };
-		6E8DC4A982EEE7F159F71CF19CCF756E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		6E8DC4A982EEE7F159F71CF19CCF756E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6EB32F23230D8C1F14F459CB9CB38D20 /* Message+JSONArrayAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+JSONArrayAdditions.swift"; path = "Sources/SwiftProtobuf/Message+JSONArrayAdditions.swift"; sourceTree = "<group>"; };
 		6FCF2FE3E7BBDBDAEAC9CB558CEA1D99 /* Internal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Internal.swift; path = Sources/SwiftProtobuf/Internal.swift; sourceTree = "<group>"; };
 		73CE98723E33D48DB2CC28E5E73785B9 /* empty.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = empty.pb.swift; path = Sources/SwiftProtobuf/empty.pb.swift; sourceTree = "<group>"; };
@@ -224,13 +227,13 @@
 		9239005A2485599DF035D0C0424C4C3E /* TextFormatDecoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextFormatDecoder.swift; path = Sources/SwiftProtobuf/TextFormatDecoder.swift; sourceTree = "<group>"; };
 		92F29EA573ED242F55D68F7AA6F1379E /* BinaryEncoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncoder.swift; path = Sources/SwiftProtobuf/BinaryEncoder.swift; sourceTree = "<group>"; };
 		93CDC135229872B8D9536E2A8B089858 /* CarShare-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "CarShare-Info.plist"; sourceTree = "<group>"; };
-		943D347E61A2E181A4FA2CA894307B6E /* SwiftProtobuf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwiftProtobuf.framework; path = SwiftProtobuf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		943D347E61A2E181A4FA2CA894307B6E /* SwiftProtobuf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftProtobuf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94D422F4C6D9EED943780F4BB2733DF5 /* Varint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Varint.swift; path = Sources/SwiftProtobuf/Varint.swift; sourceTree = "<group>"; };
 		95A681E68CF03D6FC736CE520A0A6296 /* DoubleFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DoubleFormatter.swift; path = Sources/SwiftProtobuf/DoubleFormatter.swift; sourceTree = "<group>"; };
 		96035540596DB040DE96A7511E540611 /* SwiftProtobuf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftProtobuf.xcconfig; sourceTree = "<group>"; };
-		98B93121A7A312FB9F13823949EE8950 /* CarShare.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = CarShare.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		98B93121A7A312FB9F13823949EE8950 /* CarShare.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = CarShare.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9B24C13B2645F2242FAD18F4F1B3A513 /* CarShare-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CarShare-dummy.m"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A10FA06614714CC4C711DFD052FEB9EB /* BinaryDecodingError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryDecodingError.swift; path = Sources/SwiftProtobuf/BinaryDecodingError.swift; sourceTree = "<group>"; };
 		A630B608743F0647FA03D8E2E39E5A70 /* FieldTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FieldTypes.swift; path = Sources/SwiftProtobuf/FieldTypes.swift; sourceTree = "<group>"; };
 		A98561F2E4DBA48DC3133599BD5C4E82 /* Google_Protobuf_ListValue+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_ListValue+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_ListValue+Extensions.swift"; sourceTree = "<group>"; };
@@ -241,8 +244,9 @@
 		B48C165F01529BF7E5F283AC541C11DF /* Protocols.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Protocols.swift; path = CarShare/Classes/Protocols.swift; sourceTree = "<group>"; };
 		B62D353F298B09A3C3D14AEBD62E907E /* JSONMapEncodingVisitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONMapEncodingVisitor.swift; path = Sources/SwiftProtobuf/JSONMapEncodingVisitor.swift; sourceTree = "<group>"; };
 		B6E8EDFD5386B145886F3312FE56CC46 /* JSONEncoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONEncoder.swift; path = Sources/SwiftProtobuf/JSONEncoder.swift; sourceTree = "<group>"; };
-		B9FB312D35560F0ECAAE3E8EFE3A041C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		B9FB312D35560F0ECAAE3E8EFE3A041C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BA43D4271D2391B499EADF25E7CD4287 /* Pods-CarShare_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CarShare_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		BBF9CA6E22E0F25C00A5C130 /* geotab2.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = geotab2.pb.swift; path = CarShare/Classes/geotab2.pb.swift; sourceTree = "<group>"; };
 		BC04A69DBA014B9A506C4DA031130F5C /* CarShare-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CarShare-umbrella.h"; sourceTree = "<group>"; };
 		BC96F24292B7890111266259B0C4931E /* MathUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MathUtils.swift; path = Sources/SwiftProtobuf/MathUtils.swift; sourceTree = "<group>"; };
 		BE210F511B9F420BF4E17644DFD4E5E2 /* Message+BinaryAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+BinaryAdditions.swift"; path = "Sources/SwiftProtobuf/Message+BinaryAdditions.swift"; sourceTree = "<group>"; };
@@ -445,7 +449,6 @@
 				37372C955AC31BE55010D95013F1484E /* ZigZag.swift */,
 				B7C4F8D7077358AA9A4D9C73021ACE79 /* Support Files */,
 			);
-			name = SwiftProtobuf;
 			path = SwiftProtobuf;
 			sourceTree = "<group>";
 		};
@@ -531,12 +534,14 @@
 			isa = PBXGroup;
 			children = (
 				1CEA14B022DF669A00B1B7DB /* AESEncryptionHandler.swift */,
+				BBF9CA6E22E0F25C00A5C130 /* geotab2.pb.swift */,
 				1CEA14B222DF91C400B1B7DB /* EncryptionKey.swift */,
 				F8C6669C6BD0AFFD52E6B50D52ECB2FE /* ChallengeSigner.swift */,
 				D4F0C6B5A82021E3025D737CC8B40BAC /* ChallengeVerifier.swift */,
 				4A6D1965371C8F86EE5755BB1203B47F /* DefaultCarShareClient.swift */,
 				49988DB5525475F1908420C49FEF7FC3 /* DefaultCommandProtocol.swift */,
 				230E7BAC061754850B329470A02BCE96 /* DefaultTransportProtocol.swift */,
+				1CEA14B422E10F1400B1B7DB /* DefaultSecurityProtocol.swift */,
 				E7EF4BC8FF06ED7B1133EB8DA1379CD9 /* IOSSocket.swift */,
 				B48C165F01529BF7E5F283AC541C11DF /* Protocols.swift */,
 				23C0DCA93B85E3646EFED2395CD5979A /* Pod */,
@@ -832,11 +837,13 @@
 				6E013AA06E91FF61D56A3BF5F6B3D2BF /* CarShare-dummy.m in Sources */,
 				D21077E0BBB4B6807A7027742D844A8A /* ChallengeSigner.swift in Sources */,
 				489E520B403384A6971C503C4231DC29 /* ChallengeVerifier.swift in Sources */,
+				1CEA14B522E10F1400B1B7DB /* DefaultSecurityProtocol.swift in Sources */,
 				E0DDAB161CD43F8576B6DDC58858020B /* DefaultCarShareClient.swift in Sources */,
 				1CEA14B322DF91C400B1B7DB /* EncryptionKey.swift in Sources */,
 				6D76C2FE46BB67D5CEBC988EBF8DF4CF /* DefaultCommandProtocol.swift in Sources */,
 				EE6024C932A3341AD97F147CA447C540 /* DefaultTransportProtocol.swift in Sources */,
 				1CEA14B122DF669A00B1B7DB /* AESEncryptionHandler.swift in Sources */,
+				BBF9CA6F22E0F25D00A5C130 /* geotab2.pb.swift in Sources */,
 				B2E6DCF7806AE538165A8BFCCB89D1AB /* IOSSocket.swift in Sources */,
 				B911FA46EC0C76D63E1C15BF98B3B253 /* Protocols.swift in Sources */,
 			);
@@ -968,8 +975,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

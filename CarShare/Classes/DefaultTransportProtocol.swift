@@ -134,7 +134,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
     weak var delegate: TransportProtocolDelegate?
 
-    init(socket: Socket) {
+    init(socket: Socket = IOSSocket()) {
         self.socket = socket
     }
 

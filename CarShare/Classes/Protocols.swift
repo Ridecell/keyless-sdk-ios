@@ -58,12 +58,29 @@ protocol TransportProtocolDelegate: AnyObject {
     func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error)
 }
 
+protocol SecurityProtocol: AnyObject {
+    var delegate: SecurityProtocolDelegate? { get set }
+
+    func open(_ configuration: BLeSocketConfiguration)
+    func close()
+    func send(_ data: Data)
+}
+
+protocol SecurityProtocolDelegate: AnyObject {
+    func protocolDidOpen(_ protocol: SecurityProtocol)
+    func `protocol`(_ protocol: SecurityProtocol, didReceive: Data)
+    func protocolDidSend(_ protocol: SecurityProtocol)
+    func protocolDidCloseUnexpectedly(_ protocol: SecurityProtocol, error: Error)
+    func protocolDidFailToSend(_ protocol: SecurityProtocol, error: Error)
+    func protocolDidFailToReceive(_ protocol: SecurityProtocol, error: Error)
+}
+
 protocol CommandProtocol: AnyObject {
     var delegate: CommandProtocolDelegate? { get set }
 
     func open(_ configuration: BLeSocketConfiguration)
     func close()
-    func send(_ command: Data, challengeKey: String)
+    func send(_ command: Message, challengeKey: String)
 }
 
 protocol CommandProtocolDelegate: AnyObject {
@@ -91,8 +108,7 @@ public protocol CarShareClientConnectionDelegate: AnyObject {
 }
 
 public protocol Signer: AnyObject {
-    func sign(_ challengeData: Data) -> Data?
-    func sign(_ base64ChallengeString: String) -> String?
+    func sign(_ challengeData: Data, signingKey: String) -> Data?
 }
 
 public protocol Verifier: AnyObject {
