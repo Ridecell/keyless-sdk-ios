@@ -12,6 +12,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
 
     enum DefaultCommandProtocolError: Swift.Error {
         case malformedChallenge
+        case invalidChallengeResponse(message: String)
     }
 
     private enum CommandState {
@@ -167,7 +168,11 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
     private func transformIntoProtobufResult(_ result: Data) -> Result<Bool, Error> {
         do {
             let resultMessage = try ResultMessage(serializedData: result)
-            return .success(resultMessage.success ? true : false)
+            if !resultMessage.error.isEmpty {
+                return .failure(DefaultCommandProtocolError.invalidChallengeResponse(message: resultMessage.error))
+            } else {
+                return .success(resultMessage.success)
+            }
         } catch {
             print("Failed to transform protobuf result data into Result Message due to error \(error.localizedDescription)")
             return .failure(error)
