@@ -48,7 +48,7 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
     public weak var delegate: CarShareClientConnectionDelegate?
 
     public convenience init() {
-        self.init(commandProtocol: DefaultCommandProtocol(transportProtocol: DefaultTransportProtocol(socket: IOSSocket())))
+        self.init(commandProtocol: DefaultCommandProtocol())
     }
 
     init(commandProtocol: CommandProtocol) {
@@ -108,11 +108,7 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
             return
         }
         outgoingMessage = nil
-        if response == message.expectedResponseData {
-            message.callback(.success(()))
-        } else {
-            message.callback(.failure(DefaultCarShareClientError.challengeFailed))
-        }
+        message.callback(.success(()))
     }
 
     func `protocol`(_ protocol: CommandProtocol, command: Data, didFail error: Error) {
