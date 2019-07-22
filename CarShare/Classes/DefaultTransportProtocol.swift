@@ -125,6 +125,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     }
 
     private let socket: Socket
+    private let executer: AsyncExecuter
 
     private var outgoing: (data: Data, byteIndex: Int)?
 
@@ -134,7 +135,8 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
     weak var delegate: TransportProtocolDelegate?
 
-    init(socket: Socket = IOSSocket()) {
+    init(executer: AsyncExecuter = MainExecuter(), socket: Socket = IOSSocket()) {
+        self.executer = executer
         self.socket = socket
     }
 
@@ -163,7 +165,17 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             return
         }
         connectionState = .syncing
+        sendSyncMessage()
+    }
+
+    private func sendSyncMessage() {
+        guard case .syncing = connectionState else {
+            return
+        }
         send(SyncMessage())
+        executer.after(1) { [weak self] in
+            self?.sendSyncMessage()
+        }
     }
 
     func socket(_ socket: Socket, didReceive data: Data) {

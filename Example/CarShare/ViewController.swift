@@ -15,7 +15,7 @@ class ViewController: UIViewController, CarShareClientConnectionDelegate {
     private let client = DefaultCarShareClient()
 
     private let config = BLeSocketConfiguration(
-        serviceID: "42B20191-092E-4B85-B0CA-1012F6AC783A",
+        serviceID: "42B20191-092E-4B85-B0CA-1012F6AC783F",
         notifyCharacteristicID: "430F2EA3-C765-4051-9134-A341254CFD00",
         writeCharacteristicID: "906EE7E0-D8DB-44F3-AF54-6B0DFCECDF1C")
 
@@ -85,8 +85,14 @@ QnHMrFAtXCNK5uqWlGnDzOEPvhGVj5yPiyXzvGwzn6m/7Co3vyqX6LXR
         client.checkIn(with: reservation) {
             switch $0 {
             case let .failure(error):
+                let alert = UIAlertController(title: "Failed", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
                 print("CHECK IN FAILED: \(error)")
             case .success:
+                let alert = UIAlertController(title: "Checked in", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
                 print("CHECKED IN")
             }
         }

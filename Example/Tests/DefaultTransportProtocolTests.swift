@@ -9,11 +9,14 @@ class DefaultTransportProtocolTests: XCTestCase {
 
     private var recorder: TransportRecorder!
 
+    private var executer: AsyncExecuter!
+
     override func setUp() {
         super.setUp()
+        executer = FakeExecuter()
         recorder = TransportRecorder()
         socket = FakeSocket()
-        sut = DefaultTransportProtocol(socket: socket)
+        sut = DefaultTransportProtocol(executer: executer, socket: socket)
         sut.delegate = recorder
     }
 
@@ -21,6 +24,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         sut = nil
         socket = nil
         recorder = nil
+        executer = nil
         super.tearDown()
     }
 
@@ -307,6 +311,11 @@ extension DefaultTransportProtocolTests {
             dataToSend = data
         }
 
+    }
+
+    class FakeExecuter: AsyncExecuter {
+        func after(_ seconds: TimeInterval, execute: @escaping () -> Void) {
+        }
     }
 
     class TransportRecorder: TransportProtocolDelegate {

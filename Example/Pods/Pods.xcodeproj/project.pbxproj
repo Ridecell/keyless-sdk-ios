@@ -17,6 +17,7 @@
 		0DF5D662FEC77B1F783F70BE908CD6BC /* Google_Protobuf_Value+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7CF397158AC674878B904D8C29B239 /* Google_Protobuf_Value+Extensions.swift */; };
 		10705339BD8D1E32C6F2D3EE090B498B /* JSONMapEncodingVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D353F298B09A3C3D14AEBD62E907E /* JSONMapEncodingVisitor.swift */; };
 		12DA4248E782F102FC726F9285AD05B9 /* CustomJSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B111D35983C1A50AE57004DF57DE0BAB /* CustomJSONCodable.swift */; };
+		1CCD811822E5E0E400FC7F5C /* AsyncExecuter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCD811722E5E0E400FC7F5C /* AsyncExecuter.swift */; };
 		1CEA14B122DF669A00B1B7DB /* AESEncryptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14B022DF669A00B1B7DB /* AESEncryptionHandler.swift */; };
 		1CEA14B322DF91C400B1B7DB /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14B222DF91C400B1B7DB /* EncryptionKey.swift */; };
 		1CEA14B522E10F1400B1B7DB /* DefaultSecurityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA14B422E10F1400B1B7DB /* DefaultSecurityProtocol.swift */; };
@@ -157,6 +158,7 @@
 		16AA19348F2D8B7D711FFF7814E6DAEF /* Message+AnyAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+AnyAdditions.swift"; path = "Sources/SwiftProtobuf/Message+AnyAdditions.swift"; sourceTree = "<group>"; };
 		18D5F4D564FBD60ECFE0F0102F2CE852 /* Message+JSONAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+JSONAdditions.swift"; path = "Sources/SwiftProtobuf/Message+JSONAdditions.swift"; sourceTree = "<group>"; };
 		1BF4DC0A8F2DD4CC8CC18C5331D381A8 /* BinaryEncodingSizeVisitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingSizeVisitor.swift; path = Sources/SwiftProtobuf/BinaryEncodingSizeVisitor.swift; sourceTree = "<group>"; };
+		1CCD811722E5E0E400FC7F5C /* AsyncExecuter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsyncExecuter.swift; path = CarShare/Classes/AsyncExecuter.swift; sourceTree = "<group>"; };
 		1CEA14B022DF669A00B1B7DB /* AESEncryptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AESEncryptionHandler.swift; path = CarShare/Classes/AESEncryptionHandler.swift; sourceTree = "<group>"; };
 		1CEA14B222DF91C400B1B7DB /* EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EncryptionKey.swift; path = CarShare/Classes/EncryptionKey.swift; sourceTree = "<group>"; };
 		1CEA14B422E10F1400B1B7DB /* DefaultSecurityProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultSecurityProtocol.swift; path = CarShare/Classes/DefaultSecurityProtocol.swift; sourceTree = "<group>"; };
@@ -541,6 +543,7 @@
 				4A6D1965371C8F86EE5755BB1203B47F /* DefaultCarShareClient.swift */,
 				49988DB5525475F1908420C49FEF7FC3 /* DefaultCommandProtocol.swift */,
 				230E7BAC061754850B329470A02BCE96 /* DefaultTransportProtocol.swift */,
+				1CCD811722E5E0E400FC7F5C /* AsyncExecuter.swift */,
 				1CEA14B422E10F1400B1B7DB /* DefaultSecurityProtocol.swift */,
 				E7EF4BC8FF06ED7B1133EB8DA1379CD9 /* IOSSocket.swift */,
 				B48C165F01529BF7E5F283AC541C11DF /* Protocols.swift */,
@@ -838,6 +841,7 @@
 				D21077E0BBB4B6807A7027742D844A8A /* ChallengeSigner.swift in Sources */,
 				489E520B403384A6971C503C4231DC29 /* ChallengeVerifier.swift in Sources */,
 				1CEA14B522E10F1400B1B7DB /* DefaultSecurityProtocol.swift in Sources */,
+				1CCD811822E5E0E400FC7F5C /* AsyncExecuter.swift in Sources */,
 				E0DDAB161CD43F8576B6DDC58858020B /* DefaultCarShareClient.swift in Sources */,
 				1CEA14B322DF91C400B1B7DB /* EncryptionKey.swift in Sources */,
 				6D76C2FE46BB67D5CEBC988EBF8DF4CF /* DefaultCommandProtocol.swift in Sources */,

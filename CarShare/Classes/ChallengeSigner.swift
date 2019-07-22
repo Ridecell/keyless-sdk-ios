@@ -19,8 +19,6 @@ class ChallengeSigner: Signer {
         let parameters : [String : AnyObject] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
             kSecAttrKeyClass as String: kSecAttrKeyClassPrivate
-//            kSecAttrKeySizeInBits as String: 2048 as AnyObject,
-//            kSecReturnPersistentRef as String : true as AnyObject
         ]
 
         guard let privateKey = SecKeyCreateWithData(keyData as CFData, parameters as CFDictionary, nil) else {
