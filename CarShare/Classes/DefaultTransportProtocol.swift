@@ -91,18 +91,18 @@ private struct IncomingExtendedAppDataMessage {
         guard length + 7 == bytes.count else {
             return nil
         }
-        let calculatedChecksum = IncomingExtendedAppDataMessage.checksum(for: Array(bytes[0..<bytes.count-3]))
-        guard Array(bytes[bytes.count-3..<bytes.count-1]) == calculatedChecksum else {
+        let calculatedChecksum = IncomingExtendedAppDataMessage.checksum(for: Array(bytes[0..<bytes.count - 3]))
+        guard Array(bytes[bytes.count - 3..<bytes.count - 1]) == calculatedChecksum else {
             return nil
         }
-        body = Array(bytes[4..<bytes.count-3])
+        body = Array(bytes[4..<bytes.count - 3])
     }
 
-    static private func checksum(for bytes: [UInt8]) -> [UInt8] {
+    private static func checksum(for bytes: [UInt8]) -> [UInt8] {
         var check1: UInt8 = 0
         var check2: UInt8 = 0
-        for  i in 0..<bytes.count {
-            check1 = check1.addingReportingOverflow(bytes[i]).partialValue
+        for byte in bytes {
+            check1 = check1.addingReportingOverflow(byte).partialValue
             check2 = check2.addingReportingOverflow(check1).partialValue
         }
         return [check1, check2]

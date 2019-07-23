@@ -1,5 +1,7 @@
 included: # paths to include during linting. `--path` is ignored if present.
-  - CarSharePOC
+  - CarShare
+excluded:
+  - CarShare/Classes/geotab2.pb.swift
 line_length: 200
 warning_threshold: 1
 opt_in_rules:

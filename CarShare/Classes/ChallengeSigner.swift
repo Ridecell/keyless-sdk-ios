@@ -5,8 +5,8 @@
 //  Created by Marc Maguire on 2019-07-08.
 //
 
-import Foundation
 import CommonCrypto
+import Foundation
 
 class ChallengeSigner: Signer {
 
@@ -16,7 +16,7 @@ class ChallengeSigner: Signer {
         guard let keyData = Data(base64Encoded: unwrappedKey, options: .ignoreUnknownCharacters) else {
             return nil
         }
-        let parameters : [String : AnyObject] = [
+        let parameters: [String: AnyObject] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
             kSecAttrKeyClass as String: kSecAttrKeyClassPrivate
         ]
@@ -28,10 +28,10 @@ class ChallengeSigner: Signer {
         let digestLength = Int(CC_SHA512_DIGEST_LENGTH)
         let hashBytes = UnsafeMutablePointer<UInt8>.allocate(capacity: digestLength)
         CC_SHA512([UInt8](challengeData), CC_LONG(challengeData.count), hashBytes)
-        
+
         //sign
         let blockSize = SecKeyGetBlockSize(privateKey) //in the case of RSA, modulus is the same as the block size
-        var signatureBytes = [UInt8](repeating:0, count:blockSize)
+        var signatureBytes = [UInt8](repeating: 0, count: blockSize)
         var signatureDataLength = blockSize
         let status = SecKeyRawSign(privateKey, .PKCS1SHA512, hashBytes, digestLength, &signatureBytes, &signatureDataLength)
         guard status == noErr else {

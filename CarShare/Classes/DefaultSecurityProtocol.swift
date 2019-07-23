@@ -6,7 +6,11 @@
 //
 
 class DefaultSecurityProtocol: SecurityProtocol {
-    var delegate: SecurityProtocolDelegate?
+    weak var delegate: SecurityProtocolDelegate?
+
+    enum DefaultSecurityProtocolError: Error {
+        case encryption
+    }
 
     private let transportProtocol: TransportProtocol
     private let encryptionHandler = AESEncryptionHandler()
@@ -19,10 +23,10 @@ class DefaultSecurityProtocol: SecurityProtocol {
             159,
             228,
             202,
-            239,
+            239
         ]
 
-        static let iv: [UInt8] = [
+        static let initializationVector: [UInt8] = [
             78,
             53,
             152,
@@ -43,9 +47,9 @@ class DefaultSecurityProtocol: SecurityProtocol {
 
         static let encryptionKey = EncryptionKey(
             salt: salt,
-            iv: iv,
+            initializationVector: initializationVector,
             passphrase: "SUPER_SECRET",
-            iterations: 14271)
+            iterations: 14_271)
     }
 
     init(transportProtocol: TransportProtocol = DefaultTransportProtocol()) {
@@ -62,7 +66,10 @@ class DefaultSecurityProtocol: SecurityProtocol {
     }
 
     func send(_ data: Data) {
-        let encrypted = encryptionHandler.encrypt([UInt8](data), with: Encryption.encryptionKey)
+        guard let encrypted = encryptionHandler.encrypt([UInt8](data), with: Encryption.encryptionKey) else {
+            delegate?.protocolDidFailToSend(self, error: DefaultSecurityProtocolError.encryption)
+            return
+        }
         transportProtocol.send(Data(bytes: encrypted, count: encrypted.count))
     }
 
@@ -74,7 +81,10 @@ extension DefaultSecurityProtocol: TransportProtocolDelegate {
     }
 
     func `protocol`(_ protocol: TransportProtocol, didReceive encrypted: Data) {
-        let bytes = encryptionHandler.decrypt([UInt8](encrypted), with: Encryption.encryptionKey)
+        guard let bytes = encryptionHandler.decrypt([UInt8](encrypted), with: Encryption.encryptionKey) else {
+            delegate?.protocolDidFailToReceive(self, error: DefaultSecurityProtocolError.encryption)
+            return
+        }
         delegate?.protocol(self, didReceive: Data(bytes: bytes, count: bytes.count))
     }
 
@@ -93,6 +103,5 @@ extension DefaultSecurityProtocol: TransportProtocolDelegate {
     func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error) {
         delegate?.protocolDidFailToReceive(self, error: error)
     }
-
 
 }

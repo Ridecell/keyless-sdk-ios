@@ -1,6 +1,0 @@
-framework module CarShare {
-  umbrella header "CarShare-umbrella.h"
-
-  export *
-  module * { export * }
-}
