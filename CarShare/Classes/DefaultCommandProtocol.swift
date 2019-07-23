@@ -22,7 +22,13 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         case waitingForResponse
     }
 
-    private var outgoingCommand: (command: Message, challengeKey: String, state: CommandState)?
+    private struct OutgoingCommand {
+        let command: Message.Command
+        let challengeKey: String
+        var state: CommandState
+    }
+
+    private var outgoingCommand: OutgoingCommand?
 
     private let securityProtocol: SecurityProtocol
 
@@ -43,9 +49,9 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         securityProtocol.close()
     }
 
-    func send(_ command: Message, challengeKey: String) {
-        outgoingCommand = (command, challengeKey, .issuingCommand)
-        guard let outgoingMessage = transformIntoProtobufMessage(command) else {
+    func send(_ message: Message, challengeKey: String) {
+        outgoingCommand = OutgoingCommand(command: message.command, challengeKey: challengeKey, state: .issuingCommand)
+        guard let outgoingMessage = transformIntoProtobufMessage(message) else {
             return
         }
         securityProtocol.send(outgoingMessage)
@@ -59,27 +65,27 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         guard let outgoingCommand = outgoingCommand else {
             return
         }
-        switch (outgoingCommand.state) {
+        switch outgoingCommand.state {
         case .issuingCommand:
             return
         case .waitingForChallenge:
             guard let challenge = transformIntoChallenge(data) else {
                 self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command.data, didFail: DefaultCommandProtocolError.malformedChallenge)
+                delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedChallenge)
                 return
             }
             guard let responseToChallenge = sign(challenge, with: outgoingCommand.challengeKey) else {
                 self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command.data, didFail: DefaultCommandProtocolError.malformedChallenge)
+                delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedChallenge)
                 return
             }
-            
+
             guard let response = transformIntoProtobufResponse(responseToChallenge) else {
                 self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command.data, didFail: DefaultCommandProtocolError.malformedChallenge)
+                delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedChallenge)
                 return
             }
-            
+
             self.outgoingCommand?.state = .respondingToChallenge
             securityProtocol.send(response)
         case .respondingToChallenge:
@@ -88,9 +94,9 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
             self.outgoingCommand = nil
             switch transformIntoProtobufResult(data) {
             case .success:
-                delegate?.protocol(self, command: outgoingCommand.command.data, didSucceed: data)
+                delegate?.protocol(self, command: outgoingCommand.command, didSucceed: data)
             case .failure(let error):
-                delegate?.protocol(self, command: outgoingCommand.command.data, didFail: error)
+                delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
             }
         }
     }
@@ -99,7 +105,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         guard let outgoingCommand = outgoingCommand else {
             return
         }
-        switch (outgoingCommand.state) {
+        switch outgoingCommand.state {
         case .issuingCommand:
             self.outgoingCommand?.state = .waitingForChallenge
         case .waitingForChallenge:
@@ -120,7 +126,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
             return
         }
         self.outgoingCommand = nil
-        delegate?.protocol(self, command: outgoingCommand.command.data, didFail: error)
+        delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
     }
 
     func protocolDidFailToReceive(_ protocol: SecurityProtocol, error: Error) {
@@ -128,7 +134,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
             return
         }
         self.outgoingCommand = nil
-        delegate?.protocol(self, command: outgoingCommand.command.data, didFail: error)
+        delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
     }
 
     private func transformIntoProtobufMessage(_ message: Message) -> Data? {
@@ -153,7 +159,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         }
         return nil
     }
-    
+
     private func transformIntoProtobufResponse(_ response: Data) -> Data? {
         var responseMessage = ResponseMessage()
         responseMessage.response = response
@@ -164,7 +170,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
             return nil
         }
     }
-    
+
     private func transformIntoProtobufResult(_ result: Data) -> Result<Bool, Error> {
         do {
             let resultMessage = try ResultMessage(serializedData: result)
@@ -178,19 +184,21 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
             return .failure(error)
         }
     }
-    
+
     private func transformIntoChallenge(_ data: Data) -> Data? {
         var challengeMessage: ChallengeMessage?
         do {
             try challengeMessage = ChallengeMessage(serializedData: data)
-            guard let challengeData = challengeMessage?.challenge else { return nil }
+            guard let challengeData = challengeMessage?.challenge else {
+                return nil
+            }
             return challengeData
         } catch {
             print("Unable to transform data into Challenge Message with error: \(error.localizedDescription)")
             return nil
         }
     }
-    
+
     private func sign(_ challenge: Data, with signingKey: String) -> Data? {
         let signer = ChallengeSigner()
         return signer.sign(challenge, signingKey: signingKey)

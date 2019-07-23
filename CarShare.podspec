@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CarShare'
-  s.version          = '0.1.0'
+  s.version          = '0.0.1'
   s.summary          = 'An iOS framework for car share clients.'
 
 # This description is used to generate tags and improve search results.
@@ -25,14 +25,14 @@ An iOS framework that communicates with Geotab Go9 devices for car share clients
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'msnow-bsm' => 'matt.snow@bsmtechnologies.com' }
-  s.source           = { :git => 'https://github.com/msnow-bsm/CarShare.git', :tag => s.version.to_s }
+  s.source           = { :git => 'http://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-ios.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
   
   s.swift_version = '5.0'
 
-  s.source_files = 'CarShare/Classes/**/*'
+  s.source_files = 'CarShare/Classes/**/*.swift'
   
   # s.resource_bundles = {
   #   'CarShare' => ['CarShare/Assets/*.png']

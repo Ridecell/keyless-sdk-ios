@@ -5,8 +5,8 @@
 //  Created by Matt Snow on 2019-07-05.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 class IOSSocket: NSObject, Socket {
 
@@ -23,7 +23,7 @@ class IOSSocket: NSObject, Socket {
         case connected(notifyCharacteristic: CBMutableCharacteristic, writeCharacteristic: CBMutableCharacteristic, central: CBCentral)
     }
 
-    private lazy var peripheral: CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+    private lazy var peripheral = CBPeripheralManager(delegate: self, queue: nil)
 
     private var state: State = .idle
 

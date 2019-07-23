@@ -19,7 +19,8 @@ class AESEncryptionHandler: Securable {
         static let blockSize = kCCBlockSizeAES128
     }
 
-    func encrypt(_ message: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8] {
+    // swiftlint:disable:next discouraged_optional_collection
+    func encrypt(_ message: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8]? {
 
         let derivedKey = UnsafeMutablePointer<UInt8>.allocate(capacity: Algorithm.derivedKeySize)
 
@@ -33,31 +34,33 @@ class AESEncryptionHandler: Securable {
             encryptionKey.iterations,
             derivedKey,
             Algorithm.derivedKeySize) == Int32(kCCSuccess) else {
-                fatalError()
+                return nil
         }
 
         let allocatedSize = message.count + Algorithm.blockSize
 
         let encrypted = UnsafeMutableRawPointer.allocate(byteCount: allocatedSize, alignment: 0)
         var encryptedSize = 0
-        guard CCCrypt(CCOperation(kCCEncrypt),
-                Algorithm.encryptionAlgorithm,
-                Algorithm.encryptionOptions,
-                derivedKey,
-                Algorithm.derivedKeySize,
-                encryptionKey.iv,
-                message,
-                message.count,
-                encrypted,
-                allocatedSize,
-                &encryptedSize) == Int32(kCCSuccess) else {
-            fatalError()
+        guard CCCrypt(
+            CCOperation(kCCEncrypt),
+            Algorithm.encryptionAlgorithm,
+            Algorithm.encryptionOptions,
+            derivedKey,
+            Algorithm.derivedKeySize,
+            encryptionKey.initializationVector,
+            message,
+            message.count,
+            encrypted,
+            allocatedSize,
+            &encryptedSize) == Int32(kCCSuccess) else {
+            return nil
         }
         let data = Data(bytes: encrypted, count: encryptedSize)
         return [UInt8](data)
     }
 
-    func decrypt(_ encrypted: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8] {
+    // swiftlint:disable:next discouraged_optional_collection
+    func decrypt(_ encrypted: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8]? {
 
         let derivedKey = UnsafeMutablePointer<UInt8>.allocate(capacity: Algorithm.derivedKeySize)
         guard CCKeyDerivationPBKDF(
@@ -70,29 +73,28 @@ class AESEncryptionHandler: Securable {
             encryptionKey.iterations,
             derivedKey,
             Algorithm.derivedKeySize) == Int32(kCCSuccess) else {
-            fatalError()
+            return nil
         }
 
         var messageSize = 0
         let allocatedSize = encrypted.count + Algorithm.blockSize
         let message = UnsafeMutableRawPointer.allocate(byteCount: allocatedSize, alignment: 0)
-        guard CCCrypt(CCOperation(kCCDecrypt),
-                Algorithm.encryptionAlgorithm,
-                Algorithm.encryptionOptions,
-                derivedKey,
-                Algorithm.derivedKeySize,
-                encryptionKey.iv,
-                encrypted,
-                encrypted.count,
-                message,
-                allocatedSize,
-                &messageSize) == Int32(kCCSuccess) else {
-            fatalError()
+        guard CCCrypt(
+            CCOperation(kCCDecrypt),
+            Algorithm.encryptionAlgorithm,
+            Algorithm.encryptionOptions,
+            derivedKey,
+            Algorithm.derivedKeySize,
+            encryptionKey.initializationVector,
+            encrypted,
+            encrypted.count,
+            message,
+            allocatedSize,
+            &messageSize) == Int32(kCCSuccess) else {
+            return nil
         }
         let data = Data(bytes: message, count: messageSize)
         return [UInt8](data)
     }
-    
+
 }
-
-
