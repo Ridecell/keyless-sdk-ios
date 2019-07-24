@@ -1,44 +1,23 @@
-#
-# Be sure to run `pod lib lint CarShare.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
-#
+# frozen_string_literal: true
 
 Pod::Spec.new do |s|
-  s.name             = 'CarShare'
-  s.version          = '0.0.1'
-  s.summary          = 'An iOS framework for car share clients.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
-  s.description      = <<-DESC
-An iOS framework that communicates with Geotab Go9 devices for car share clients.
-                       DESC
-
-  s.homepage         = 'https://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-ios'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'msnow-bsm' => 'matt.snow@bsmtechnologies.com' }
-  s.source           = { :git => 'http://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-ios.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.name = 'CarShare'
+  s.version = '0.0.3'
+  s.summary = 'An iOS framework for car share clients.'
+  s.description = <<~DESC
+    An iOS framework that communicates with Geotab Go9 devices for car share clients.
+  DESC
+  s.homepage = 'https://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-ios'
+  s.license = { type: 'MIT', file: 'LICENSE' }
+  s.author = { 'msnow-bsm' => 'matt.snow@bsmtechnologies.com' }
+  s.source = {
+    git: 'git@gitlab.voffice.bsmtechnologies.com:bsm/illuminate/mobile/car-share-podspec.git',
+    tag: "v#{s.version}"
+  }
 
   s.ios.deployment_target = '11.0'
-  
   s.swift_version = '5.0'
-
   s.source_files = 'CarShare/Classes/**/*.swift'
-  
-  # s.resource_bundles = {
-  #   'CarShare' => ['CarShare/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Foundation', 'CoreBluetooth'
   s.dependency 'SwiftProtobuf', '~> 1.0'
 end
