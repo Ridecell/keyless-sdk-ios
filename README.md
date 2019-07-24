@@ -15,21 +15,15 @@ The maintainer must then push the `v2.4.7` tag, which will trigger [Bitrise](htt
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
-
 ## Installation
 
-CarShare is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+CarShare is available through [CocoaPods](https://cocoapods.org). To install it, add the following lines to your Podfile:
 
 ```ruby
+
+source 'http://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-podspec.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
+# add the pod to your target
 pod 'CarShare'
 ```
-
-## Author
-
-msnow-bsm, matt.snow@bsmtechnologies.com
-
-## License
-
-CarShare is available under the MIT license. See the LICENSE file for more info.
