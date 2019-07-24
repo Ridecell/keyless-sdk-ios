@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.license = { type: 'MIT', file: 'LICENSE' }
   s.author = { 'msnow-bsm' => 'matt.snow@bsmtechnologies.com' }
   s.source = {
-    git: 'git@gitlab.voffice.bsmtechnologies.com:bsm/illuminate/mobile/car-share-podspec.git',
+    git: 'git@gitlab.voffice.bsmtechnologies.com:bsm/illuminate/mobile/car-share-ios.git',
     tag: "v#{s.version}"
   }
 
