@@ -9,7 +9,7 @@ Maintainers should update the version in the CarShare.podspec file to the approp
 ```ruby
   s.version = '2.4.7'
 ```
-The maintainer must then push the `vx.x.x` tag, which will trigger [Bitrise](https://app.bitrise.io/app/d92098b0096b1157) to publish a new pod version of the [`CarShare` framework](https://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-podspec).
+The maintainer must then push the `v2.4.7` tag, which will trigger [Bitrise](https://app.bitrise.io/app/d92098b0096b1157) to publish a new pod version of the [`CarShare` framework](https://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-podspec).
 
 ## Example
 
