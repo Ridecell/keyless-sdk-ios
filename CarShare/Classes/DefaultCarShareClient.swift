@@ -20,10 +20,10 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
     public weak var delegate: CarShareClientDelegate?
 
     public convenience init() {
-        self.init(commandProtocol: DefaultCommandProtocol())
+        self.init(commandProtocol: PocCommandProtocol())
     }
 
-    init(commandProtocol: CommandProtocol) {
+    init(commandProtocol: PocCommandProtocol) {
         self.commandProtocol = commandProtocol
     }
 
@@ -34,6 +34,12 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
 
     public func disconnect() {
         commandProtocol.close()
+    }
+
+    public func execute(_ command: Command, with reservation: Reservation) {
+        let message = Message(command: command, reservation: reservation)
+        outgoingMessage = message
+        commandProtocol.send(message, challengeKey: reservation.privateKey)
     }
 
     public func checkIn(with reservation: Reservation) {
@@ -75,7 +81,7 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
         delegate?.clientDidDisconnectUnexpectedly(self, error: error)
     }
 
-    func `protocol`(_ protocol: CommandProtocol, command: Message.Command, didSucceed response: Data) {
+    func `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) {
         guard let message = outgoingMessage else {
             return
         }
@@ -83,7 +89,7 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
         delegate?.clientCommandDidSucceed(self, command: message.command)
     }
 
-    func `protocol`(_ protocol: CommandProtocol, command: Message.Command, didFail error: Error) {
+    func `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error) {
         guard let message = outgoingMessage else {
             return
         }

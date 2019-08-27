@@ -49,7 +49,7 @@ private class AddonMessage: TransportMessage {
     var messageData: Data {
         var bytes = [stx, messageType]
         if isExtendedBodyLength {
-            bytes.append(contentsOf: [UInt8(body.count >> 8 & 0xFF), UInt8(body.count & 0xFF)])
+            bytes.append(contentsOf: [UInt8(body.count & 0xFF), UInt8(body.count >> 8 & 0xFF)])
         } else {
             bytes.append(contentsOf: [UInt8(body.count & 0xFF)])
         }
@@ -62,9 +62,9 @@ private class AddonMessage: TransportMessage {
 
 private class HandshakeConfirmationMessage: AddonMessage {
 
-    private let deviceID: [UInt8] = [0x5D, 0x10]
+    private let deviceID: [UInt8] = [0x5F, 0x10]
 
-    private let flags: [UInt8] = [0x00, 0x01]
+    private let flags: [UInt8] = [0x01, 0x00]
 
     required init() {
         var body = deviceID
@@ -87,7 +87,7 @@ private struct IncomingExtendedAppDataMessage {
         guard bytes.starts(with: [0x02, 0x24]), let last = bytes.last, last == 0x03, bytes.count >= 7 else {
             return nil
         }
-        let length = Int(bytes[2]) << 8 + Int(bytes[3])
+        let length = Int(bytes[3]) << 8 + Int(bytes[2])
         guard length + 7 == bytes.count else {
             return nil
         }
@@ -182,7 +182,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         if incoming != nil {
             self.incoming?.data.append(data)
         } else if data.count >= 7 && data[1] == 0x24 {
-            let length = Int(data[2]) << 8 + Int(data[3]) + 7
+            let length = Int(data[3]) << 8 + Int(data[2]) + 7
             self.incoming = (data, length)
         } else if data.count == 6 && (data[1] == 0x01 || data[1] == 0x02) {
             self.incoming = (data, 6)

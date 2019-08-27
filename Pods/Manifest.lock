@@ -1,5 +1,5 @@
 PODS:
-  - CarShare (0.1.0):
+  - CarShare (0.0.3):
     - SwiftProtobuf (~> 1.0)
   - SwiftLint (0.34.0)
   - SwiftProtobuf (1.6.0)
@@ -18,10 +18,10 @@ EXTERNAL SOURCES:
     :path: "."
 
 SPEC CHECKSUMS:
-  CarShare: 692401d90a0fd16c20b09ce088909d9e8598ef19
+  CarShare: 43252c6786d8e1ed8006305f2a99f3d1417781f9
   SwiftLint: 79d48a17c6565dc286c37efb8322c7b450f95c67
   SwiftProtobuf: e905ca1366405696411aaf174411c4b19c0ef73d
 
 PODFILE CHECKSUM: 33c24fb08606d16cda7f40c14deff74ac796c1e0
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.7.2
