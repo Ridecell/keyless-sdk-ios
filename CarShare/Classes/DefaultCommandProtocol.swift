@@ -12,7 +12,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
 
     enum DefaultCommandProtocolError: Swift.Error {
         case malformedChallenge
-        case invalidChallengeResponse(message: String)
+        case invalidChallengeResponse
     }
 
     private enum CommandState {
@@ -23,7 +23,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
     }
 
     private struct OutgoingCommand {
-        let command: Message.Command
+        let command: Command
         let challengeKey: String
         var state: CommandState
     }
@@ -138,46 +138,100 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
     }
 
     private func transformIntoProtobufMessage(_ message: Message) -> Data? {
-        var protoMessage = CommandMessage()
-        protoMessage.reservationToken = message.reservation.certificate
+        let reservationTransformer = ReservationTransformer()
+        guard let tokenString = String(data: message.reservation.token, encoding: .utf8), let tokenObject = try? reservationTransformer.transform(tokenString) else {
+            print("Failed to decode message", #function)
+            return nil
+        }
+
+        var appToDeviceMessage = AppToDeviceMessage()
+        var deviceCommandMessage = DeviceCommandMessage()
         switch message.command {
         case .checkIn:
-            protoMessage.command = .checkin
+            deviceCommandMessage.command = .checkin
         case .checkOut:
-            protoMessage.command = .checkout
+            deviceCommandMessage.command = .checkout
         case .locate:
-            protoMessage.command = .locate
+            deviceCommandMessage.command = .locate
         case .lock:
-            protoMessage.command = .lock
+            deviceCommandMessage.command = .lock
         case .unlock:
-            protoMessage.command = .unlock
+            deviceCommandMessage.command = .unlockAll
         }
+
+        guard let deviceReservationMessage = generateDeviceReservationMessage(from: tokenObject) else {
+            print("Unable to generate DeviceReservationMessage from ReservationDetails")
+            return nil
+        }
+        deviceCommandMessage.reservation = deviceReservationMessage
+        appToDeviceMessage.command = deviceCommandMessage
         do {
-            return try protoMessage.serializedData()
+            return try appToDeviceMessage.serializedData()
         } catch {
             print("Failed to serialize data to protobuf due to error: \(error.localizedDescription)")
         }
         return nil
     }
 
-    private func transformIntoProtobufResponse(_ response: Data) -> Data? {
-        var responseMessage = ResponseMessage()
-        responseMessage.response = response
-        do {
-            return try responseMessage.serializedData()
-        } catch {
-            print("Unable to serialize challenge response due to error: \(error.localizedDescription)")
+    private func generateDeviceReservationMessage(from reservationDetails: ReservationTransformer.ReservationDetails) -> DeviceReservationMessage? {
+        var deviceReservationMessage = DeviceReservationMessage()
+        guard let publicModulus = Data(base64Encoded: reservationDetails.reservationToken.appPublicModulus) else {
+            print("Unable to turn public modulus into Data")
             return nil
         }
+        deviceReservationMessage.appPublicModulus = publicModulus
+        deviceReservationMessage.keyExpiry = reservationDetails.reservationToken.keyExpiry
+
+        guard let reservationBytes = Data(base64Encoded: reservationDetails.reservationId) else {
+            print("Unable to turn reservationID into Data")
+            return nil
+        }
+        deviceReservationMessage.reservationID = reservationBytes
+        deviceReservationMessage.deviceHardwareID = reservationDetails.reservationToken.deviceHardwareId
+        var account = Account()
+        account.id = reservationDetails.reservationToken.account.id
+        var permissionsList = PermissionList()
+        permissionsList.permissions = reservationDetails.reservationToken.account.permissions
+        account.permissions = permissionsList
+        deviceReservationMessage.account = account
+        deviceReservationMessage.reservationStartTime = reservationDetails.reservationToken.reservationStartTime
+        deviceReservationMessage.reservationEndTime = reservationDetails.reservationToken.reservationEndTime
+        deviceReservationMessage.gracePeriodSeconds = reservationDetails.reservationToken.gracePeriodSeconds
+        deviceReservationMessage.gracePeriodSeconds = reservationDetails.reservationToken.securePeriodSeconds
+        var endBookConditions = EndBookConditions()
+        var vehicleSecureConditions = VehicleSecureConditions()
+        vehicleSecureConditions.vehicleSecureConditions = reservationDetails.reservationToken.endBookConditions.endBookVehicleFlags
+        endBookConditions.vehicleSecureConditions = vehicleSecureConditions
+        var homePoint = GpsCoordinate()
+        homePoint.latitude = reservationDetails.reservationToken.endBookConditions.homePoint.latitude
+        homePoint.longitude = reservationDetails.reservationToken.endBookConditions.homePoint.longitude
+        endBookConditions.homePoint = homePoint
+        endBookConditions.homeRadius = reservationDetails.reservationToken.endBookConditions.homeRadius
+        deviceReservationMessage.endBookConditions = endBookConditions
+        return deviceReservationMessage
+    }
+
+    private func transformIntoProtobufResponse(_ response: Data) -> Data? {
+        //to-do: Reimplement when proto file is updated to include challenge response
+//        var responseMessage = ResponseMessage()
+//        responseMessage.response = response
+//        do {
+//            return try responseMessage.serializedData()
+//        } catch {
+//            print("Unable to serialize challenge response due to error: \(error.localizedDescription)")
+//            return nil
+//        }
+        return nil
     }
 
     private func transformIntoProtobufResult(_ result: Data) -> Result<Bool, Error> {
         do {
             let resultMessage = try ResultMessage(serializedData: result)
-            if !resultMessage.error.isEmpty {
-                return .failure(DefaultCommandProtocolError.invalidChallengeResponse(message: resultMessage.error))
+            if resultMessage.success {
+                return .success(true)
+
             } else {
-                return .success(resultMessage.success)
+                return .failure(DefaultCommandProtocolError.invalidChallengeResponse)
             }
         } catch {
             print("Failed to transform protobuf result data into Result Message due to error \(error.localizedDescription)")
@@ -186,17 +240,19 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
     }
 
     private func transformIntoChallenge(_ data: Data) -> Data? {
-        var challengeMessage: ChallengeMessage?
-        do {
-            try challengeMessage = ChallengeMessage(serializedData: data)
-            guard let challengeData = challengeMessage?.challenge else {
-                return nil
-            }
-            return challengeData
-        } catch {
-            print("Unable to transform data into Challenge Message with error: \(error.localizedDescription)")
-            return nil
-        }
+        //to-do: Reimplement when proto file is updated to include challenge response
+//        var challengeMessage: ChallengeMessage?
+//        do {
+//            try challengeMessage = ChallengeMessage(serializedData: data)
+//            guard let challengeData = challengeMessage?.challenge else {
+//                return nil
+//            }
+//            return challengeData
+//        } catch {
+//            print("Unable to transform data into Challenge Message with error: \(error.localizedDescription)")
+//            return nil
+//        }
+        return nil
     }
 
     private func sign(_ challenge: Data, with signingKey: String) -> Data? {

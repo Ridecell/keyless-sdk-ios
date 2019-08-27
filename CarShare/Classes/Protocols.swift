@@ -15,24 +15,23 @@ public struct BLeSocketConfiguration {
 }
 
 public struct Reservation: Codable {
-    public let certificate: String
+    public let token: Data
     public let privateKey: String
 
-    public init(certificate: String, privateKey: String) {
-        self.certificate = certificate
+    public init(token: Data, privateKey: String) {
+        self.token = token
         self.privateKey = privateKey
     }
 }
 
+public enum Command {
+    case checkIn
+    case checkOut
+    case lock
+    case unlock
+    case locate
+}
 public struct Message {
-
-    public enum Command {
-        case checkIn
-        case checkOut
-        case lock
-        case unlock
-        case locate
-    }
 
     let command: Command
     let reservation: Reservation
@@ -102,8 +101,8 @@ protocol CommandProtocol: AnyObject {
 protocol CommandProtocolDelegate: AnyObject {
     func protocolDidOpen(_ protocol: CommandProtocol)
     func protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error)
-    func `protocol`(_ protocol: CommandProtocol, command: Message.Command, didSucceed response: Data)
-    func `protocol`(_ protocol: CommandProtocol, command: Message.Command, didFail error: Error)
+    func `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data)
+    func `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error)
 }
 
 public protocol CarShareClient: AnyObject {
@@ -111,18 +110,14 @@ public protocol CarShareClient: AnyObject {
 
     func connect(_ configuration: BLeSocketConfiguration)
     func disconnect()
-    func checkIn(with reservation: Reservation)
-    func checkOut(with reservation: Reservation)
-    func lock(with reservation: Reservation)
-    func unlock(with reservation: Reservation)
-    func locate(with reservation: Reservation)
+    func execute(_ command: Command, with reservation: Reservation)
 }
 
 public protocol CarShareClientDelegate: AnyObject {
     func clientDidConnect(_ client: CarShareClient)
     func clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error)
-    func clientCommandDidSucceed(_ client: CarShareClient, command: Message.Command)
-    func clientCommandDidFail(_ client: CarShareClient, command: Message.Command, error: Error)
+    func clientCommandDidSucceed(_ client: CarShareClient, command: Command)
+    func clientCommandDidFail(_ client: CarShareClient, command: Command, error: Error)
 }
 
 public protocol Signer: AnyObject {
