@@ -83,6 +83,9 @@ MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRx
     @IBAction func didTapDisconnect(_ sender: Any) {
         deviceHardwareIDTextField.isEnabled = true
         client.disconnect()
+        let alert = UIAlertController(title: "Disconnected", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func didTapCheckIn() {
@@ -128,7 +131,7 @@ MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRx
 
     func clientDidConnect(_ client: CarShareClient) {
         deviceHardwareIDTextField.isEnabled = false
-        guard let reservation = reservation else {
+        guard let _ = reservation else {
             presentInvalidReservationAlert()
             return
         }
@@ -139,6 +142,12 @@ MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRx
 
     func clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error) {
         deviceHardwareIDTextField.isEnabled = true
+        let alert = UIAlertController(title: "Disconnected with error: \(String(describing: error))", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Retry", style: .default) { _ in
+            self.didTapConnect(self)
+        })
+        self.present(alert, animated: true, completion: nil)
         print("SOMETHING WENT WRONG: \(error)")
     }
     
