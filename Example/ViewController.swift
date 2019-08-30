@@ -169,14 +169,14 @@ MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRx
         "deviceHardwareId": \(deviceHardwareId),
         "account": {
         "id": 23,
-        "permissions": 15
+        "permissions": 3301
         },
         "reservationStartTime": 1564625640,
         "reservationEndTime": 1567142040,
         "gracePeriodSeconds": 900,
         "securePeriodSeconds": 900,
         "endBookConditions": {
-        "endBookVehicleFlags": 63,
+        "endBookVehicleFlags": 9,
         "homePoint": {
         "latitude": 43.4509125,
         "longitude": -80.51358
