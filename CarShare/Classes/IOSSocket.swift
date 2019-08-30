@@ -77,10 +77,18 @@ class IOSSocket: NSObject, Socket {
 }
 
 extension IOSSocket: CBPeripheralManagerDelegate {
+
+    struct BluetoothOffError: Swift.Error {}
+
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+
+        if peripheral.state == .poweredOff {
+            delegate?.socketDidCloseUnexpectedly(self, error: BluetoothOffError())
+        }
         guard peripheral.state == .poweredOn else {
             return
         }
+
         guard case let .initializing(advertisingData, serviceId, notifyCharacteristicId, writeCharacteristicId) = state else {
             return
         }
@@ -100,6 +108,7 @@ extension IOSSocket: CBPeripheralManagerDelegate {
         state = .advertising(notifyCharacteristic: notifyCharacteristic, writeCharacteristic: writeCharacteristic)
         peripheral.add(service)
         peripheral.startAdvertising(advertisingData)
+
     }
 
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {

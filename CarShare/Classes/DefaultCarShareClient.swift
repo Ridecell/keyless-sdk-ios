@@ -79,6 +79,7 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
 
     func protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error) {
         delegate?.clientDidDisconnectUnexpectedly(self, error: error)
+        disconnect()
     }
 
     func `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) {
