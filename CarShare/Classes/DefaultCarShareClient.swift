@@ -42,37 +42,6 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
         commandProtocol.send(message, challengeKey: reservation.privateKey)
     }
 
-    public func checkIn(with reservation: Reservation) {
-        let message = Message(command: .checkIn, reservation: reservation)
-        outgoingMessage = message
-        commandProtocol.send(message, challengeKey: reservation.privateKey)
-    }
-
-    public func checkOut(with reservation: Reservation) {
-        let message = Message(command: .checkOut, reservation: reservation)
-
-        outgoingMessage = message
-        commandProtocol.send(message, challengeKey: reservation.privateKey)
-    }
-
-    public func lock(with reservation: Reservation) {
-        let message = Message(command: .lock, reservation: reservation)
-        outgoingMessage = message
-        commandProtocol.send(message, challengeKey: reservation.privateKey)
-    }
-
-    public func unlock(with reservation: Reservation) {
-        let message = Message(command: .unlock, reservation: reservation)
-        outgoingMessage = message
-        commandProtocol.send(message, challengeKey: reservation.privateKey)
-    }
-
-    public func locate(with reservation: Reservation) {
-        let message = Message(command: .locate, reservation: reservation)
-        outgoingMessage = message
-        commandProtocol.send(message, challengeKey: reservation.privateKey)
-    }
-
     func protocolDidOpen(_ protocol: CommandProtocol) {
         delegate?.clientDidConnect(self)
     }

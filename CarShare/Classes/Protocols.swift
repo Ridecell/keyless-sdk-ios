@@ -28,8 +28,13 @@ public enum Command {
     case checkIn
     case checkOut
     case lock
-    case unlock
     case locate
+    case unlockDriver
+    case unlockAll
+    case openTrunk
+    case closeTrunk
+    case immobilize
+    case mobilize
 }
 public struct Message {
 
