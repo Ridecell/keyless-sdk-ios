@@ -96,30 +96,6 @@ MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRx
         client.execute(.checkIn, with: reservation)
     }
     
-    @IBAction func didTapLocate(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.locate, with: reservation)
-    }
-    
-    @IBAction func didTapUnlock(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.unlock, with: reservation)
-    }
-    
-    @IBAction func didTapLock(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.lock, with: reservation)
-    }
-    
     @IBAction func didTapCheckOut(_ sender: Any) {
         guard let reservation = reservation else {
             presentInvalidReservationAlert()
@@ -127,6 +103,72 @@ MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRx
         }
         client.execute(.checkOut, with: reservation)
     }
+
+    @IBAction func didTapLocate(_ sender: Any) {
+        guard let reservation = reservation else {
+            presentInvalidReservationAlert()
+            return
+        }
+        client.execute(.locate, with: reservation)
+    }
+
+    @IBAction func didTapLock(_ sender: Any) {
+        guard let reservation = reservation else {
+            presentInvalidReservationAlert()
+            return
+        }
+        client.execute(.lock, with: reservation)
+    }
+
+    @IBAction func didTapUnlockAll(_ sender: Any) {
+        guard let reservation = reservation else {
+            presentInvalidReservationAlert()
+            return
+        }
+        client.execute(.unlockAll, with: reservation)
+    }
+
+    @IBAction func didTapUnlockDriver(_ sender: Any) {
+        guard let reservation = reservation else {
+            presentInvalidReservationAlert()
+            return
+        }
+        client.execute(.unlockDriver, with: reservation)
+    }
+    
+    @IBAction func didTapOpenTrunk(_ sender: Any) {
+        guard let reservation = reservation else {
+            presentInvalidReservationAlert()
+            return
+        }
+        client.execute(.openTrunk, with: reservation)
+    }
+    
+    @IBAction func didTapCloseTrunk(_ sender: Any) {
+        guard let reservation = reservation else {
+            presentInvalidReservationAlert()
+            return
+        }
+        client.execute(.closeTrunk, with: reservation)
+    }
+    
+    @IBAction func didTapMobilize(_ sender: Any) {
+        guard let reservation = reservation else {
+            presentInvalidReservationAlert()
+            return
+        }
+        client.execute(.mobilize, with: reservation)
+    }
+    
+    @IBAction func didTapImmobilize(_ sender: Any) {
+        guard let reservation = reservation else {
+            presentInvalidReservationAlert()
+            return
+        }
+        client.execute(.immobilize, with: reservation)
+    }
+    
+    
     
 
     func clientDidConnect(_ client: CarShareClient) {

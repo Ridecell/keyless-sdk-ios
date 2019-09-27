@@ -212,7 +212,7 @@ struct DeviceToAppMessage {
     set {_uniqueStorage()._message = newValue}
   }
 
-  /// TODO: add context to this message 
+  /// TODO: add context to this message
   var result: ResultMessage {
     get {
       if case .result(let v)? = _storage._message {return v}
@@ -224,7 +224,7 @@ struct DeviceToAppMessage {
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Message: Equatable {
-    /// TODO: add context to this message 
+    /// TODO: add context to this message
     case result(ResultMessage)
 
   #if !swift(>=4.1)
@@ -271,8 +271,13 @@ struct DeviceCommandMessage {
   enum Command: SwiftProtobuf.Enum {
     typealias RawValue = Int
     case lock // = 1
+    case unlockDriver // = 2
     case unlockAll // = 4
+    case openTrunk // = 8
+    case closeTrunk // = 16
     case locate // = 32
+    case immobilize // = 64
+    case mobilize // = 128
     case checkin // = 1024
     case checkout // = 2048
 
@@ -283,8 +288,13 @@ struct DeviceCommandMessage {
     init?(rawValue: Int) {
       switch rawValue {
       case 1: self = .lock
+      case 2: self = .unlockDriver
       case 4: self = .unlockAll
+      case 8: self = .openTrunk
+      case 16: self = .closeTrunk
       case 32: self = .locate
+      case 64: self = .immobilize
+      case 128: self = .mobilize
       case 1024: self = .checkin
       case 2048: self = .checkout
       default: return nil
@@ -294,8 +304,13 @@ struct DeviceCommandMessage {
     var rawValue: Int {
       switch self {
       case .lock: return 1
+      case .unlockDriver: return 2
       case .unlockAll: return 4
+      case .openTrunk: return 8
+      case .closeTrunk: return 16
       case .locate: return 32
+      case .immobilize: return 64
+      case .mobilize: return 128
       case .checkin: return 1024
       case .checkout: return 2048
       }
@@ -389,8 +404,7 @@ struct DeviceReservationMessage {
   /// Clears the value of `account`. Subsequent reads from it will return its default value.
   mutating func clearAccount() {_uniqueStorage()._account = nil}
 
-  ///
-  ///  // Timestamp represented by seconds since Unix Epoch
+  /// Timestamp represented by seconds since Unix Epoch
   var reservationStartTime: UInt64 {
     get {return _storage._reservationStartTime ?? 0}
     set {_uniqueStorage()._reservationStartTime = newValue}
@@ -400,8 +414,7 @@ struct DeviceReservationMessage {
   /// Clears the value of `reservationStartTime`. Subsequent reads from it will return its default value.
   mutating func clearReservationStartTime() {_uniqueStorage()._reservationStartTime = nil}
 
-  ///
-  ///  // Timestamp represented by seconds since Unix Epoch
+  /// Timestamp represented by seconds since Unix Epoch
   var reservationEndTime: UInt64 {
     get {return _storage._reservationEndTime ?? 0}
     set {_uniqueStorage()._reservationEndTime = newValue}
@@ -872,8 +885,13 @@ extension DeviceCommandMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
 extension DeviceCommandMessage.Command: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "LOCK"),
+    2: .same(proto: "UNLOCK_DRIVER"),
     4: .same(proto: "UNLOCK_ALL"),
+    8: .same(proto: "OPEN_TRUNK"),
+    16: .same(proto: "CLOSE_TRUNK"),
     32: .same(proto: "LOCATE"),
+    64: .same(proto: "IMMOBILIZE"),
+    128: .same(proto: "MOBILIZE"),
     1024: .same(proto: "CHECKIN"),
     2048: .same(proto: "CHECKOUT"),
   ]
