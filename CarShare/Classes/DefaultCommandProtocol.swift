@@ -136,7 +136,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         self.outgoingCommand = nil
         delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
     }
-    //swiftlint:disable cyclomatic_complexity
+
     private func transformIntoProtobufMessage(_ message: Message) -> Data? {
         let reservationTransformer = ReservationTransformer()
         guard let tokenString = String(data: message.reservation.token, encoding: .utf8), let tokenObject = try? reservationTransformer.transform(tokenString) else {
@@ -163,10 +163,6 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
             deviceCommandMessage.command = .openTrunk
         case .closeTrunk:
             deviceCommandMessage.command = .closeTrunk
-        case .immobilize:
-            deviceCommandMessage.command = .immobilize
-        case .mobilize:
-            deviceCommandMessage.command = .mobilize
         }
 
         guard let deviceReservationMessage = generateDeviceReservationMessage(from: tokenObject) else {

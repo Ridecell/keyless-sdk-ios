@@ -25,23 +25,23 @@
                                 <rect key="frame" x="16" y="20" width="343" height="647"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Device Hardware ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VL4-xR-H0w">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="92.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="108"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="B6Y-0q-Lvb">
-                                        <rect key="frame" x="0.0" y="92.5" width="343" height="92.5"/>
+                                        <rect key="frame" x="0.0" y="108" width="343" height="107.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MiE-Lv-73V" userLabel="Connect">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="92.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="107.5"/>
                                                 <state key="normal" title="Connect"/>
                                                 <connections>
                                                     <action selector="didTapConnect:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7Wu-nb-zG9"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KhA-tz-xkk" userLabel="Disconnect">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="92.5"/>
+                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="107.5"/>
                                                 <state key="normal" title="Disconnect"/>
                                                 <connections>
                                                     <action selector="didTapDisconnect:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="lgO-by-8uO"/>
@@ -50,17 +50,17 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="P51-Jq-bfZ">
-                                        <rect key="frame" x="0.0" y="185" width="343" height="92.5"/>
+                                        <rect key="frame" x="0.0" y="215.5" width="343" height="108"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JGt-Z0-FuY">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="92.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="108"/>
                                                 <state key="normal" title="Check In"/>
                                                 <connections>
                                                     <action selector="didTapCheckIn" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gjt-Q1-lbV"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dpw-a1-L7d" userLabel="Check-Out">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="92.5"/>
+                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="108"/>
                                                 <state key="normal" title="Check Out"/>
                                                 <connections>
                                                     <action selector="didTapCheckOut:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="cAh-y0-AWF"/>
@@ -69,17 +69,17 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="m1O-pD-IFR">
-                                        <rect key="frame" x="0.0" y="277.5" width="343" height="92"/>
+                                        <rect key="frame" x="0.0" y="323.5" width="343" height="108"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VNI-AS-Wi5" userLabel="Locate">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="92"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="108"/>
                                                 <state key="normal" title="Locate"/>
                                                 <connections>
                                                     <action selector="didTapLocate:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ouj-m7-ET6"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3U0-Cb-njh" userLabel="Lock">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="92"/>
+                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="108"/>
                                                 <state key="normal" title="Lock"/>
                                                 <connections>
                                                     <action selector="didTapLock:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="zzd-3j-xbS"/>
@@ -88,17 +88,17 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="GQJ-dX-YEz">
-                                        <rect key="frame" x="0.0" y="369.5" width="343" height="92.5"/>
+                                        <rect key="frame" x="0.0" y="431.5" width="343" height="107.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ec-XS-zcF" userLabel="Unlock">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="92.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="107.5"/>
                                                 <state key="normal" title="Unlock All"/>
                                                 <connections>
                                                     <action selector="didTapUnlockAll:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gGY-Vq-CA4"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i6e-6T-U9e">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="92.5"/>
+                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="107.5"/>
                                                 <state key="normal" title="Unlock Driver"/>
                                                 <connections>
                                                     <action selector="didTapUnlockDriver:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="R14-fU-HO2"/>
@@ -107,39 +107,20 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Bhp-GO-cfx">
-                                        <rect key="frame" x="0.0" y="462" width="343" height="92.5"/>
+                                        <rect key="frame" x="0.0" y="539" width="343" height="108"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AbZ-6f-Aad">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="92.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="108"/>
                                                 <state key="normal" title="Open Trunk"/>
                                                 <connections>
                                                     <action selector="didTapOpenTrunk:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="53m-YK-T5V"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xz-Gj-7J9">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="92.5"/>
+                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="108"/>
                                                 <state key="normal" title="Close Trunk"/>
                                                 <connections>
                                                     <action selector="didTapCloseTrunk:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="BJ4-pP-uYi"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="aDa-uW-DLd">
-                                        <rect key="frame" x="0.0" y="554.5" width="343" height="92.5"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Itt-Je-TlI">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="92.5"/>
-                                                <state key="normal" title="Mobilize"/>
-                                                <connections>
-                                                    <action selector="didTapMobilize:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="CYc-06-rGd"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CF3-qf-r2p">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="92.5"/>
-                                                <state key="normal" title="Immobilize"/>
-                                                <connections>
-                                                    <action selector="didTapImmobilize:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ltZ-mb-CrK"/>
                                                 </connections>
                                             </button>
                                         </subviews>

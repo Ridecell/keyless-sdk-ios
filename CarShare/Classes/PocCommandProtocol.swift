@@ -108,7 +108,7 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         self.outgoingCommand = nil
         delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
     }
-    //swiftlint:disable cyclomatic_complexity
+
     private func transformIntoProtobufMessage(_ message: Message) -> Data? {
         let reservationTransformer = ReservationTransformer()
         guard let tokenString = String(data: message.reservation.token, encoding: .utf8), let tokenObject = try? reservationTransformer.transform(tokenString) else {
@@ -139,10 +139,6 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
                     return DeviceCommandMessage.Command.openTrunk
                 case .closeTrunk:
                     return DeviceCommandMessage.Command.closeTrunk
-                case .immobilize:
-                    return DeviceCommandMessage.Command.immobilize
-                case .mobilize:
-                    return DeviceCommandMessage.Command.mobilize
                 }
             }()
             populator.reservation = deviceReservationMessage
