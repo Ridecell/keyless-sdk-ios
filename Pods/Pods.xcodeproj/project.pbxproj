@@ -98,6 +98,7 @@
 		BA892E036BF98AEFC995CA85190A65E8 /* JSONEncodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C7C2810A7A30A8DF2F4EEFFCA5881B /* JSONEncodingError.swift */; };
 		BB5B994123157EFC00559B1D /* PocCommandProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5B993F23157EFB00559B1D /* PocCommandProtocol.swift */; };
 		BB69945F233D40AB009EC99D /* carshare_messaging.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB69945E233D40AB009EC99D /* carshare_messaging.pb.swift */; };
+		BBA894EC234B87280012D6A8 /* CarshareToken.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA894EB234B87280012D6A8 /* CarshareToken.pb.swift */; };
 		C00057D7DF8FA44AD2FD9A8CCD073B14 /* field_mask.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605BD375E9389AD74A7762FF7A71F254 /* field_mask.pb.swift */; };
 		C4AC079C642BBEC28400473A4CE56252 /* FieldTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E09F67F60117DAD0470B5411B2747 /* FieldTag.swift */; };
 		C82A53A123110AA0B6ED46DDB0F7F70C /* NameMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9451D07723123F25C2BF5B24BCE192A /* NameMap.swift */; };
@@ -268,6 +269,7 @@
 		BB1076DFA7492F518E3066BA60C4777E /* BinaryDecodingError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryDecodingError.swift; path = Sources/SwiftProtobuf/BinaryDecodingError.swift; sourceTree = "<group>"; };
 		BB5B993F23157EFB00559B1D /* PocCommandProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PocCommandProtocol.swift; path = CarShare/Classes/PocCommandProtocol.swift; sourceTree = "<group>"; };
 		BB69945E233D40AB009EC99D /* carshare_messaging.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = carshare_messaging.pb.swift; path = CarShare/Classes/carshare_messaging.pb.swift; sourceTree = "<group>"; };
+		BBA894EB234B87280012D6A8 /* CarshareToken.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarshareToken.pb.swift; path = CarShare/Classes/CarshareToken.pb.swift; sourceTree = "<group>"; };
 		BCAA4A0275F325C81D0B0BFA8B13F4C8 /* Varint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Varint.swift; path = Sources/SwiftProtobuf/Varint.swift; sourceTree = "<group>"; };
 		BD563ADBE9A07A630A29FAD4F292E4A2 /* EncryptionKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EncryptionKey.swift; path = CarShare/Classes/EncryptionKey.swift; sourceTree = "<group>"; };
 		BF4D3B8E1DBF90F068BF25413088C05F /* WireFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WireFormat.swift; path = Sources/SwiftProtobuf/WireFormat.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				682AC807D51BD6AAD1916C7FEC15164E /* AsyncExecuter.swift */,
 				F9E34C3AC0A8D98D65D9FA9655284AAF /* ChallengeSigner.swift */,
 				BB69945E233D40AB009EC99D /* carshare_messaging.pb.swift */,
+				BBA894EB234B87280012D6A8 /* CarshareToken.pb.swift */,
 				BB5B993F23157EFB00559B1D /* PocCommandProtocol.swift */,
 				679E3AFECEDD64A6AF5AE4451B25246A /* DefaultCarShareClient.swift */,
 				60B727F45DBCAE65B5FAA13482327639 /* DefaultCommandProtocol.swift */,
@@ -802,6 +805,7 @@
 				321FBCC686CEBFD092F2F418CBDF893F /* DefaultCommandProtocol.swift in Sources */,
 				BB5B994123157EFC00559B1D /* PocCommandProtocol.swift in Sources */,
 				1D59236D752D01A3D50FB62BD11E6223 /* DefaultSecurityProtocol.swift in Sources */,
+				BBA894EC234B87280012D6A8 /* CarshareToken.pb.swift in Sources */,
 				EBBB6A2A0E8BBD416A4AA3876F0611AC /* DefaultTransportProtocol.swift in Sources */,
 				71B09F297E7D490E48D472A272835BF1 /* EncryptionKey.swift in Sources */,
 				F424D4891B52155941474FDD3DBF8F87 /* IOSSocket.swift in Sources */,

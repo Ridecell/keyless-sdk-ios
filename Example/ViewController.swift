@@ -11,17 +11,8 @@ import CarShare
 import CommonCrypto
 
 class ViewController: UIViewController, CarShareClientDelegate {
-    
-    private let simulator = Go9CarShareSimulator()
 
     private let client = DefaultCarShareClient()
-    
-    private func generateConfig(deviceHardwareId: String) -> BLeSocketConfiguration {
-        return BLeSocketConfiguration(
-            serviceID: serviceUUID(deviceHardwareId: deviceHardwareId),
-            notifyCharacteristicID: "430F2EA3-C765-4051-9134-A341254CFD00",
-            writeCharacteristicID: "906EE7E0-D8DB-44F3-AF54-6B0DFCECDF1C")
-    }
     
     private func serviceUUID(deviceHardwareId: String) -> String {
         //SHA-256 hash of device ID and take the first 32 bytes of this.
@@ -38,33 +29,25 @@ class ViewController: UIViewController, CarShareClientDelegate {
         }
         return NSUUID(uuidBytes: firstSixteen).uuidString
     }
-    
-    private var reservation: Reservation? {
-        if let token = generateReservationJson(with: deviceHardwareIDTextField.text ?? "No ID Provided") {
-            return Reservation(token: token, privateKey: """
------BEGIN RSA PRIVATE KEY-----
-MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRxIoM58FF4PQUI2oEXGlVjn8lKYBqXwydvXQZI1gyizwAx1oDzzIIisixQmZv/+CnUGU/+uyPSdUvDEVBf4ug58Ffzafqdb3c5Mwf3fCM1F+9rzU3K8AQbSvPleMGUx3HH/DUGHmAVNy7EbAoVZmIYYaBlMJF+12eAUl9CVwWtR6JrqmAJeLjtx6op7I7KQf65nfq1/m/kjy4KqQ9DeUTqimf5w7cAN2YTUfYtFo5RXvgSDrdG36DwUFW1BApippruytHFDh+JhK7xX/F/vdrgVwIDAQABAoIBAFE3J5RHs/EDpo4v9UDUR287lYt9gAPdfKEZmA35CtuQNO/JV18PU/i/dL2ubt42plEM+fCZFVFKZwj02JpRgz1W1ONjcxbPhfg6ZAJhuShOszzzcg3nw/fhjuSUS+R5EefRc3igXt1d+y+DC9RV2bS7/Su+VfKimqDv8tVpCjUwEwGp2o/GGKbANxOtiRlwOKzDqGU6mZxwBUGlnD944laeLPJjoBEniS7UCZdJT8P8XsRG9mKbno1trjGtD459EUQnflJYgoGpodjoftrd5JokuWd4OF5ENq9MrYhN2IAf8KryC+8ogoV9QG1pM/wY/FAdkroOm4jC0AeYNKhaetECgYEA+P8nKCCmeXxn5fLOItR5BDX+VqV1/6rn8yUHof11F5Dtr0r2X+EZr7+acR+D1Lt9aN4cbM1+R0SZjpYsy4Pzv6rQPASY4+MSxTitWwtLfowCPFUdxNu4GJ5vrbs6zljtbLM79YHp000S9WbmfRcjMKq9ly7eTmNJ6kzjWBLCgxkCgYEAyo0Qn0nlmgdkSbLXE9kXUA81t6kFiUgTSuOo+XpoKINMFdmfm6cLh8KPrLHzY/eknE36HRXKa8D8MzoAT061ibhCSK+ShkQVP9y9vzK8W3COKrOrTZ9PcUq9373qVd+AIBXW4YFz5aW2DB9Rf6X9x4iV2mV0D79/8xYy7VKB3O8CgYBTYFUDSdOU0ISV6jT+UrlnIJFXADa/8sGSmG6y3oUr6/q6/NX9Cwon4Hfds1jYjiOTTvSjtje3s4/bwAul5jxjjNYHkt6DSJELe0wJNYIFEOrauwGp3o0JqVvqB8zMNdji0i2cqvDaMW/MvrUlY+8Dp9iuXCJSi0q/6xkhb760WQKBgCtXCdJ7lmRh5oSafsjhb8qSppTY1rVsNayVkAdpuLXKelJGkY9Vq/Ltn559KS4fxBop2TW1/u0ViyFO7NgLaG7CfXReFQUjtkRG8Fbj/Ue3isP6U9I1H2OHcZ9ZXLXpL9otsh/oeisOTSjE3sRoeSfjwuTLRo1EFZWnD1iWifEDAoGBAIhpuaFCrlYAi+G2Oda+yWlg6GwsaOaXaGF1evwVb3aOMFBV8d2FDus+OyiFXL9iRkziJBf2yVUj5wl1FHZyFfsCeSNwfoK06E5JydiEARR6sevUBBjzh1LjjjQENFh8btkrBUKOOMagXi09VRFRoSk7EaSyIb256UZkWkF3Xile
------END RSA PRIVATE KEY-----
-""")
-        }
-        print("Failed to generate reservation")
-        return nil
-        
-    }
+
+    private let reservation = "Reservation"
+
+//    private var reservation: Reservation? {
+//        if let token = generateReservationJson(with: deviceHardwareIDTextField.text ?? "No ID Provided") {
+//            return Reservation(token: token, privateKey: """
+//-----BEGIN RSA PRIVATE KEY-----
+//MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRxIoM58FF4PQUI2oEXGlVjn8lKYBqXwydvXQZI1gyizwAx1oDzzIIisixQmZv/+CnUGU/+uyPSdUvDEVBf4ug58Ffzafqdb3c5Mwf3fCM1F+9rzU3K8AQbSvPleMGUx3HH/DUGHmAVNy7EbAoVZmIYYaBlMJF+12eAUl9CVwWtR6JrqmAJeLjtx6op7I7KQf65nfq1/m/kjy4KqQ9DeUTqimf5w7cAN2YTUfYtFo5RXvgSDrdG36DwUFW1BApippruytHFDh+JhK7xX/F/vdrgVwIDAQABAoIBAFE3J5RHs/EDpo4v9UDUR287lYt9gAPdfKEZmA35CtuQNO/JV18PU/i/dL2ubt42plEM+fCZFVFKZwj02JpRgz1W1ONjcxbPhfg6ZAJhuShOszzzcg3nw/fhjuSUS+R5EefRc3igXt1d+y+DC9RV2bS7/Su+VfKimqDv8tVpCjUwEwGp2o/GGKbANxOtiRlwOKzDqGU6mZxwBUGlnD944laeLPJjoBEniS7UCZdJT8P8XsRG9mKbno1trjGtD459EUQnflJYgoGpodjoftrd5JokuWd4OF5ENq9MrYhN2IAf8KryC+8ogoV9QG1pM/wY/FAdkroOm4jC0AeYNKhaetECgYEA+P8nKCCmeXxn5fLOItR5BDX+VqV1/6rn8yUHof11F5Dtr0r2X+EZr7+acR+D1Lt9aN4cbM1+R0SZjpYsy4Pzv6rQPASY4+MSxTitWwtLfowCPFUdxNu4GJ5vrbs6zljtbLM79YHp000S9WbmfRcjMKq9ly7eTmNJ6kzjWBLCgxkCgYEAyo0Qn0nlmgdkSbLXE9kXUA81t6kFiUgTSuOo+XpoKINMFdmfm6cLh8KPrLHzY/eknE36HRXKa8D8MzoAT061ibhCSK+ShkQVP9y9vzK8W3COKrOrTZ9PcUq9373qVd+AIBXW4YFz5aW2DB9Rf6X9x4iV2mV0D79/8xYy7VKB3O8CgYBTYFUDSdOU0ISV6jT+UrlnIJFXADa/8sGSmG6y3oUr6/q6/NX9Cwon4Hfds1jYjiOTTvSjtje3s4/bwAul5jxjjNYHkt6DSJELe0wJNYIFEOrauwGp3o0JqVvqB8zMNdji0i2cqvDaMW/MvrUlY+8Dp9iuXCJSi0q/6xkhb760WQKBgCtXCdJ7lmRh5oSafsjhb8qSppTY1rVsNayVkAdpuLXKelJGkY9Vq/Ltn559KS4fxBop2TW1/u0ViyFO7NgLaG7CfXReFQUjtkRG8Fbj/Ue3isP6U9I1H2OHcZ9ZXLXpL9otsh/oeisOTSjE3sRoeSfjwuTLRo1EFZWnD1iWifEDAoGBAIhpuaFCrlYAi+G2Oda+yWlg6GwsaOaXaGF1evwVb3aOMFBV8d2FDus+OyiFXL9iRkziJBf2yVUj5wl1FHZyFfsCeSNwfoK06E5JydiEARR6sevUBBjzh1LjjjQENFh8btkrBUKOOMagXi09VRFRoSk7EaSyIb256UZkWkF3Xile
+//-----END RSA PRIVATE KEY-----
+//""")
+//        }
+//        print("Failed to generate reservation")
+//        return nil
+//
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         client.delegate = self
-    }
-
-    @IBAction func didTapSimulator() {
-        client.disconnect()
-        simulator.stop()
-        let config = generateConfig(deviceHardwareId: deviceHardwareIDTextField.text ?? "No Device Hardware ID")
-        simulator.start(
-            serviceID: config.serviceID,
-            notifyCharacteristicID: config.notifyCharacteristicID,
-            writeCharacteristicID: config.writeCharacteristicID)
     }
 
     @IBOutlet weak var deviceHardwareIDTextField: UITextField!
@@ -77,7 +60,7 @@ MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRx
             self.present(alert, animated: true, completion: nil)
             return
         }
-        client.connect(generateConfig(deviceHardwareId: deviceHardwareID))
+        try? client.connect("token")
     }
     
     @IBAction func didTapDisconnect(_ sender: Any) {
@@ -89,94 +72,39 @@ MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRx
     }
     
     @IBAction func didTapCheckIn() {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.checkIn, with: reservation)
+        try? client.execute(.checkIn, with: reservation)
     }
     
     @IBAction func didTapCheckOut(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.checkOut, with: reservation)
+        try? client.execute(.checkOut, with: reservation)
     }
 
     @IBAction func didTapLocate(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.locate, with: reservation)
+        try? client.execute(.locate, with: reservation)
     }
 
     @IBAction func didTapLock(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.lock, with: reservation)
+        try? client.execute(.lock, with: reservation)
     }
 
     @IBAction func didTapUnlockAll(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.unlockAll, with: reservation)
+        try? client.execute(.unlockAll, with: reservation)
     }
 
     @IBAction func didTapUnlockDriver(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.unlockDriver, with: reservation)
+        try? client.execute(.unlockDriver, with: reservation)
     }
     
     @IBAction func didTapOpenTrunk(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.openTrunk, with: reservation)
+        try? client.execute(.openTrunk, with: reservation)
     }
     
     @IBAction func didTapCloseTrunk(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.closeTrunk, with: reservation)
+        try? client.execute(.closeTrunk, with: reservation)
     }
-    
-    @IBAction func didTapMobilize(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.mobilize, with: reservation)
-    }
-    
-    @IBAction func didTapImmobilize(_ sender: Any) {
-        guard let reservation = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
-        client.execute(.immobilize, with: reservation)
-    }
-    
-    
-    
 
     func clientDidConnect(_ client: CarShareClient) {
         deviceHardwareIDTextField.isEnabled = false
-        guard let _ = reservation else {
-            presentInvalidReservationAlert()
-            return
-        }
         let alert = UIAlertController(title: "Connected", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)

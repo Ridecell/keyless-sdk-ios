@@ -33,9 +33,8 @@ public enum Command {
     case unlockAll
     case openTrunk
     case closeTrunk
-    case immobilize
-    case mobilize
 }
+
 public struct Message {
 
     let command: Command
@@ -113,9 +112,9 @@ protocol CommandProtocolDelegate: AnyObject {
 public protocol CarShareClient: AnyObject {
     var delegate: CarShareClientDelegate? { get set }
 
-    func connect(_ configuration: BLeSocketConfiguration)
+    func connect(_ reservationToken: String) throws
     func disconnect()
-    func execute(_ command: Command, with reservation: Reservation)
+    func execute(_ command: Command, with reservationToken: String) throws
 }
 
 public protocol CarShareClientDelegate: AnyObject {
