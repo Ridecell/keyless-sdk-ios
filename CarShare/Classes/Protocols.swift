@@ -109,14 +109,6 @@ protocol CommandProtocolDelegate: AnyObject {
     func `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error)
 }
 
-public protocol CarShareClient: AnyObject {
-    var delegate: CarShareClientDelegate? { get set }
-
-    func connect(_ reservationToken: String) throws
-    func disconnect()
-    func execute(_ command: Command, with reservationToken: String) throws
-}
-
 public protocol CarShareClientDelegate: AnyObject {
     func clientDidConnect(_ client: CarShareClient)
     func clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error)

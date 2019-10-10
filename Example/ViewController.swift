@@ -12,59 +12,21 @@ import CommonCrypto
 
 class ViewController: UIViewController, CarShareClientDelegate {
 
-    private let client = DefaultCarShareClient()
-    
-    private func serviceUUID(deviceHardwareId: String) -> String {
-        //SHA-256 hash of device ID and take the first 32 bytes of this.
-        
-        let deviceId = Int(deviceHardwareId)!.reverseBytes().bytes
-        var hashBytes = [UInt8](repeating: 0, count:Int(CC_SHA256_DIGEST_LENGTH))
-        CC_SHA256(deviceId, CC_LONG(deviceId.count), &hashBytes)
-        var firstSixteen: [UInt8] = []
-        for byte in hashBytes {
-            firstSixteen.append(byte)
-            if firstSixteen.count == 16 {
-                break
-            }
-        }
-        return NSUUID(uuidBytes: firstSixteen).uuidString
-    }
+    private let client = CarShareClient()
 
-    private let reservation = "Reservation"
-
-//    private var reservation: Reservation? {
-//        if let token = generateReservationJson(with: deviceHardwareIDTextField.text ?? "No ID Provided") {
-//            return Reservation(token: token, privateKey: """
-//-----BEGIN RSA PRIVATE KEY-----
-//MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRxIoM58FF4PQUI2oEXGlVjn8lKYBqXwydvXQZI1gyizwAx1oDzzIIisixQmZv/+CnUGU/+uyPSdUvDEVBf4ug58Ffzafqdb3c5Mwf3fCM1F+9rzU3K8AQbSvPleMGUx3HH/DUGHmAVNy7EbAoVZmIYYaBlMJF+12eAUl9CVwWtR6JrqmAJeLjtx6op7I7KQf65nfq1/m/kjy4KqQ9DeUTqimf5w7cAN2YTUfYtFo5RXvgSDrdG36DwUFW1BApippruytHFDh+JhK7xX/F/vdrgVwIDAQABAoIBAFE3J5RHs/EDpo4v9UDUR287lYt9gAPdfKEZmA35CtuQNO/JV18PU/i/dL2ubt42plEM+fCZFVFKZwj02JpRgz1W1ONjcxbPhfg6ZAJhuShOszzzcg3nw/fhjuSUS+R5EefRc3igXt1d+y+DC9RV2bS7/Su+VfKimqDv8tVpCjUwEwGp2o/GGKbANxOtiRlwOKzDqGU6mZxwBUGlnD944laeLPJjoBEniS7UCZdJT8P8XsRG9mKbno1trjGtD459EUQnflJYgoGpodjoftrd5JokuWd4OF5ENq9MrYhN2IAf8KryC+8ogoV9QG1pM/wY/FAdkroOm4jC0AeYNKhaetECgYEA+P8nKCCmeXxn5fLOItR5BDX+VqV1/6rn8yUHof11F5Dtr0r2X+EZr7+acR+D1Lt9aN4cbM1+R0SZjpYsy4Pzv6rQPASY4+MSxTitWwtLfowCPFUdxNu4GJ5vrbs6zljtbLM79YHp000S9WbmfRcjMKq9ly7eTmNJ6kzjWBLCgxkCgYEAyo0Qn0nlmgdkSbLXE9kXUA81t6kFiUgTSuOo+XpoKINMFdmfm6cLh8KPrLHzY/eknE36HRXKa8D8MzoAT061ibhCSK+ShkQVP9y9vzK8W3COKrOrTZ9PcUq9373qVd+AIBXW4YFz5aW2DB9Rf6X9x4iV2mV0D79/8xYy7VKB3O8CgYBTYFUDSdOU0ISV6jT+UrlnIJFXADa/8sGSmG6y3oUr6/q6/NX9Cwon4Hfds1jYjiOTTvSjtje3s4/bwAul5jxjjNYHkt6DSJELe0wJNYIFEOrauwGp3o0JqVvqB8zMNdji0i2cqvDaMW/MvrUlY+8Dp9iuXCJSi0q/6xkhb760WQKBgCtXCdJ7lmRh5oSafsjhb8qSppTY1rVsNayVkAdpuLXKelJGkY9Vq/Ltn559KS4fxBop2TW1/u0ViyFO7NgLaG7CfXReFQUjtkRG8Fbj/Ue3isP6U9I1H2OHcZ9ZXLXpL9otsh/oeisOTSjE3sRoeSfjwuTLRo1EFZWnD1iWifEDAoGBAIhpuaFCrlYAi+G2Oda+yWlg6GwsaOaXaGF1evwVb3aOMFBV8d2FDus+OyiFXL9iRkziJBf2yVUj5wl1FHZyFfsCeSNwfoK06E5JydiEARR6sevUBBjzh1LjjjQENFh8btkrBUKOOMagXi09VRFRoSk7EaSyIb256UZkWkF3Xile
-//-----END RSA PRIVATE KEY-----
-//""")
-//        }
-//        print("Failed to generate reservation")
-//        return nil
-//
-//    }
+    private let reservation = "CiQ0MEEyOUZFOC02ODY3LUY1RTAtMDVFNi1FOTM2QkQ0RUQ0QUIStAxNSUlFb3dJQkFBS0NBUUVBdzRKZTZDS2dXdUlKWWNDTzY4bjI5RitJdHg1RWZDK1VISHpVd0doZ2tkeWJxTWNaOWsrN0ZNV2VqTXJUWk8xZ3FZWFNWRWR2WElwR3R1N1ZLNFMwZDltWXpjbHVwL25mVFdHd0MwOUNCR0VYR05Vc2RXRXltZlkxemE3S09YRjVPRUQ3elpBaytKRDlzcjBUZGgvaE5oWWIrS3Y1OEsvZlduS1NYZHFSclN1SWllVG05NUZJY1hUUHVoRGpnUyswWVlUWGk5SFNnQ0ZKUEV5ckZOOEc5UExZSGlJZmZRZjV3WE9XNVZjRzFNa1NGZktyMm9saVkzWnNhS1hWRDBxV2Y4dlVHeEZ0YzZBTGlPM0JFRHlGc0ZYVTM0TzVOL1N3NG9NNDNhdkFmZTYrQi8zOE93bTNhRXNyeUxXOEh0SmlLdTl5a0dleEVFd2cvMUlyV0FNS1pRSURBUUFCQW9JQkFCaVhoLytVQjI2WEd3NEFMaG9May9RbUppaStkbWZXaGo5VkZsL0RZVTVIblE3TVNJQTZoREkzTDF2UFVXclREd01UMGFLSFA4TTRvMjkwT0QwYW1xYXVxTEZONG96ZmVjNmVlSW5icE5hdkxid1NhRjYxWkt1SUZEbDBnSHhjUVI2cDBlS0gvSmFGaWx2V3U2RnluaDN6QnY2dkJ5Zld2M1g5amxxZTJROGFmKy9PUCtXSDVmaW9WWHVJVXIvWEdLLzZ3UGgwNjZjaXpabXM0QnBKaUxnMXM0S2tGaDJTcGM5WHo2U0dMY3ZBc0Nod1pla3pyZ2lUQndOZ1BUdmxUSzkvdkpydERoUTF3bnhUOG1jemVHa2RiU1V2Nm5YVTBMakE1TjdHMUkydDFCcmRrcFhRblo4dDdOejduUERZT2NaTFoybVFGbjR5VldXZUpXN2VWbkVDZ1lFQTRpZnBQRkVxZENhUmZpa0tZS3Q5dGRPcytDREUrNFhTRzVSVHMza2c0UVZ6Zk82aTdvU2tmR1ZzbmJsQUFTY0dLb2NkbVJsZjFpUzkxQVI5V0Vub25jNGgwVmx2UExZOTd0cjJKSnVndmJiZW9PVmh3bzZtRDVteXVkaExMc3EyTjVJQllmR2lyUDArbFhoWkh3M0QzTmJHQW9zNXlabnFrZ1BmK3hmNVh4a0NnWUVBM1U4a2YxSGtlZytvTTVaWGdqbGUwRFBWTkIwUE9rSVVCdlpxNmdCWEo2TFBhSmN2aXhvUE1mVnpGMGp5QXE4ZzFSdUNPVXBZQzRmV2I2cDVUZFBhYWpTWDZ3cC9wRTFIMFc1ZWdRT1dyMGlGUno0MzVpM2JHc2k1dHJKb2ZrNWJ5MjF3NzNVNjVmZGFhTHAyREwyclkrbkhPRzdudit1K0VWb0Zvb3Y1U3kwQ2dZQnF1dTB1d3h0bS80Q3dhb3YwUFZxeGdmbGlqSXlLSzRpUjdYbG0vT1pRYS9NcDViRk5JWnBDL3RhNHhPRjQ2Y0xXTlRmNXRlanR0aDlFUE80dXlZcVhWdDNNNEFsSVBMV1QwUkJURElOYXBVQUI3TjhySTRrcFdaN29hRFJyRzgzTkFnSFhDR04rZ25HVHR0MVFjMzJZN2w4NmVoeEdrWFlMZlBxcWxKRGltUUtCZ1FESEwvWmZpZXVrV1BkQkJ5M1lEWjdpc2VSUk5WNkJSdndUa0RLR1Rxd2pCb3k3VEdnRVFQNHdMd1RaamxRVVNsKzRyenUwS00rNkFSYm1CbitMcHdSTTF1MXRKVlBoSTVWaVVINUtqRnBSaFdvL3h5WTB6RTBLZkdONnBuVWFTWmloTGUyWitOOThIL2VGajEyMDlmbU93ZGtIVi9yS2FIbjMwQmlHUm9tb09RS0JnQTc5Ky9iN1RjZDBTZmZXMklHSUwrM2gyUy9veTd3U21xR1BYWlNuaEN3NXJsb0tFMEJSRElPQ1pvTHljb0dBeldUZ3FSbEhMQ0NlRnhpakpNUkZZa1dMWjc5YmtaTEJJTjdOWWJRQzJDMURXY0w1U0tTQnBpQ21pcHdnY3c1djRDMkJNS0I2L0UyR0VVbkNZZjQ5b21DRDJvRENBSndPMmFXMUFKMk9nQWRvGoACw4Je6CKgWuIJYcCO68n29F+Itx5EfC+UHHzUwGhgkdybqMcZ9k+7FMWejMrTZO1gqYXSVEdvXIpGtu7VK4S0d9mYzclup/nfTWGwC09CBGEXGNUsdWEymfY1za7KOXF5OED7zZAk+JD9sr0Tdh/hNhYb+Kv58K/fWnKSXdqRrSuIieTm95FIcXTPuhDjgS+0YYTXi9HSgCFJPEyrFN8G9PLYHiIffQf5wXOW5VcG1MkSFfKr2oliY3ZsaKXVD0qWf8vUGxFtc6ALiO3BEDyFsFXU34O5N/Sw4oM43avAfe6+B/38Owm3aEsryLW8HtJiKu9ykGexEEwg/1IrWAMKZSKAApWoyqmq4I18lz9mTjxN8sB+484YwY9kwWqFzI1ccK2Qx6gw15CVeXNbhU+D4WT4dd5wW9BjIToTTWv9xYWEtmWJDloit68tidXzMV1oP7abjrHRxIBn6eOaMgNZ/3jiAFBUx4HVKcUa4Dcst0qO9stFSwPcOmEE8jQ53vgmgxawfC7qu1OXuZCh23RH9HsbTTE2BV8lLNZVGbdYuID+3bJCitm1HzWJdCmHWvcLtdT0OEjXqXBKDkIJo495zzMlIXElSfr7yCghuj7UPQFdlB/kE2o0WYGZHcskcpvNm51Aa02P6gkgONy4T2X5k9pFaw8QAgUAK/GsYETx5f6o3YUq4gIKgALDgl7oIqBa4glhwI7ryfb0X4i3HkR8L5QcfNTAaGCR3Juoxxn2T7sUxZ6MytNk7WCphdJUR29cika27tUrhLR32ZjNyW6n+d9NYbALT0IEYRcY1Sx1YTKZ9jXNrso5cXk4QPvNkCT4kP2yvRN2H+E2Fhv4q/nwr99acpJd2pGtK4iJ5Ob3kUhxdM+6EOOBL7RhhNeL0dKAIUk8TKsU3wb08tgeIh99B/nBc5blVwbUyRIV8qvaiWJjdmxopdUPSpZ/y9QbEW1zoAuI7cEQPIWwVdTfg7k39LDigzjdq8B97r4H/fw7CbdoSyvItbwe0mIq73KQZ7EQTCD/UitYAwplEKC0iaXXLRoQJ/RDR+FF1U+fsyNJBjDXjyDth4yIAioNCNOL64IOEgUN/w8AADDAr5uj1y04gL3SpNctQIQHSIQHUhsKBQ0/AAAAEgoNAACAQBUAAOBAGPQDJQAAgD4ygAJY6TImM4e48/GTS+TDA5wqQdUSWWwAsYdQeZ/YU2alVdcLdgKPJVDeXNIw+GTLjUh+vILzyM6cc49tFQXyjfG5Yv3IgNqTe/drJkmQIhigfZqQrQWCW/N9XZcI/5IY3t4P7oQ22bo5tDfsxe0DH0hssocOLllh5ej3PmtP8cFev2LcU2I1P4toW2WeW0nxdJOBUg3K/moDAbx1LXwwFkaisy5sqM0WZK+AqQkefwBTm/uTqiYazJW56l99EO5am0iOG0Z6zSEkPtrXZc5jUm3sTSnuaqbH5Gg1w8qmDaLlDZp+mgY/GM9yLi5zfURhzsF2e7s3pDZhOs+qO+fa61aH"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         client.delegate = self
     }
-
-    @IBOutlet weak var deviceHardwareIDTextField: UITextField!
-    
     
     @IBAction func didTapConnect(_ sender: Any) {
-        guard let deviceHardwareID = deviceHardwareIDTextField.text, deviceHardwareID.count > 0, let _ = Int(deviceHardwareID) else {
-            let alert = UIAlertController(title: "Please enter a valid, non nil, numeric (Int) deviceHardwareID", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return
-        }
-        try? client.connect("token")
+        //Pass in a CarShareToken from the signing service
+        try? client.connect(reservation)
     }
     
     @IBAction func didTapDisconnect(_ sender: Any) {
-        deviceHardwareIDTextField.isEnabled = true
         client.disconnect()
         let alert = UIAlertController(title: "Disconnected", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -104,14 +66,12 @@ class ViewController: UIViewController, CarShareClientDelegate {
     }
 
     func clientDidConnect(_ client: CarShareClient) {
-        deviceHardwareIDTextField.isEnabled = false
         let alert = UIAlertController(title: "Connected", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
 
     func clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error) {
-        deviceHardwareIDTextField.isEnabled = true
         let alert = UIAlertController(title: "Disconnected with error: \(String(describing: error))", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Retry", style: .default) { _ in
@@ -134,62 +94,6 @@ class ViewController: UIViewController, CarShareClientDelegate {
         self.present(alert, animated: true, completion: nil)
         print("Command: \(String(describing: command.self))  Failed with error: \(error)")
     }
-    
-    private func generateReservationJson(with deviceHardwareId: String) -> Data? {
-        return """
-        {
-        "reservationId": "6CLhfHKvOUWhT9hZknHLGA==",
-        "appPrivateKeyPkcs1Encoded": "MIIEowIBAAKCAQEAxQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRxIoM58FF4PQUI2oEXGlVjn8lKYBqXwydvXQZI1gyizwAx1oDzzIIisixQmZv/+CnUGU/+uyPSdUvDEVBf4ug58Ffzafqdb3c5Mwf3fCM1F+9rzU3K8AQbSvPleMGUx3HH/DUGHmAVNy7EbAoVZmIYYaBlMJF+12eAUl9CVwWtR6JrqmAJeLjtx6op7I7KQf65nfq1/m/kjy4KqQ9DeUTqimf5w7cAN2YTUfYtFo5RXvgSDrdG36DwUFW1BApippruytHFDh+JhK7xX/F/vdrgVwIDAQABAoIBAFE3J5RHs/EDpo4v9UDUR287lYt9gAPdfKEZmA35CtuQNO/JV18PU/i/dL2ubt42plEM+fCZFVFKZwj02JpRgz1W1ONjcxbPhfg6ZAJhuShOszzzcg3nw/fhjuSUS+R5EefRc3igXt1d+y+DC9RV2bS7/Su+VfKimqDv8tVpCjUwEwGp2o/GGKbANxOtiRlwOKzDqGU6mZxwBUGlnD944laeLPJjoBEniS7UCZdJT8P8XsRG9mKbno1trjGtD459EUQnflJYgoGpodjoftrd5JokuWd4OF5ENq9MrYhN2IAf8KryC+8ogoV9QG1pM/wY/FAdkroOm4jC0AeYNKhaetECgYEA+P8nKCCmeXxn5fLOItR5BDX+VqV1/6rn8yUHof11F5Dtr0r2X+EZr7+acR+D1Lt9aN4cbM1+R0SZjpYsy4Pzv6rQPASY4+MSxTitWwtLfowCPFUdxNu4GJ5vrbs6zljtbLM79YHp000S9WbmfRcjMKq9ly7eTmNJ6kzjWBLCgxkCgYEAyo0Qn0nlmgdkSbLXE9kXUA81t6kFiUgTSuOo+XpoKINMFdmfm6cLh8KPrLHzY/eknE36HRXKa8D8MzoAT061ibhCSK+ShkQVP9y9vzK8W3COKrOrTZ9PcUq9373qVd+AIBXW4YFz5aW2DB9Rf6X9x4iV2mV0D79/8xYy7VKB3O8CgYBTYFUDSdOU0ISV6jT+UrlnIJFXADa/8sGSmG6y3oUr6/q6/NX9Cwon4Hfds1jYjiOTTvSjtje3s4/bwAul5jxjjNYHkt6DSJELe0wJNYIFEOrauwGp3o0JqVvqB8zMNdji0i2cqvDaMW/MvrUlY+8Dp9iuXCJSi0q/6xkhb760WQKBgCtXCdJ7lmRh5oSafsjhb8qSppTY1rVsNayVkAdpuLXKelJGkY9Vq/Ltn559KS4fxBop2TW1/u0ViyFO7NgLaG7CfXReFQUjtkRG8Fbj/Ue3isP6U9I1H2OHcZ9ZXLXpL9otsh/oeisOTSjE3sRoeSfjwuTLRo1EFZWnD1iWifEDAoGBAIhpuaFCrlYAi+G2Oda+yWlg6GwsaOaXaGF1evwVb3aOMFBV8d2FDus+OyiFXL9iRkziJBf2yVUj5wl1FHZyFfsCeSNwfoK06E5JydiEARR6sevUBBjzh1LjjjQENFh8btkrBUKOOMagXi09VRFRoSk7EaSyIb256UZkWkF3Xile",
-        "reservationTokenSignature": "qY3rg2rrvmcjGEsIMMEb5zuVy1X8m18uqO5fEsp2sgFsYd6l7j/TolOMLrBGj60opND9iD/GdVrq8R3mDQMGh1jdb8zc2ORQ0FQZkeFrB4W6YwT+hcHmMcEMScI1Bs1HfzUADsWFsv+IDxUEjmKRtFzZy5ImEZ+zgEiTltzHZO9SxRSVACBce/ant+Mx8rGRx/wqDdqwxmjFzyS9uXogFW4Im+X8+rz8FokZJxSVKBzhBEVaqcVSLqFqcnJ5vzq6S21ujV6BVKnao/SYUZRZRTDncoGT80Qdi9FrHWm5HrH6ohGHu6u+fjFOqLjITz9U3e1ApEH6Qrxvq2R4ZiGgoQ==",
-        "reservationToken": {
-        "appPublicModulus": "xQKJmRupP7zoxiNM65NpwGj1Sxp13pDPPC5dezh0GYmBAlL6hHlt1NfUFRDTAcRxIoM58FF4PQUI2oEXGlVjn8lKYBqXwydvXQZI1gyizwAx1oDzzIIisixQmZv/+CnUGU/+uyPSdUvDEVBf4ug58Ffzafqdb3c5Mwf3fCM1F+9rzU3K8AQbSvPleMGUx3HH/DUGHmAVNy7EbAoVZmIYYaBlMJF+12eAUl9CVwWtR6JrqmAJeLjtx6op7I7KQf65nfq1/m/kjy4KqQ9DeUTqimf5w7cAN2YTUfYtFo5RXvgSDrdG36DwUFW1BApippruytHFDh+JhK7xX/F/vdrgVw==",
-        "keyExpiry": 1567142040,
-        "reservationId": "6CLhfHKvOUWhT9hZknHLGA==",
-        "deviceHardwareId": \(deviceHardwareId),
-        "account": {
-        "id": 23,
-        "permissions": 3301
-        },
-        "reservationStartTime": 1564625640,
-        "reservationEndTime": 1567142040,
-        "gracePeriodSeconds": 900,
-        "securePeriodSeconds": 900,
-        "endBookConditions": {
-        "endBookVehicleFlags": 9,
-        "homePoint": {
-        "latitude": 43.4509125,
-        "longitude": -80.51358
-        },
-        "homeRadius": 500
-        }
-        }
-        }
-        """.data(using: .utf8)
 
-    }
-    
-    private func presentInvalidReservationAlert() {
-        let alert = UIAlertController(title: "Invalid Reservation", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-}
-
-extension Int {
-    var bytes: [UInt8] {
-        let v0: UInt8 = UInt8(((self >> 24) & 0xFF))
-        let v1: UInt8 = UInt8(((self >> 16) & 0xFF))
-        let v2: UInt8 = UInt8(((self >> 8) & 0xFF))
-        let v3: UInt8 = UInt8(((self >> 0) & 0xFF))
-        return [v0, v1, v2, v3]
-    }
-    
-    func reverseBytes() -> Int {
-        let v0  = ((self >> 0) & 0xFF)
-        let v1  = ((self >> 8) & 0xFF)
-        let v2  = ((self >> 16) & 0xFF)
-        let v3  = ((self >> 24) & 0xFF)
-        return (v0 << 24) | (v1 << 16) | (v2 << 8) | (v3 << 0)
-    }
 }
 

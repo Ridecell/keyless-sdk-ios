@@ -1,5 +1,5 @@
 //
-//  DefaultCarShareClient.swift
+//  CarShareClient.swift
 //  CarShare
 //
 //  Created by Matt Snow on 2019-07-08.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
+public class CarShareClient: CommandProtocolDelegate {
 
     enum DefaultCarShareClientError: Error {
         case challengeFailed
         case tokenDecodingFailed
     }
-    private struct ReservationToken {
+    private struct CarShareToken {
         let bleServiceUuid: String
         let reservationPrivateKey: String
         let reservationModulusHash: Data
@@ -36,9 +36,9 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
         self.commandProtocol = commandProtocol
     }
 
-    public func connect(_ reservationToken: String) throws {
+    public func connect(_ carShareToken: String) throws {
         do {
-            let carShareToken = try transformIntoCarshareToken(reservationToken)
+            let carShareToken = try transformIntoCarshareToken(carShareToken)
             commandProtocol.delegate = self
             commandProtocol.open(generateConfig(bleServiceUUID: carShareToken.bleServiceUuid))
         } catch {
@@ -51,10 +51,10 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
         commandProtocol.close()
     }
 
-    public func execute(_ command: Command, with reservationToken: String) throws {
+    public func execute(_ command: Command, with carShareToken: String) throws {
         do {
-            let carShareToken = try transformIntoCarshareToken(reservationToken)
-            let reservation = Reservation(token: carShareToken.reservationToken, privateKey: carShareToken.reservationPrivateKey)
+            let token = try transformIntoCarshareToken(carShareToken)
+            let reservation = Reservation(token: token.reservationToken, privateKey: token.reservationPrivateKey)
             let message = Message(command: command, reservation: reservation)
             outgoingMessage = message
             commandProtocol.send(message, challengeKey: reservation.privateKey)
@@ -96,13 +96,13 @@ public class DefaultCarShareClient: CarShareClient, CommandProtocolDelegate {
             writeCharacteristicID: "906EE7E0-D8DB-44F3-AF54-6B0DFCECDF1C")
     }
 
-    private func transformIntoCarshareToken(_ reservationToken: String) throws -> CarshareToken {
-        guard let decodedData = Data(base64Encoded: reservationToken) else {
+    private func transformIntoCarshareToken(_ carShareToken: String) throws -> CarshareToken {
+        guard let decodedData = Data(base64Encoded: carShareToken) else {
             throw DefaultCarShareClientError.tokenDecodingFailed
         }
         do {
-            let carShareToken = try CarshareToken(serializedData: decodedData)
-            return carShareToken
+            let token = try CarshareToken(serializedData: decodedData)
+            return token
         } catch {
             throw DefaultCarShareClientError.tokenDecodingFailed
         }

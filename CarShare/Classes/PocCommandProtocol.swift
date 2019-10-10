@@ -110,15 +110,6 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
     }
 
     private func transformIntoProtobufMessage(_ message: Message) -> Data? {
-        let reservationTransformer = ReservationTransformer()
-        guard let tokenString = String(data: message.reservation.token, encoding: .utf8), let tokenObject = try? reservationTransformer.transform(tokenString) else {
-            print("Failed to decode message", #function)
-            return nil
-        }
-        guard let deviceReservationMessage = generateDeviceReservationMessage(from: tokenObject) else {
-            print("Unable to generate DeviceReservationMessage from ReservationDetails")
-            return nil
-        }
 
         let deviceCommandMessage = DeviceCommandMessage.with { populator in
             populator.command = {
@@ -141,8 +132,7 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
                     return DeviceCommandMessage.Command.closeTrunk
                 }
             }()
-            populator.reservation = deviceReservationMessage
-
+            populator.reservation = message.reservation.token
         }
         let appToDeviceMessage = AppToDeviceMessage.with { populator in
             populator.message = .command(deviceCommandMessage)
@@ -154,46 +144,6 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
             print("Failed to serialize data to protobuf due to error: \(error)")
             return nil
         }
-    }
-
-    private func generateDeviceReservationMessage(from reservationDetails: ReservationTransformer.ReservationDetails) -> DeviceReservationMessage? {
-
-        guard let publicModulus = Data(base64Encoded: reservationDetails.reservationToken.appPublicModulus) else {
-            print("Unable to turn public modulus into Data")
-            return nil
-        }
-        guard let reservationBytes = Data(base64Encoded: reservationDetails.reservationId) else {
-            print("Unable to turn reservationID into Data")
-            return nil
-        }
-
-        let deviceReservationMessage = DeviceReservationMessage.with { populator in
-            populator.appPublicModulus = publicModulus
-            populator.keyExpiry = reservationDetails.reservationToken.keyExpiry
-            populator.reservationID = reservationBytes
-            populator.deviceHardwareID = reservationDetails.reservationToken.deviceHardwareId
-            populator.account = Account.with { accountPopulator in
-                accountPopulator.id = reservationDetails.reservationToken.account.id
-                accountPopulator.permissions = PermissionList.with { permissionsPopulator in
-                    permissionsPopulator.permissions = reservationDetails.reservationToken.account.permissions
-                }
-            }
-            populator.reservationStartTime = reservationDetails.reservationToken.reservationStartTime
-            populator.reservationEndTime = reservationDetails.reservationToken.reservationEndTime
-            populator.gracePeriodSeconds = reservationDetails.reservationToken.gracePeriodSeconds
-            populator.securePeriodSeconds = reservationDetails.reservationToken.securePeriodSeconds
-            populator.endBookConditions = EndBookConditions.with { endBookPopulator in
-                endBookPopulator.vehicleSecureConditions = VehicleSecureConditions.with { vehicleSecurePopulator in
-                    vehicleSecurePopulator.vehicleSecureConditions = reservationDetails.reservationToken.endBookConditions.endBookVehicleFlags
-                }
-                endBookPopulator.homePoint = GpsCoordinate.with { gpsCoordinatePopulator in
-                    gpsCoordinatePopulator.latitude = reservationDetails.reservationToken.endBookConditions.homePoint.latitude
-                    gpsCoordinatePopulator.longitude = reservationDetails.reservationToken.endBookConditions.homePoint.longitude
-                }
-                endBookPopulator.homeRadius = reservationDetails.reservationToken.endBookConditions.homeRadius
-            }
-        }
-        return deviceReservationMessage
     }
 
     private func transformIntoProtobufResult(_ result: Data) -> Result<Bool, Error> {
