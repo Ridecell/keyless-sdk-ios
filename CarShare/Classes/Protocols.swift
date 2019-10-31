@@ -14,16 +14,6 @@ public struct BLeSocketConfiguration {
     }
 }
 
-public struct Reservation: Codable {
-    public let token: Data
-    public let privateKey: String
-
-    public init(token: Data, privateKey: String) {
-        self.token = token
-        self.privateKey = privateKey
-    }
-}
-
 public enum Command {
     case checkIn
     case checkOut
@@ -36,9 +26,8 @@ public enum Command {
 }
 
 public struct Message {
-
     let command: Command
-    let reservation: Reservation
+    let carShareTokenInfo: CarShareTokenInfo
 }
 
 protocol Socket: AnyObject {
@@ -99,7 +88,7 @@ protocol CommandProtocol: AnyObject {
 
     func open(_ configuration: BLeSocketConfiguration)
     func close()
-    func send(_ command: Message, challengeKey: String)
+    func send(_ command: Message)
 }
 
 protocol CommandProtocolDelegate: AnyObject {

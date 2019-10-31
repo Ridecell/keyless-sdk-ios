@@ -61,7 +61,6 @@
 		661892C0A343DBFDC426049DFBCD9A7A /* MessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBD8B80DA8F5C4CA4E0904251DC307D /* MessageExtension.swift */; };
 		66ACCEE67EFB6E36D2A829A273889D85 /* wrappers.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6CEA3B9F108798F56CD6C8E2DBF268 /* wrappers.pb.swift */; };
 		6834F3BF6913F29A0DC3BE925E48ADC9 /* timestamp.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FEB53F93EB5022C7BFF879D0339002 /* timestamp.pb.swift */; };
-		6DB05D48037D830EF0E76D7C7F7769BD /* CarshareToken.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAF63ACE6C94F7B64EE0F9ABC23D1E3 /* CarshareToken.pb.swift */; };
 		6F6484520DF217275ED8EBA76B29A5E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7835C4229DC5A4AB8AA8ABA114DC559E /* Foundation.framework */; };
 		723FB9367CEB4C5C0CD02C898154DAA4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7835C4229DC5A4AB8AA8ABA114DC559E /* Foundation.framework */; };
 		72981ABA6C4CFF040C749FB85C9E720E /* JSONEncodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1CF7B4D0FF2A0E1A5679048020908 /* JSONEncodingError.swift */; };
@@ -94,7 +93,11 @@
 		B55F92B7234FF09A9EC7B6A9353DB5A0 /* struct.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C9E4FDE89FA54260348DDC03DA59D8 /* struct.pb.swift */; };
 		B786E30DD12C449EF6559E4F32136F26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7835C4229DC5A4AB8AA8ABA114DC559E /* Foundation.framework */; };
 		B7F584F627B87F895E226B8BEE131404 /* JSONScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03FCF434F1201BC421B836B807E76FD /* JSONScanner.swift */; };
-		BB4D2322234FA8C200018269 /* carshare_sdk.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2321234FA8C200018269 /* carshare_sdk.pb.swift */; };
+		BB1837AA2358F7E400513851 /* CarShareMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837A92358F7E400513851 /* CarShareMessage.swift */; };
+		BB1837AE235DF24700513851 /* carshare_messaging.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837AD235DF24700513851 /* carshare_messaging.pb.swift */; };
+		BB1837B0235DFA7F00513851 /* CarShareTokenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */; };
+		BB1837B5235E239A00513851 /* CarshareToken.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837B3235E224100513851 /* CarshareToken.pb.swift */; };
+		BB1837B72360C7A700513851 /* DeviceMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837B62360C7A700513851 /* DeviceMessage.swift */; };
 		BE2D42A9484EBB69B07E66BA7DE0718B /* ChallengeSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE21E08840F10490D6D9FD65177DBED /* ChallengeSigner.swift */; };
 		BE81E3F22B6A4C756A1AE9715BB819B8 /* ZigZag.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE77FFFF6036ABF85A4816CD77411CF3 /* ZigZag.swift */; };
 		C0371039A60E5B7C923277C0DB80F630 /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF33E2ED1A236E976222A96A3837EE /* EncryptionKey.swift */; };
@@ -266,7 +269,11 @@
 		B3FEB53F93EB5022C7BFF879D0339002 /* timestamp.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = timestamp.pb.swift; path = Sources/SwiftProtobuf/timestamp.pb.swift; sourceTree = "<group>"; };
 		B64A397EA10E9EA8FCC8A30EF237C85C /* CarShare.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = CarShare.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BA43D4271D2391B499EADF25E7CD4287 /* Pods-CarShare_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CarShare_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		BB4D2321234FA8C200018269 /* carshare_sdk.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = carshare_sdk.pb.swift; path = CarShare/Classes/carshare_sdk.pb.swift; sourceTree = "<group>"; };
+		BB1837A92358F7E400513851 /* CarShareMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CarShareMessage.swift; path = CarShare/Classes/CarShareMessage.swift; sourceTree = "<group>"; };
+		BB1837AD235DF24700513851 /* carshare_messaging.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = carshare_messaging.pb.swift; path = CarShare/Classes/carshare_messaging.pb.swift; sourceTree = "<group>"; };
+		BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarShareTokenInfo.swift; path = CarShare/Classes/CarShareTokenInfo.swift; sourceTree = "<group>"; };
+		BB1837B3235E224100513851 /* CarshareToken.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarshareToken.pb.swift; path = CarShare/Classes/CarshareToken.pb.swift; sourceTree = "<group>"; };
+		BB1837B62360C7A700513851 /* DeviceMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceMessage.swift; path = CarShare/Classes/DeviceMessage.swift; sourceTree = "<group>"; };
 		BCB962468AF95B35985F2D057683009A /* Google_Protobuf_Struct+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Struct+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Struct+Extensions.swift"; sourceTree = "<group>"; };
 		BCDE3D0997EDA6D8F730A35D08D25F7C /* duration.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = duration.pb.swift; path = Sources/SwiftProtobuf/duration.pb.swift; sourceTree = "<group>"; };
 		BDAF63ACE6C94F7B64EE0F9ABC23D1E3 /* CarshareToken.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CarshareToken.pb.swift; path = CarShare/Classes/CarshareToken.pb.swift; sourceTree = "<group>"; };
@@ -361,11 +368,15 @@
 			children = (
 				796B9C7F00A8D2B4E7E65A9E6FE4E2BC /* AESEncryptionHandler.swift */,
 				E5774118156E5E44706B35A4B490F834 /* AsyncExecuter.swift */,
-				BB4D2321234FA8C200018269 /* carshare_sdk.pb.swift */,
+				BB1837AD235DF24700513851 /* carshare_messaging.pb.swift */,
 				BDAF63ACE6C94F7B64EE0F9ABC23D1E3 /* CarshareToken.pb.swift */,
 				6EE21E08840F10490D6D9FD65177DBED /* ChallengeSigner.swift */,
 				FFFFB97C2F40A0CD6447682F523653E4 /* CarShareClient.swift */,
+				BB1837B3235E224100513851 /* CarshareToken.pb.swift */,
+				BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */,
 				05FCA307A84EFFF97AD7CCC4E29E4A2A /* DefaultCommandProtocol.swift */,
+				BB1837B62360C7A700513851 /* DeviceMessage.swift */,
+				BB1837A92358F7E400513851 /* CarShareMessage.swift */,
 				440B551FD64EDA54AB31B7A4AC4F7504 /* DefaultSecurityProtocol.swift */,
 				68B7F8CB0D04393211A6C9B6421AC1C9 /* DefaultTransportProtocol.swift */,
 				A1CF33E2ED1A236E976222A96A3837EE /* EncryptionKey.swift */,
@@ -893,20 +904,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB1837B5235E239A00513851 /* CarshareToken.pb.swift in Sources */,
+				BB1837B0235DFA7F00513851 /* CarShareTokenInfo.swift in Sources */,
 				3FAF8516A81DEBE3ED84EE94E31E326C /* AESEncryptionHandler.swift in Sources */,
 				5A1DC939F3902B7AD1E0F242B44F8FC8 /* AsyncExecuter.swift in Sources */,
 				3E06FF81012CF807C26C2BE96BE89DFE /* CarShare-dummy.m in Sources */,
-				6DB05D48037D830EF0E76D7C7F7769BD /* CarshareToken.pb.swift in Sources */,
 				BE2D42A9484EBB69B07E66BA7DE0718B /* ChallengeSigner.swift in Sources */,
 				8E72B2BFD38132B50DEA0C84DA5FCBD2 /* CarShareClient.swift in Sources */,
+				BB1837B72360C7A700513851 /* DeviceMessage.swift in Sources */,
+				BB1837AE235DF24700513851 /* carshare_messaging.pb.swift in Sources */,
 				D8CB39EAEB8B0F8C9C53AE80611F55F2 /* DefaultCommandProtocol.swift in Sources */,
+				BB1837AA2358F7E400513851 /* CarShareMessage.swift in Sources */,
 				2D446A88D8E4668F3AF479C58AD4D4D7 /* DefaultSecurityProtocol.swift in Sources */,
 				32DAE0A149762786A68936F0893F6F76 /* DefaultTransportProtocol.swift in Sources */,
 				C0371039A60E5B7C923277C0DB80F630 /* EncryptionKey.swift in Sources */,
 				51E3929EC69472303102557F31D7FAC9 /* IOSSocket.swift in Sources */,
 				115EB65054C3EFBF5F909010929909B4 /* PocCommandProtocol.swift in Sources */,
 				52DEE6BB53F279DCC734782A373FA786 /* Protocols.swift in Sources */,
-				BB4D2322234FA8C200018269 /* carshare_sdk.pb.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
