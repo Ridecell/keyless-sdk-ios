@@ -49,12 +49,13 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         securityProtocol.close()
     }
 
-    func send(_ message: Message, challengeKey: String) {
-        outgoingCommand = OutgoingCommand(command: message.command, challengeKey: challengeKey, state: .issuingCommand)
-        guard let outgoingMessage = transformIntoProtobufMessage(message) else {
+    func send(_ message: Message) {
+        outgoingCommand = OutgoingCommand(command: message.command, challengeKey: message.carShareTokenInfo.reservationPrivateKey, state: .issuingCommand)
+        guard let commandMessageProto = transformIntoProtobufMessage(message) else {
             return
         }
-        securityProtocol.send(outgoingMessage)
+
+        securityProtocol.send(commandMessageProto)
     }
 
     func protocolDidOpen(_ protocol: SecurityProtocol) {
@@ -214,8 +215,8 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
     }
 
     private func sign(_ challenge: Data, with signingKey: String) -> Data? {
-        let signer = ChallengeSigner()
-        return signer.sign(challenge, signingKey: signingKey)
+        let challengeSigner = ChallengeSigner()
+        return challengeSigner.sign(challenge, signingKey: signingKey)
     }
 
 }

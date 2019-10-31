@@ -47,12 +47,19 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         transportProtocol.close()
     }
 
-    func send(_ message: Message, challengeKey: String) {
-        outgoingCommand = OutgoingCommand(command: message.command, challengeKey: challengeKey, state: .issuingCommand)
-        guard let outgoingMessage = transformIntoProtobufMessage(message) else {
+    func send(_ message: Message) {
+        outgoingCommand = OutgoingCommand(command: message.command, challengeKey: message.carShareTokenInfo.reservationPrivateKey, state: .issuingCommand)
+        guard let commandProto = transformIntoProtobufMessage(message) else {
             return
         }
-        transportProtocol.send(outgoingMessage)
+        //temporary random bytes
+        let randomBytes: [UInt8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let signedCommandHash = self.signedCommandHash(with: message.carShareTokenInfo.reservationPrivateKey,
+                                                       commandMessageProto: commandProto,
+                                                       randomBytes: Data(bytes: randomBytes,
+                                                                         count: randomBytes.count))
+        let payload = CarShareMessage.deviceMessage(from: message.carShareTokenInfo, commandMessageProto: commandProto, signedCommandHash: signedCommandHash).data
+        transportProtocol.send(payload)
     }
 
     func protocolDidOpen(_ protocol: TransportProtocol) {
@@ -109,6 +116,18 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
     }
 
+    private func signedCommandHash(with privateKey: String, commandMessageProto: Data, randomBytes: Data) -> [UInt8] {
+        let challengeSigner = ChallengeSigner()
+        var commandMessageProto = [UInt8](commandMessageProto)
+        //hardcoded with 32 0's until challenge response is fully implemented
+        commandMessageProto.append(contentsOf: [UInt8](randomBytes))
+        let commandMessageData = Data(bytes: commandMessageProto, count: commandMessageProto.count)
+        guard let signedData = challengeSigner.sign(commandMessageData, signingKey: privateKey) else {
+            return []
+        }
+        return [UInt8](signedData)
+    }
+
     private func transformIntoProtobufMessage(_ message: Message) -> Data? {
 
         let deviceCommandMessage = DeviceCommandMessage.with { populator in
@@ -132,14 +151,9 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
                     return DeviceCommandMessage.Command.closeTrunk
                 }
             }()
-            populator.reservation = message.reservation.token
-        }
-        let appToDeviceMessage = AppToDeviceMessage.with { populator in
-            populator.message = .command(deviceCommandMessage)
-
         }
         do {
-            return try appToDeviceMessage.serializedData()
+             return try deviceCommandMessage.serializedData()
         } catch {
             print("Failed to serialize data to protobuf due to error: \(error)")
             return nil

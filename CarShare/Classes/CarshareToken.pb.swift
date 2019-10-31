@@ -30,7 +30,7 @@ struct CarshareToken {
 
   var reservationModulusHash: Data = SwiftProtobuf.Internal.emptyData
 
-  var deploymentModulusHash: Data = SwiftProtobuf.Internal.emptyData
+  var tenantModulusHash: Data = SwiftProtobuf.Internal.emptyData
 
   var reservationToken: Data = SwiftProtobuf.Internal.emptyData
 
@@ -49,7 +49,7 @@ extension CarshareToken: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     1: .standard(proto: "ble_service_uuid"),
     2: .standard(proto: "reservation_private_key"),
     3: .standard(proto: "reservation_modulus_hash"),
-    4: .standard(proto: "deployment_modulus_hash"),
+    4: .standard(proto: "tenant_modulus_hash"),
     5: .standard(proto: "reservation_token"),
     6: .standard(proto: "reservation_token_signature"),
   ]
@@ -60,7 +60,7 @@ extension CarshareToken: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
       case 1: try decoder.decodeSingularStringField(value: &self.bleServiceUuid)
       case 2: try decoder.decodeSingularStringField(value: &self.reservationPrivateKey)
       case 3: try decoder.decodeSingularBytesField(value: &self.reservationModulusHash)
-      case 4: try decoder.decodeSingularBytesField(value: &self.deploymentModulusHash)
+      case 4: try decoder.decodeSingularBytesField(value: &self.tenantModulusHash)
       case 5: try decoder.decodeSingularBytesField(value: &self.reservationToken)
       case 6: try decoder.decodeSingularBytesField(value: &self.reservationTokenSignature)
       default: break
@@ -78,8 +78,8 @@ extension CarshareToken: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     if !self.reservationModulusHash.isEmpty {
       try visitor.visitSingularBytesField(value: self.reservationModulusHash, fieldNumber: 3)
     }
-    if !self.deploymentModulusHash.isEmpty {
-      try visitor.visitSingularBytesField(value: self.deploymentModulusHash, fieldNumber: 4)
+    if !self.tenantModulusHash.isEmpty {
+      try visitor.visitSingularBytesField(value: self.tenantModulusHash, fieldNumber: 4)
     }
     if !self.reservationToken.isEmpty {
       try visitor.visitSingularBytesField(value: self.reservationToken, fieldNumber: 5)
@@ -94,7 +94,7 @@ extension CarshareToken: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     if lhs.bleServiceUuid != rhs.bleServiceUuid {return false}
     if lhs.reservationPrivateKey != rhs.reservationPrivateKey {return false}
     if lhs.reservationModulusHash != rhs.reservationModulusHash {return false}
-    if lhs.deploymentModulusHash != rhs.deploymentModulusHash {return false}
+    if lhs.tenantModulusHash != rhs.tenantModulusHash {return false}
     if lhs.reservationToken != rhs.reservationToken {return false}
     if lhs.reservationTokenSignature != rhs.reservationTokenSignature {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}

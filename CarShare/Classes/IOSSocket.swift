@@ -40,6 +40,11 @@ class IOSSocket: NSObject, Socket {
     private var dataToSend: Data?
 
     func open(_ configuration: BLeSocketConfiguration) {
+
+        guard case .idle = state else {
+            return
+        }
+
         peripheral.delegate = self
         let serviceId = CBUUID(string: configuration.serviceID)
         let advertisingData = [

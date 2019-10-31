@@ -38,7 +38,7 @@ public class CarShareClient: CommandProtocolDelegate {
 
     public func connect(_ carShareToken: String) throws {
         do {
-            let carShareToken = try transformIntoCarshareToken(carShareToken)
+            let carShareToken = try transformIntoCarShareTokenInfo(carShareToken)
             commandProtocol.delegate = self
             commandProtocol.open(generateConfig(bleServiceUUID: carShareToken.bleServiceUuid))
         } catch {
@@ -53,11 +53,10 @@ public class CarShareClient: CommandProtocolDelegate {
 
     public func execute(_ command: Command, with carShareToken: String) throws {
         do {
-            let token = try transformIntoCarshareToken(carShareToken)
-            let reservation = Reservation(token: token.reservationToken, privateKey: token.reservationPrivateKey)
-            let message = Message(command: command, reservation: reservation)
+            let tokenData = try transformIntoCarShareTokenInfo(carShareToken)
+            let message = Message(command: command, carShareTokenInfo: tokenData)
             outgoingMessage = message
-            commandProtocol.send(message, challengeKey: reservation.privateKey)
+            commandProtocol.send(message)
         } catch {
             print("Failed to decode reservation token")
             throw error
@@ -96,13 +95,18 @@ public class CarShareClient: CommandProtocolDelegate {
             writeCharacteristicID: "906EE7E0-D8DB-44F3-AF54-6B0DFCECDF1C")
     }
 
-    private func transformIntoCarshareToken(_ carShareToken: String) throws -> CarshareToken {
+    private func transformIntoCarShareTokenInfo(_ carShareToken: String) throws -> CarShareTokenInfo {
         guard let decodedData = Data(base64Encoded: carShareToken) else {
             throw DefaultCarShareClientError.tokenDecodingFailed
         }
         do {
             let token = try CarshareToken(serializedData: decodedData)
-            return token
+            return CarShareTokenInfo(bleServiceUuid: token.bleServiceUuid,
+                                     reservationPrivateKey: token.reservationPrivateKey,
+                                     reservationModulusHash: token.reservationModulusHash,
+                                     tenantModulusHash: token.tenantModulusHash,
+                                     reservationToken: token.reservationToken,
+                                     reservationTokenSignature: token.reservationTokenSignature)
         } catch {
             throw DefaultCarShareClientError.tokenDecodingFailed
         }
