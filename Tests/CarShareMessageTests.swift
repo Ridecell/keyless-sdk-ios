@@ -30,7 +30,7 @@ class CarShareMessageTests: XCTestCase {
                                                                   commandMessageProto: Data(bytes: expectedCommandMessage, count: expectedCommandMessage.count),
                                                                   signedCommandHash: signedCommandHashBytes)
         XCTAssertEqual(expectedVersion, deviceMessage.reservationSignaturePayload.reservationVersion)
-        XCTAssertEqual([UInt8](carShareTokenInfo.tenantModulusHash).dropLast(), deviceMessage.reservationSignaturePayload.databasePublicKeyHash)
+        XCTAssertEqual([UInt8](carShareTokenInfo.tenantModulusHash).dropLast(), deviceMessage.reservationSignaturePayload.tenantModulusHash)
         XCTAssertEqual([UInt8](carShareTokenInfo.reservationTokenSignature), deviceMessage.reservationSignaturePayload.signedReservationHash)
         
         let reservationLength1 = ((deviceMessage.reservationSignaturePayload.reservationLength[1] & 0xFF) << 8)

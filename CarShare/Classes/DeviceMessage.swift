@@ -52,7 +52,7 @@ extension DeviceMessage: CustomStringConvertible {
 
 struct ReservationSignaturePayload {
     let reservationVersion: [UInt8]
-    let databasePublicKeyHash: [UInt8]
+    let tenantModulusHash: [UInt8]
     let signedReservationHash: [UInt8]
     let reservationLength: [UInt8]
     let crc32Reservation: [UInt8]
@@ -62,7 +62,7 @@ extension ReservationSignaturePayload: ByteRepresentable, DataRepresentable {
     var bytes: [UInt8] {
         var byteArray: [UInt8] = []
         byteArray.append(contentsOf: reservationVersion)
-        byteArray.append(contentsOf: databasePublicKeyHash)
+        byteArray.append(contentsOf: tenantModulusHash)
         byteArray.append(contentsOf: signedReservationHash)
         byteArray.append(contentsOf: reservationLength)
         byteArray.append(contentsOf: crc32Reservation)
@@ -74,7 +74,7 @@ extension ReservationSignaturePayload: CustomStringConvertible {
     var description: String {
         return """
         The reservationVersion has \(reservationVersion.count) bytes, -> \(reservationVersion),
-        The databasePublicKeyHash has \(databasePublicKeyHash.count) bytes, -> \(databasePublicKeyHash),
+        The tenantModulusHash has \(tenantModulusHash.count) bytes, -> \(tenantModulusHash),
         The signedReservationHash has \(signedReservationHash.count) bytes, -> \(signedReservationHash),
         The reservationLength has \(reservationLength.count) bytes, -> \(reservationLength),
         The crc32Reservation has \(crc32Reservation.count) bytes, -> \(crc32Reservation)

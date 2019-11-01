@@ -153,7 +153,7 @@ class PocCommandProtocol: CommandProtocol, TransportProtocolDelegate {
             }()
         }
         do {
-             return try deviceCommandMessage.serializedData()
+            return try deviceCommandMessage.serializedData()
         } catch {
             print("Failed to serialize data to protobuf due to error: \(error)")
             return nil
