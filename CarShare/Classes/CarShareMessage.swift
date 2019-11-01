@@ -30,7 +30,7 @@ enum CarShareMessage {
 
     private static func generateReservationSignaturePayload(from carShareTokenInfo: CarShareTokenInfo) -> ReservationSignaturePayload {
         return ReservationSignaturePayload(reservationVersion: reservationVersion(from: carShareTokenInfo),
-                                           databasePublicKeyHash: databasePublicKeyHash(from: carShareTokenInfo),
+                                           tenantModulusHash: tenantModulusHash(from: carShareTokenInfo),
                                            signedReservationHash: signedReservationHash(from: carShareTokenInfo),
                                            reservationLength: reservationLength(from: carShareTokenInfo),
                                            crc32Reservation: crc32reservation(from: carShareTokenInfo))
@@ -48,15 +48,8 @@ enum CarShareMessage {
         return reservationMessageVersion.reverseBytes().bytes.dropLast(2)
     }
 
-    private static func databasePublicKeyHash(from carShareTokenInfo: CarShareTokenInfo) -> [UInt8] {
-        var databasePublicKeyHash: [UInt8] = []
-        for byte in carShareTokenInfo.tenantModulusHash {
-            databasePublicKeyHash.append(byte)
-            if databasePublicKeyHash.count == 4 {
-                break
-            }
-        }
-        return databasePublicKeyHash
+    private static func tenantModulusHash(from carShareTokenInfo: CarShareTokenInfo) -> [UInt8] {
+        return [UInt8](carShareTokenInfo.tenantModulusHash.prefix(4))
     }
 
     private static func signedReservationHash(from carShareTokenInfo: CarShareTokenInfo) -> [UInt8] {
@@ -78,14 +71,7 @@ enum CarShareMessage {
     }
 
     private static func reservationPublicKeyHash(from carShareTokenInfo: CarShareTokenInfo) -> [UInt8] {
-        var reservationPublicKeyHash: [UInt8] = []
-        for byte in carShareTokenInfo.reservationModulusHash {
-            reservationPublicKeyHash.append(byte)
-            if reservationPublicKeyHash.count == 4 {
-                break
-            }
-        }
-        return reservationPublicKeyHash
+        return [UInt8](carShareTokenInfo.reservationModulusHash.prefix(4))
     }
 
     private static func commandLength(from commandMessageProto: Data) -> [UInt8] {
