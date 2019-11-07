@@ -1,99 +1,126 @@
 //
-//  DefaultCommandProtocol.swift
+//  PocCommandProtocol.swift
 //  CarShare
 //
-//  Created by Matt Snow on 2019-07-08.
+//  Created by Marc Maguire on 2019-08-26.
 //
 
 import Foundation
-import SwiftProtobuf
 
-class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
+class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
 
     enum DefaultCommandProtocolError: Swift.Error {
-        case malformedChallenge
-        case invalidChallengeResponse
+        case ackError
+        case malformedData
     }
 
     private enum CommandState {
-        case issuingCommand
+        case requestingToSendMessage
         case waitingForChallenge
-        case respondingToChallenge
-        case waitingForResponse
+        case issuingCommand
+        case awaitingChallengeAck
     }
 
     private struct OutgoingCommand {
         let command: Command
-        let challengeKey: String
+        let deviceCommandMessage: Data
+        let carShareTokenInfo: CarShareTokenInfo
         var state: CommandState
+    }
+
+    private enum ChallengeResponseValues {
+        static let messageRequestType: UInt8 = 0x00
+        static let messageRequestProtocolVersion: [UInt8] = [0x01, 0x00]
+        static let challengeResponseType: UInt8 = 0x80
+        static let deviceToAppAckType: UInt8 = 0x81
+        static let deviceToAppAckValue: UInt8 = 0x00
+        static let deviceToAppAck: [UInt8] = [0x81, 0x00]
+        static let encryptionSalt: [UInt8] = [232, 96, 98, 5, 159, 228, 202, 239]
+        static let encryptionPassphrase: String = "SUPER_SECRET"
+        static let encryptionIterations: Int = 14_271
     }
 
     private var outgoingCommand: OutgoingCommand?
 
-    private let securityProtocol: SecurityProtocol
+    private let transportProtocol: TransportProtocol
+    private let deviceCommandTransformer: DeviceCommandTransformer
+    private let challengeSigner: ChallengeSigner
+    private let encryptionHandler: EncryptionHandler
 
     weak var delegate: CommandProtocolDelegate?
 
-    init(securityProtocol: SecurityProtocol = DefaultSecurityProtocol()) {
-        self.securityProtocol = securityProtocol
+    init(transportProtocol: TransportProtocol = DefaultTransportProtocol(),
+         deviceCommandTransformer: DeviceCommandTransformer = ProtobufDeviceCommandTransformer(),
+         challengeSigner: ChallengeSigner = DefaultChallengeSigner(),
+         encryptionHandler: EncryptionHandler = AESEncryptionHandler()) {
+        self.transportProtocol = transportProtocol
+        self.deviceCommandTransformer = deviceCommandTransformer
+        self.challengeSigner = challengeSigner
+        self.encryptionHandler = encryptionHandler
     }
 
     func open(_ configuration: BLeSocketConfiguration) {
         outgoingCommand = nil
-        securityProtocol.delegate = self
-        securityProtocol.open(configuration)
+        transportProtocol.delegate = self
+        transportProtocol.open(configuration)
     }
 
     func close() {
         outgoingCommand = nil
-        securityProtocol.close()
+        transportProtocol.close()
     }
 
     func send(_ message: Message) {
-        outgoingCommand = OutgoingCommand(command: message.command, challengeKey: message.carShareTokenInfo.reservationPrivateKey, state: .issuingCommand)
-        guard let commandMessageProto = transformIntoProtobufMessage(message) else {
+        guard outgoingCommand == nil else {
             return
         }
-
-        securityProtocol.send(commandMessageProto)
+        guard let commandProto = deviceCommandTransformer.transform(message.command) else {
+            return
+        }
+        outgoingCommand = OutgoingCommand(command: message.command, deviceCommandMessage: commandProto, carShareTokenInfo: message.carShareTokenInfo, state: .requestingToSendMessage)
+        transportProtocol.send(appToDeviceMessageRequest)
     }
 
-    func protocolDidOpen(_ protocol: SecurityProtocol) {
+    private var appToDeviceMessageRequest: Data {
+        var request: [UInt8] = []
+        request.append(ChallengeResponseValues.messageRequestType)
+        request.append(contentsOf: ChallengeResponseValues.messageRequestProtocolVersion)
+        return Data(bytes: request, count: request.count)
+    }
+
+    func protocolDidOpen(_ protocol: TransportProtocol) {
         delegate?.protocolDidOpen(self)
     }
 
-    func `protocol`(_ protocol: SecurityProtocol, didReceive data: Data) {
+    func `protocol`(_ protocol: TransportProtocol, didReceive data: Data) {
         guard let outgoingCommand = outgoingCommand else {
             return
         }
         switch outgoingCommand.state {
-        case .issuingCommand:
+        case .requestingToSendMessage:
             return
         case .waitingForChallenge:
-            guard let challenge = transformIntoChallenge(data) else {
+            guard let randomBytes = IncomingChallenge(data: data)?.randomBytes else {
+                delegate?.protocol(self,
+                                   command: outgoingCommand.command,
+                                   didFail: DefaultCommandProtocolError.malformedData)
                 self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedChallenge)
-                return
-            }
-            guard let responseToChallenge = sign(challenge, with: outgoingCommand.challengeKey) else {
-                self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedChallenge)
                 return
             }
 
-            guard let response = transformIntoProtobufResponse(responseToChallenge) else {
+            let securePayload = generateSecurePayload(randomBytes, outgoingCommand: outgoingCommand)
+            guard let encryptionResult = encryptMessage([UInt8](securePayload)) else {
+                self.delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedData)
                 self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedChallenge)
                 return
             }
-
-            self.outgoingCommand?.state = .respondingToChallenge
-            securityProtocol.send(response)
-        case .respondingToChallenge:
+            sendChallengeResponse(encryptionResult.initVector, encryptedMessage: encryptionResult.encryptedMessage)
+            self.outgoingCommand?.state = .issuingCommand
+        case .issuingCommand:
             return
-        case .waitingForResponse:
+        case .awaitingChallengeAck:
             self.outgoingCommand = nil
-            switch transformIntoProtobufResult(data) {
+            switch handleAck(data) {
             case .success:
                 delegate?.protocol(self, command: outgoingCommand.command, didSucceed: data)
             case .failure(let error):
@@ -102,27 +129,28 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         }
     }
 
-    func protocolDidSend(_ protocol: SecurityProtocol) {
+    func protocolDidSend(_ protocol: TransportProtocol) {
         guard let outgoingCommand = outgoingCommand else {
             return
         }
         switch outgoingCommand.state {
-        case .issuingCommand:
+        case .requestingToSendMessage:
             self.outgoingCommand?.state = .waitingForChallenge
+        case .awaitingChallengeAck:
+            return
         case .waitingForChallenge:
             return
-        case .respondingToChallenge:
-            self.outgoingCommand?.state = .waitingForResponse
-        case .waitingForResponse:
-            return
+        case .issuingCommand:
+            self.outgoingCommand?.state = .awaitingChallengeAck
         }
     }
 
-    func protocolDidCloseUnexpectedly(_ protocol: SecurityProtocol, error: Error) {
+    func protocolDidCloseUnexpectedly(_ protocol: TransportProtocol, error: Error) {
+        self.outgoingCommand = nil
         delegate?.protocolDidCloseUnexpectedly(self, error: error)
     }
 
-    func protocolDidFailToSend(_ protocol: SecurityProtocol, error: Error) {
+    func protocolDidFailToSend(_ protocol: TransportProtocol, error: Error) {
         guard let outgoingCommand = outgoingCommand else {
             return
         }
@@ -130,7 +158,7 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
     }
 
-    func protocolDidFailToReceive(_ protocol: SecurityProtocol, error: Error) {
+    func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error) {
         guard let outgoingCommand = outgoingCommand else {
             return
         }
@@ -138,85 +166,69 @@ class DefaultCommandProtocol: CommandProtocol, SecurityProtocolDelegate {
         delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
     }
 
-    private func transformIntoProtobufMessage(_ message: Message) -> Data? {
+    private func generateSecurePayload(_ randomBytes: [UInt8], outgoingCommand: OutgoingCommand) -> Data {
+        let signedCommandHash = self.signedCommandHash(with: outgoingCommand.carShareTokenInfo.reservationPrivateKey,
+                                                       commandMessageProto: outgoingCommand.deviceCommandMessage,
+                                                       randomBytes: Data(bytes: randomBytes,
+                                                                         count: randomBytes.count))
+        return DeviceCommandPayload.build(from: outgoingCommand.carShareTokenInfo,
+                                          commandMessageProto: outgoingCommand.deviceCommandMessage,
+                                          signedCommandHash: signedCommandHash).data
+    }
 
-        var appToDeviceMessage = AppToDeviceMessage()
-        var deviceCommandMessage = DeviceCommandMessage()
-        switch message.command {
-        case .checkIn:
-            deviceCommandMessage.command = .checkin
-        case .checkOut:
-            deviceCommandMessage.command = .checkout
-        case .locate:
-            deviceCommandMessage.command = .locate
-        case .lock:
-            deviceCommandMessage.command = .lock
-        case .unlockAll:
-            deviceCommandMessage.command = .unlockAll
-        case .unlockDriver:
-            deviceCommandMessage.command = .unlockDriver
-        case .openTrunk:
-            deviceCommandMessage.command = .openTrunk
-        case .closeTrunk:
-            deviceCommandMessage.command = .closeTrunk
+    private func signedCommandHash(with privateKey: String, commandMessageProto: Data, randomBytes: Data) -> [UInt8] {
+        var commandMessageProto = [UInt8](commandMessageProto)
+        commandMessageProto.append(contentsOf: [UInt8](randomBytes))
+        let commandMessageData = Data(bytes: commandMessageProto, count: commandMessageProto.count)
+        guard let signedData = challengeSigner.sign(commandMessageData, signingKey: privateKey) else {
+            //throw error?
+            return []
+        }
+        return [UInt8](signedData)
+    }
+
+    private func encryptMessage(_ messageToEncrypt: [UInt8]) -> (initVector: [UInt8], encryptedMessage: [UInt8])? {
+        let encryptionKey = encryptionHandler.encryptionKey()
+        var bytesToEncrypt: [UInt8] = []
+        bytesToEncrypt.append(ChallengeResponseValues.challengeResponseType)
+        bytesToEncrypt.append(contentsOf: messageToEncrypt)
+        guard let encryptedMessage = encryptionHandler.encrypt(bytesToEncrypt, with: encryptionKey) else {
+            return nil
+        }
+        return (encryptionKey.initializationVector, encryptedMessage)
+    }
+
+    private func handleAck(_ data: Data) -> Result<Void, DefaultCommandProtocolError> {
+        guard let incomingChallengeAck = IncomingChallengeAck(data: data) else {
+            return .failure(DefaultCommandProtocolError.malformedData)
+        }
+        let encryptionKey = encryptionHandler.encryptionKey(ChallengeResponseValues.encryptionSalt,
+                                                            initVector: incomingChallengeAck.initVector,
+                                                            passphrase: ChallengeResponseValues.encryptionPassphrase,
+                                                            iterations: ChallengeResponseValues.encryptionIterations)
+        return decryptMessage(incomingChallengeAck.encryptedMessage, encryptionKey: encryptionKey)
+    }
+
+    private func decryptMessage(_ messageToDecrypt: [UInt8], encryptionKey: EncryptionKey) -> Result<Void, DefaultCommandProtocolError> {
+        guard let decryptedMessage = encryptionHandler.decrypt(messageToDecrypt, with: encryptionKey) else {
+            return .failure(DefaultCommandProtocolError.malformedData)
+        }
+        guard decryptedMessage[0] == ChallengeResponseValues.deviceToAppAckType else {
+            return .failure(DefaultCommandProtocolError.malformedData)
         }
 
-        appToDeviceMessage.command = deviceCommandMessage
-        do {
-            return try appToDeviceMessage.serializedData()
-        } catch {
-            print("Failed to serialize data to protobuf due to error: \(error.localizedDescription)")
-        }
-        return nil
-    }
-
-    private func transformIntoProtobufResponse(_ response: Data) -> Data? {
-        //to-do: Reimplement when proto file is updated to include challenge response
-//        var responseMessage = ResponseMessage()
-//        responseMessage.response = response
-//        do {
-//            return try responseMessage.serializedData()
-//        } catch {
-//            print("Unable to serialize challenge response due to error: \(error.localizedDescription)")
-//            return nil
-//        }
-        return nil
-    }
-
-    private func transformIntoProtobufResult(_ result: Data) -> Result<Bool, Error> {
-        do {
-            let resultMessage = try ResultMessage(serializedData: result)
-            if resultMessage.success {
-                return .success(true)
-
-            } else {
-                return .failure(DefaultCommandProtocolError.invalidChallengeResponse)
-            }
-        } catch {
-            print("Failed to transform protobuf result data into Result Message due to error \(error.localizedDescription)")
-            return .failure(error)
+        if decryptedMessage[1] == ChallengeResponseValues.deviceToAppAckValue {
+            return .success(())
+        } else {
+            //will eventuall handle error codes from GO here
+            return .failure(DefaultCommandProtocolError.ackError)
         }
     }
 
-    private func transformIntoChallenge(_ data: Data) -> Data? {
-        //to-do: Reimplement when proto file is updated to include challenge response
-//        var challengeMessage: ChallengeMessage?
-//        do {
-//            try challengeMessage = ChallengeMessage(serializedData: data)
-//            guard let challengeData = challengeMessage?.challenge else {
-//                return nil
-//            }
-//            return challengeData
-//        } catch {
-//            print("Unable to transform data into Challenge Message with error: \(error.localizedDescription)")
-//            return nil
-//        }
-        return nil
+    private func sendChallengeResponse(_ initializationVector: [UInt8], encryptedMessage: [UInt8]) {
+        var response: [UInt8] = []
+        response.append(contentsOf: initializationVector)
+        response.append(contentsOf: encryptedMessage)
+        transportProtocol.send(Data(bytes: response, count: response.count))
     }
-
-    private func sign(_ challenge: Data, with signingKey: String) -> Data? {
-        let challengeSigner = ChallengeSigner()
-        return challengeSigner.sign(challenge, signingKey: signingKey)
-    }
-
 }

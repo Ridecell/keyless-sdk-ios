@@ -29,10 +29,10 @@ public class CarShareClient: CommandProtocolDelegate {
     public weak var delegate: CarShareClientDelegate?
 
     public convenience init() {
-        self.init(commandProtocol: PocCommandProtocol())
+        self.init(commandProtocol: DefaultCommandProtocol())
     }
 
-    init(commandProtocol: PocCommandProtocol) {
+    init(commandProtocol: DefaultCommandProtocol) {
         self.commandProtocol = commandProtocol
     }
 
@@ -54,6 +54,7 @@ public class CarShareClient: CommandProtocolDelegate {
     public func execute(_ command: Command, with carShareToken: String) throws {
         do {
             let tokenData = try transformIntoCarShareTokenInfo(carShareToken)
+            //remove message and pass down two params
             let message = Message(command: command, carShareTokenInfo: tokenData)
             outgoingMessage = message
             commandProtocol.send(message)
@@ -73,19 +74,19 @@ public class CarShareClient: CommandProtocolDelegate {
     }
 
     func `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) {
-        guard let message = outgoingMessage else {
+        guard outgoingMessage != nil else {
             return
         }
         outgoingMessage = nil
-        delegate?.clientCommandDidSucceed(self, command: message.command)
+        delegate?.clientCommandDidSucceed(self, command: command)
     }
 
     func `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error) {
-        guard let message = outgoingMessage else {
+         guard outgoingMessage != nil else {
             return
         }
         outgoingMessage = nil
-        delegate?.clientCommandDidFail(self, command: message.command, error: error)
+        delegate?.clientCommandDidFail(self, command: command, error: error)
     }
 
     private func generateConfig(bleServiceUUID: String) -> BLeSocketConfiguration {

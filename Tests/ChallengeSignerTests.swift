@@ -12,13 +12,13 @@ import XCTest
 
 class ChallengeSignerTests: XCTestCase {
     
-    private var sut: Signer!
+    private var sut: ChallengeSigner!
     private var signableData: Data!
     private var publicKey: String!
     private var privateKey: String!
 
     override func setUp() {
-        sut = ChallengeSigner()
+        sut = DefaultChallengeSigner()
         publicKey = "MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBZBrdVNXjgKX3rd++2yoJxiWIAJgHkDAG3H/a4SJrTe3aSXJb1dhrZTW2yZ58Tsp0Mcv/gQlfsFglxHBKhoNuOHJvSq4ROqDs/lYLKaUqXqQRqyPmMGnie4J/DbVCVRX2Aw87xM+wa+GrMhaF22ZnbAzdqEW+0uj96djvB2ec4K2fOFAd2xrXnZ934MANL113OyEIHBwd3e1a4+SoyGLIwbEh0/NzRIYi6oZrVRdlWjj2PHMlobBw6RkRw7gWGhqXEwbS0wzZAALvi301CwhBFwCBSk1utWyIR/Qok/wz8Z6zTLuERSA2xyfR8838efdSBaoAZLbzqZgn+d/R3k9pNAgMBAAE="
         privateKey = """
                     -----BEGIN RSA PRIVATE KEY-----
