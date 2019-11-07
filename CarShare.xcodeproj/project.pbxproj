@@ -53,6 +53,7 @@
 		88733455025506464A85DF0B /* Pods-CarShare_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarShare_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarShare_Tests/Pods-CarShare_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		898C394C0C0BA3FF1053E8EE /* CarShare.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CarShare.podspec; path = ../CarShare.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BB1837B1235E0D5800513851 /* ChallengeSignerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSignerTests.swift; sourceTree = "<group>"; };
+		BB4A6D282374A1E60064F8DC /* ByteGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteGenerator.swift; sourceTree = "<group>"; };
 		BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCommandPayloadTests.swift; sourceTree = "<group>"; };
 		BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCommandProtocolTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -80,6 +81,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				BB4A6D282374A1E60064F8DC /* ByteGenerator.swift */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for CarShare */,
 				607FACE81AFB9204008FA782 /* Tests */,
