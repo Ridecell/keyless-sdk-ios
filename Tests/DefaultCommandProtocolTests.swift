@@ -16,6 +16,7 @@ class DefaultCommandProtocolTests: XCTestCase {
     var challengeSigner: FakeChallengeSigner!
     var encryptionHandler: FakeEncryptionHandler!
     var transportProtocol: FakeTransportProtocol!
+    var byteGenerator: ByteGenerator!
     var delegate: CommandDelegate!
 
     override func setUp() {
@@ -23,10 +24,12 @@ class DefaultCommandProtocolTests: XCTestCase {
         let deviceCommandTransformer = FakeDeviceCommandTransformer()
         let challengeSigner = FakeChallengeSigner()
         let encryptionHandler = FakeEncryptionHandler()
+        byteGenerator = DefaultByteGenerator()
         let defaultCommandProtocol = DefaultCommandProtocol(transportProtocol: transportProtocol,
                                                             deviceCommandTransformer: deviceCommandTransformer,
                                                             challengeSigner: challengeSigner,
-                                                            encryptionHandler: encryptionHandler)
+                                                            encryptionHandler: encryptionHandler,
+                                                            byteGenerator: DefaultByteGenerator())
         let delegate = CommandDelegate()
         defaultCommandProtocol.delegate = delegate
         self.sut = defaultCommandProtocol
@@ -43,6 +46,7 @@ class DefaultCommandProtocolTests: XCTestCase {
         self.challengeSigner = nil
         self.encryptionHandler = nil
         self.transportProtocol = nil
+        self.byteGenerator = nil
         self.delegate = nil
     }
     
@@ -72,13 +76,13 @@ class DefaultCommandProtocolTests: XCTestCase {
         XCTAssertTrue([UInt8](transportProtocol.sentData!) == [0x00, 0x01, 0x00])
         
         sut.protocolDidSend(transportProtocol)
-        let randomBytes = [UInt8](Data(repeating: UInt8.random(in: UInt8.min...UInt8.max), count: 32))
+        let randomBytes = byteGenerator.generate(32)
         var challenge: [UInt8] = [0x01, 0x01, 0x00]
         challenge.append(contentsOf: randomBytes)
         sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
         
         sut.protocolDidSend(transportProtocol)
-        var iv = [UInt8](Data(repeating: UInt8.random(in: UInt8.min...UInt8.max), count: 16))
+        var iv = byteGenerator.generate(16)
         iv.append(contentsOf: [0x81,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
         
         sut.protocol(transportProtocol, didReceive: Data(bytes: iv, count: iv.count))
@@ -109,13 +113,13 @@ class DefaultCommandProtocolTests: XCTestCase {
         XCTAssertTrue([UInt8](transportProtocol.sentData!) == [0x00, 0x01, 0x00])
         
         sut.protocolDidSend(transportProtocol)
-        let randomBytes = [UInt8](Data(repeating: UInt8.random(in: UInt8.min...UInt8.max), count: 32))
+        let randomBytes = byteGenerator.generate(32)
         var challenge: [UInt8] = [0x01, 0x01, 0x00]
         challenge.append(contentsOf: randomBytes)
         sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
         
         sut.protocolDidSend(transportProtocol)
-        var iv = [UInt8](Data(repeating: UInt8.random(in: UInt8.min...UInt8.max), count: 16))
+        var iv = byteGenerator.generate(16)
         iv.append(contentsOf: [0x81,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
         
         sut.protocol(transportProtocol, didReceive: Data(bytes: iv, count: iv.count))
@@ -153,12 +157,12 @@ extension DefaultCommandProtocolTests {
             return encrypted.suffix(16)
         }
         
-        func encryptionKey(_ salt: [UInt8], initVector: [UInt8], passphrase: String, iterations: Int) -> EncryptionKey {
-            return EncryptionKey(salt: salt, initializationVector: initVector, passphrase: passphrase, iterations: UInt32(iterations))
-        }
-        
-        func encryptionKey() -> EncryptionKey {
-             return EncryptionKey(salt: [0,0,0,0,0,0,0,0], initializationVector: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], passphrase: "SUPER SECRET", iterations: 14271)
+        func encryptionKey(_ initVector: [UInt8]) -> EncryptionKey {
+            return EncryptionKey(
+                salt: [232, 96, 98, 5, 159, 228, 202, 239],
+                initializationVector: initVector,
+                passphrase: "SUPER_SECRET",
+                iterations: 14_271)
         }
     }
     

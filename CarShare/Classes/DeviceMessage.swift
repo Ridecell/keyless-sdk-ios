@@ -144,6 +144,8 @@ struct IncomingChallengeAck {
         static let length: Int = 32
         static let ivLength: Int = 16
         static let encryptedMessageLength: Int = 16
+        static let deviceToAppAckType: UInt8 = 0x81
+        static let deviceToAppAckValue: UInt8 = 0x00
     }
 
     let initVector: [UInt8]
@@ -155,5 +157,15 @@ struct IncomingChallengeAck {
         }
         initVector = [UInt8](data.prefix(IncomingChallengeAckValues.ivLength))
         encryptedMessage = data.suffix(IncomingChallengeAckValues.encryptedMessageLength)
+    }
+
+    func validatePayload(_ challengeAckPayload: [UInt8]) -> Bool {
+        guard challengeAckPayload[0] == IncomingChallengeAckValues.deviceToAppAckType else {
+            return false
+        }
+        guard challengeAckPayload[1] == IncomingChallengeAckValues.deviceToAppAckValue else {
+            return false
+        }
+        return true
     }
 }

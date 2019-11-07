@@ -11,8 +11,7 @@ import Foundation
 protocol EncryptionHandler: AnyObject {
     func encrypt(_ message: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8]?
     func decrypt(_ encrypted: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8]?
-    func encryptionKey(_ salt: [UInt8], initVector: [UInt8], passphrase: String, iterations: Int) -> EncryptionKey
-    func encryptionKey() -> EncryptionKey
+    func encryptionKey(_ initVector: [UInt8]) -> EncryptionKey
 }
 
 class AESEncryptionHandler: EncryptionHandler {
@@ -104,37 +103,10 @@ class AESEncryptionHandler: EncryptionHandler {
         return [UInt8](data)
     }
 
-    private func generateRandom(_ size: Int) -> [UInt8] {
-        let bytes = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: 0)
-
-        guard SecRandomCopyBytes(kSecRandomDefault, size, bytes) == errSecSuccess else {
-            return []
-        }
-
-        let data = Data(bytes: bytes, count: size)
-        return [UInt8](data)
-    }
-
-    private func generateSalt() -> [UInt8] {
-        return generateRandom(8)
-    }
-
-    private func generateInitializationVector() -> [UInt8] {
-        return generateRandom(16)
-    }
-
-    func encryptionKey(_ salt: [UInt8], initVector: [UInt8], passphrase: String, iterations: Int) -> EncryptionKey {
+    func encryptionKey(_ initVector: [UInt8]) -> EncryptionKey {
         return EncryptionKey(
-            salt: salt,
+            salt: [232, 96, 98, 5, 159, 228, 202, 239],
             initializationVector: initVector,
-            passphrase: passphrase,
-            iterations: UInt32(iterations))
-    }
-
-    func encryptionKey() -> EncryptionKey {
-        return EncryptionKey(
-            salt: generateSalt(),
-            initializationVector: generateInitializationVector(),
             passphrase: "SUPER_SECRET",
             iterations: 14_271)
     }
