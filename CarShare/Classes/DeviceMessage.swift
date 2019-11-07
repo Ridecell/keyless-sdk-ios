@@ -113,3 +113,47 @@ extension CommandSignaturePayload: CustomStringConvertible {
         """
     }
 }
+
+struct IncomingChallenge {
+
+    private enum IncomingChallengeValues {
+        static let type: UInt8 = 0x01
+        static let length: Int = 35
+        static let randomBytesLength: Int = 32
+        static let protocolVersion: [UInt8] = [0x01, 0x00]
+    }
+
+    let randomBytes: [UInt8]
+
+    init?(data: Data) {
+        guard [UInt8](data)[0] == IncomingChallengeValues.type else {
+            return nil
+        }
+        guard [UInt8](data.prefix(3).dropFirst()) == IncomingChallengeValues.protocolVersion else {
+            return nil
+        }
+        guard data.count == IncomingChallengeValues.length else {
+            return nil
+        }
+        randomBytes = [UInt8](data.suffix(IncomingChallengeValues.randomBytesLength))
+    }
+}
+
+struct IncomingChallengeAck {
+    private enum IncomingChallengeAckValues {
+        static let length: Int = 32
+        static let ivLength: Int = 16
+        static let encryptedMessageLength: Int = 16
+    }
+
+    let initVector: [UInt8]
+    let encryptedMessage: [UInt8]
+
+    init?(data: Data) {
+        guard data.count == IncomingChallengeAckValues.length else {
+            return nil
+        }
+        initVector = [UInt8](data.prefix(IncomingChallengeAckValues.ivLength))
+        encryptedMessage = data.suffix(IncomingChallengeAckValues.encryptedMessageLength)
+    }
+}

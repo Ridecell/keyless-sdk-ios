@@ -37,7 +37,7 @@ class SecurityTests: XCTestCase {
     }
 
     private func generateInitializationVector() -> [UInt8] {
-        return generateRandom(kCCBlockSizeAES128)
+        return generateRandom(16)
     }
 
     func testEncryption() {

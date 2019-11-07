@@ -1,5 +1,5 @@
 //
-//  CarShareMessageTests.swift
+//  DeviceCommandPayloadTests.swift
 //  CarShare_Tests
 //
 //  Created by Marc Maguire on 2019-10-29.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import CarShare
 
-class CarShareMessageTests: XCTestCase {
+class DeviceCommandPayloadTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -26,18 +26,18 @@ class CarShareMessageTests: XCTestCase {
         let expectedCommandMessage: [UInt8] = [0x01, 0x02, 0x03]
         var signedCommandHashBytes = [UInt8](repeating: 0, count: 256)
         signedCommandHashBytes.append(contentsOf: randomBytes)
-        let deviceMessage = CarShareMessage.deviceMessage(from: carShareTokenInfo,
+        let deviceCommandPayload = DeviceCommandPayload.build(from: carShareTokenInfo,
                                                                   commandMessageProto: Data(bytes: expectedCommandMessage, count: expectedCommandMessage.count),
                                                                   signedCommandHash: signedCommandHashBytes)
-        XCTAssertEqual(expectedVersion, deviceMessage.reservationSignaturePayload.reservationVersion)
-        XCTAssertEqual([UInt8](carShareTokenInfo.tenantModulusHash).dropLast(), deviceMessage.reservationSignaturePayload.tenantModulusHash)
-        XCTAssertEqual([UInt8](carShareTokenInfo.reservationTokenSignature), deviceMessage.reservationSignaturePayload.signedReservationHash)
+        XCTAssertEqual(expectedVersion, deviceCommandPayload.reservationSignaturePayload.reservationVersion)
+        XCTAssertEqual([UInt8](carShareTokenInfo.tenantModulusHash).dropLast(), deviceCommandPayload.reservationSignaturePayload.tenantModulusHash)
+        XCTAssertEqual([UInt8](carShareTokenInfo.reservationTokenSignature), deviceCommandPayload.reservationSignaturePayload.signedReservationHash)
         
-        let reservationLength1 = ((deviceMessage.reservationSignaturePayload.reservationLength[1] & 0xFF) << 8)
-        let reservationLength2 = (deviceMessage.reservationSignaturePayload.reservationLength[0] & 0xFF)
+        let reservationLength1 = ((deviceCommandPayload.reservationSignaturePayload.reservationLength[1] & 0xFF) << 8)
+        let reservationLength2 = (deviceCommandPayload.reservationSignaturePayload.reservationLength[0] & 0xFF)
         let actualReservationTokenSize = Int(reservationLength1+reservationLength2)
         XCTAssertEqual(carShareTokenInfo.reservationToken.count, actualReservationTokenSize)
-        XCTAssertEqual(4, deviceMessage.reservationSignaturePayload.crc32Reservation.count)
+        XCTAssertEqual(4, deviceCommandPayload.reservationSignaturePayload.crc32Reservation.count)
     }
     
     func testCommandSignaturePayloadFormat() {
@@ -47,7 +47,7 @@ class CarShareMessageTests: XCTestCase {
         let expectedCommandMessage: [UInt8] = [0x01, 0x02, 0x03]
         var signedCommandHashBytes = [UInt8](repeating: 0, count: 256)
         signedCommandHashBytes.append(contentsOf: randomBytes)
-        let deviceMessage = CarShareMessage.deviceMessage(from: carShareTokenInfo,
+        let deviceMessage = DeviceCommandPayload.build(from: carShareTokenInfo,
                                                           commandMessageProto: Data(bytes: expectedCommandMessage, count: expectedCommandMessage.count),
                                                           signedCommandHash: signedCommandHashBytes)
         XCTAssertEqual(expectedVersion, deviceMessage.commandSignaturePayload.commandVersion)

@@ -26,7 +26,7 @@
 		0C05FE57D1334AECB1FDD5CA492F6958 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F548E61385B2142E39E74AE5943903 /* TimeUtils.swift */; };
 		100B2220D0B640CACDDFA0C7B32265E9 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74770D2B1AA7FFDBD2497B1DC320F6C2 /* Data+Extensions.swift */; };
 		1065D75B4B2F47D20770962B62BFC399 /* SelectiveVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C65DE5478FED13DE8C87D5D53326496 /* SelectiveVisitor.swift */; };
-		115EB65054C3EFBF5F909010929909B4 /* PocCommandProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C67E57B2194AA4E58116083D2B8402 /* PocCommandProtocol.swift */; };
+		115EB65054C3EFBF5F909010929909B4 /* DefaultCommandProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C67E57B2194AA4E58116083D2B8402 /* DefaultCommandProtocol.swift */; };
 		116A1F061D9461BEB3A60400BED878BF /* WireFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05536DE76FBB7EE3F61B4B4E63C2AEA4 /* WireFormat.swift */; };
 		129969EA56A40D1B58E7EB845B1F8DB5 /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449D141A3B2D822E33BB33FC39DF88FD /* Decoder.swift */; };
 		1513877110691944E20A2F1F1F7817B3 /* descriptor.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4532CCFFE6AD5E2EC86E250E7F885BF /* descriptor.pb.swift */; };
@@ -93,12 +93,13 @@
 		B55F92B7234FF09A9EC7B6A9353DB5A0 /* struct.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C9E4FDE89FA54260348DDC03DA59D8 /* struct.pb.swift */; };
 		B786E30DD12C449EF6559E4F32136F26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7835C4229DC5A4AB8AA8ABA114DC559E /* Foundation.framework */; };
 		B7F584F627B87F895E226B8BEE131404 /* JSONScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03FCF434F1201BC421B836B807E76FD /* JSONScanner.swift */; };
-		BB1837AA2358F7E400513851 /* CarShareMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837A92358F7E400513851 /* CarShareMessage.swift */; };
+		BB1837AA2358F7E400513851 /* DeviceCommandPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837A92358F7E400513851 /* DeviceCommandPayload.swift */; };
 		BB1837AE235DF24700513851 /* carshare_messaging.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837AD235DF24700513851 /* carshare_messaging.pb.swift */; };
 		BB1837B0235DFA7F00513851 /* CarShareTokenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */; };
 		BB1837B5235E239A00513851 /* CarshareToken.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837B3235E224100513851 /* CarshareToken.pb.swift */; };
 		BB1837B72360C7A700513851 /* DeviceMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837B62360C7A700513851 /* DeviceMessage.swift */; };
-		BE2D42A9484EBB69B07E66BA7DE0718B /* ChallengeSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE21E08840F10490D6D9FD65177DBED /* ChallengeSigner.swift */; };
+		BB5CCA99237310F2006408AC /* DeviceCommandTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5CCA98237310F2006408AC /* DeviceCommandTransformer.swift */; };
+		BE2D42A9484EBB69B07E66BA7DE0718B /* DefaultChallengeSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE21E08840F10490D6D9FD65177DBED /* DefaultChallengeSigner.swift */; };
 		BE81E3F22B6A4C756A1AE9715BB819B8 /* ZigZag.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE77FFFF6036ABF85A4816CD77411CF3 /* ZigZag.swift */; };
 		C0371039A60E5B7C923277C0DB80F630 /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF33E2ED1A236E976222A96A3837EE /* EncryptionKey.swift */; };
 		C0B2663BC21BEBD5DF6893A3E62A22AD /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729DD03F7901520B08A95FAEAAE27041 /* StringUtils.swift */; };
@@ -110,7 +111,6 @@
 		CC85E8A57AB687D1403BF2BA1396396C /* Message+AnyAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38F7BCC5F32D25F348B0BD20ECD8D9D /* Message+AnyAdditions.swift */; };
 		D177C90714B0C01D3BB5E9F4DF1BBDA2 /* JSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178C22DB9A0DB8DC47DED95A380CE032 /* JSONDecoder.swift */; };
 		D7B901BA405A4090273E42936C99478B /* CustomJSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337D59EC0F2BF159CFA3A44828BD76C8 /* CustomJSONCodable.swift */; };
-		D8CB39EAEB8B0F8C9C53AE80611F55F2 /* DefaultCommandProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FCA307A84EFFF97AD7CCC4E29E4A2A /* DefaultCommandProtocol.swift */; };
 		DC2EF9B487C7E13DE578D62FD43AC495 /* TextFormatEncodingVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7FDFE9D5BC66271775D4DDC39D6C5B /* TextFormatEncodingVisitor.swift */; };
 		DC98607F38243CB80857566156D8FCCF /* ProtobufAPIVersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A29BF2612EB233503762240EE847A2 /* ProtobufAPIVersionCheck.swift */; };
 		DD8FA339D664697836D1665B5292DC62 /* HashVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B555303E3617F0C649C6D7C9E7FC0C2 /* HashVisitor.swift */; };
@@ -173,7 +173,6 @@
 /* Begin PBXFileReference section */
 		0184FF40C25B9A5309F83CAE47E02FE1 /* Visitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Visitor.swift; path = Sources/SwiftProtobuf/Visitor.swift; sourceTree = "<group>"; };
 		05536DE76FBB7EE3F61B4B4E63C2AEA4 /* WireFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WireFormat.swift; path = Sources/SwiftProtobuf/WireFormat.swift; sourceTree = "<group>"; };
-		05FCA307A84EFFF97AD7CCC4E29E4A2A /* DefaultCommandProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultCommandProtocol.swift; path = CarShare/Classes/DefaultCommandProtocol.swift; sourceTree = "<group>"; };
 		060CAA04D17E5C109CC2261E7DC5020A /* Pods-CarShare_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CarShare_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		0A08F80E0372EFAB1AAA58C9FEED0109 /* Message+JSONArrayAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+JSONArrayAdditions.swift"; path = "Sources/SwiftProtobuf/Message+JSONArrayAdditions.swift"; sourceTree = "<group>"; };
 		0B538BFB6A0D8873F855F5214F583E66 /* CarShare-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "CarShare-Info.plist"; sourceTree = "<group>"; };
@@ -231,7 +230,7 @@
 		679AC3F7C271DD456148D5708BF9C79C /* BinaryEncodingError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingError.swift; path = Sources/SwiftProtobuf/BinaryEncodingError.swift; sourceTree = "<group>"; };
 		686EF163E04BCAD80D2B775538EE34A5 /* FieldTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FieldTypes.swift; path = Sources/SwiftProtobuf/FieldTypes.swift; sourceTree = "<group>"; };
 		68B7F8CB0D04393211A6C9B6421AC1C9 /* DefaultTransportProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultTransportProtocol.swift; path = CarShare/Classes/DefaultTransportProtocol.swift; sourceTree = "<group>"; };
-		6EE21E08840F10490D6D9FD65177DBED /* ChallengeSigner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ChallengeSigner.swift; path = CarShare/Classes/ChallengeSigner.swift; sourceTree = "<group>"; };
+		6EE21E08840F10490D6D9FD65177DBED /* DefaultChallengeSigner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultChallengeSigner.swift; path = CarShare/Classes/DefaultChallengeSigner.swift; sourceTree = "<group>"; };
 		729DD03F7901520B08A95FAEAAE27041 /* StringUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StringUtils.swift; path = Sources/SwiftProtobuf/StringUtils.swift; sourceTree = "<group>"; };
 		74770D2B1AA7FFDBD2497B1DC320F6C2 /* Data+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Data+Extensions.swift"; path = "Sources/SwiftProtobuf/Data+Extensions.swift"; sourceTree = "<group>"; };
 		74C9E4FDE89FA54260348DDC03DA59D8 /* struct.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = struct.pb.swift; path = Sources/SwiftProtobuf/struct.pb.swift; sourceTree = "<group>"; };
@@ -269,11 +268,12 @@
 		B3FEB53F93EB5022C7BFF879D0339002 /* timestamp.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = timestamp.pb.swift; path = Sources/SwiftProtobuf/timestamp.pb.swift; sourceTree = "<group>"; };
 		B64A397EA10E9EA8FCC8A30EF237C85C /* CarShare.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = CarShare.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BA43D4271D2391B499EADF25E7CD4287 /* Pods-CarShare_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CarShare_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		BB1837A92358F7E400513851 /* CarShareMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CarShareMessage.swift; path = CarShare/Classes/CarShareMessage.swift; sourceTree = "<group>"; };
+		BB1837A92358F7E400513851 /* DeviceCommandPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceCommandPayload.swift; path = CarShare/Classes/DeviceCommandPayload.swift; sourceTree = "<group>"; };
 		BB1837AD235DF24700513851 /* carshare_messaging.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = carshare_messaging.pb.swift; path = CarShare/Classes/carshare_messaging.pb.swift; sourceTree = "<group>"; };
 		BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarShareTokenInfo.swift; path = CarShare/Classes/CarShareTokenInfo.swift; sourceTree = "<group>"; };
 		BB1837B3235E224100513851 /* CarshareToken.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarshareToken.pb.swift; path = CarShare/Classes/CarshareToken.pb.swift; sourceTree = "<group>"; };
 		BB1837B62360C7A700513851 /* DeviceMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceMessage.swift; path = CarShare/Classes/DeviceMessage.swift; sourceTree = "<group>"; };
+		BB5CCA98237310F2006408AC /* DeviceCommandTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceCommandTransformer.swift; path = CarShare/Classes/DeviceCommandTransformer.swift; sourceTree = "<group>"; };
 		BCB962468AF95B35985F2D057683009A /* Google_Protobuf_Struct+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Struct+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Struct+Extensions.swift"; sourceTree = "<group>"; };
 		BCDE3D0997EDA6D8F730A35D08D25F7C /* duration.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = duration.pb.swift; path = Sources/SwiftProtobuf/duration.pb.swift; sourceTree = "<group>"; };
 		BDAF63ACE6C94F7B64EE0F9ABC23D1E3 /* CarshareToken.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CarshareToken.pb.swift; path = CarShare/Classes/CarshareToken.pb.swift; sourceTree = "<group>"; };
@@ -281,7 +281,7 @@
 		BFA8FB01839A8661A791CEDCDC9F35C9 /* Pods-CarShare_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CarShare_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		C3A99FCA2D9343224FFEEEEA4DFF8B8C /* Varint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Varint.swift; path = Sources/SwiftProtobuf/Varint.swift; sourceTree = "<group>"; };
 		C3E7A1041E580AEAEF8F06634F270B1D /* Google_Protobuf_Value+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Value+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Value+Extensions.swift"; sourceTree = "<group>"; };
-		C4C67E57B2194AA4E58116083D2B8402 /* PocCommandProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PocCommandProtocol.swift; path = CarShare/Classes/PocCommandProtocol.swift; sourceTree = "<group>"; };
+		C4C67E57B2194AA4E58116083D2B8402 /* DefaultCommandProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultCommandProtocol.swift; path = CarShare/Classes/DefaultCommandProtocol.swift; sourceTree = "<group>"; };
 		C56A0B8E1D6F540A4A0D97E157A3F0AE /* TextFormatDecoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextFormatDecoder.swift; path = Sources/SwiftProtobuf/TextFormatDecoder.swift; sourceTree = "<group>"; };
 		C5CB645640F1E27554D9158AB4F1B4DB /* BinaryDecodingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryDecodingOptions.swift; path = Sources/SwiftProtobuf/BinaryDecodingOptions.swift; sourceTree = "<group>"; };
 		D10317BC886FEFB57BAC04DB70E89097 /* any.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = any.pb.swift; path = Sources/SwiftProtobuf/any.pb.swift; sourceTree = "<group>"; };
@@ -370,18 +370,18 @@
 				E5774118156E5E44706B35A4B490F834 /* AsyncExecuter.swift */,
 				BB1837AD235DF24700513851 /* carshare_messaging.pb.swift */,
 				BDAF63ACE6C94F7B64EE0F9ABC23D1E3 /* CarshareToken.pb.swift */,
-				6EE21E08840F10490D6D9FD65177DBED /* ChallengeSigner.swift */,
+				6EE21E08840F10490D6D9FD65177DBED /* DefaultChallengeSigner.swift */,
 				FFFFB97C2F40A0CD6447682F523653E4 /* CarShareClient.swift */,
 				BB1837B3235E224100513851 /* CarshareToken.pb.swift */,
 				BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */,
-				05FCA307A84EFFF97AD7CCC4E29E4A2A /* DefaultCommandProtocol.swift */,
 				BB1837B62360C7A700513851 /* DeviceMessage.swift */,
-				BB1837A92358F7E400513851 /* CarShareMessage.swift */,
+				BB5CCA98237310F2006408AC /* DeviceCommandTransformer.swift */,
+				BB1837A92358F7E400513851 /* DeviceCommandPayload.swift */,
 				440B551FD64EDA54AB31B7A4AC4F7504 /* DefaultSecurityProtocol.swift */,
 				68B7F8CB0D04393211A6C9B6421AC1C9 /* DefaultTransportProtocol.swift */,
 				A1CF33E2ED1A236E976222A96A3837EE /* EncryptionKey.swift */,
 				249ECA0A8EF5BA470E70C5DB1BD7DB87 /* IOSSocket.swift */,
-				C4C67E57B2194AA4E58116083D2B8402 /* PocCommandProtocol.swift */,
+				C4C67E57B2194AA4E58116083D2B8402 /* DefaultCommandProtocol.swift */,
 				E9A2654F2687A134AC738B7D926DBC44 /* Protocols.swift */,
 				937F931BFDD5C429E22162AD36DB00DF /* Pod */,
 				1A908054CAD48453F4E99DA91626DF43 /* Support Files */,
@@ -909,17 +909,17 @@
 				3FAF8516A81DEBE3ED84EE94E31E326C /* AESEncryptionHandler.swift in Sources */,
 				5A1DC939F3902B7AD1E0F242B44F8FC8 /* AsyncExecuter.swift in Sources */,
 				3E06FF81012CF807C26C2BE96BE89DFE /* CarShare-dummy.m in Sources */,
-				BE2D42A9484EBB69B07E66BA7DE0718B /* ChallengeSigner.swift in Sources */,
+				BE2D42A9484EBB69B07E66BA7DE0718B /* DefaultChallengeSigner.swift in Sources */,
 				8E72B2BFD38132B50DEA0C84DA5FCBD2 /* CarShareClient.swift in Sources */,
 				BB1837B72360C7A700513851 /* DeviceMessage.swift in Sources */,
 				BB1837AE235DF24700513851 /* carshare_messaging.pb.swift in Sources */,
-				D8CB39EAEB8B0F8C9C53AE80611F55F2 /* DefaultCommandProtocol.swift in Sources */,
-				BB1837AA2358F7E400513851 /* CarShareMessage.swift in Sources */,
+				BB5CCA99237310F2006408AC /* DeviceCommandTransformer.swift in Sources */,
+				BB1837AA2358F7E400513851 /* DeviceCommandPayload.swift in Sources */,
 				2D446A88D8E4668F3AF479C58AD4D4D7 /* DefaultSecurityProtocol.swift in Sources */,
 				32DAE0A149762786A68936F0893F6F76 /* DefaultTransportProtocol.swift in Sources */,
 				C0371039A60E5B7C923277C0DB80F630 /* EncryptionKey.swift in Sources */,
 				51E3929EC69472303102557F31D7FAC9 /* IOSSocket.swift in Sources */,
-				115EB65054C3EFBF5F909010929909B4 /* PocCommandProtocol.swift in Sources */,
+				115EB65054C3EFBF5F909010929909B4 /* DefaultCommandProtocol.swift in Sources */,
 				52DEE6BB53F279DCC734782A373FA786 /* Protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

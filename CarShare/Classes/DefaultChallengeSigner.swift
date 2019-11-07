@@ -8,7 +8,11 @@
 import CommonCrypto
 import Foundation
 
-class ChallengeSigner: Signer {
+public protocol ChallengeSigner: AnyObject {
+    func sign(_ challengeData: Data, signingKey: String) -> Data?
+}
+
+class DefaultChallengeSigner: ChallengeSigner {
 
     func sign(_ challengeData: Data, signingKey: String) -> Data? {
         let unwrappedKey = signingKey.replacingOccurrences(of: "-----BEGIN RSA PRIVATE KEY-----", with: "").replacingOccurrences(of: "-----END RSA PRIVATE KEY-----", with: "")

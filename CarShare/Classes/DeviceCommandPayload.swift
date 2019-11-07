@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CarShareMessage {
+enum DeviceCommandPayload {
 
     private static var reservationMessageVersion: Int {
         return 1
@@ -17,7 +17,7 @@ enum CarShareMessage {
         return 1
     }
 
-    static func deviceMessage(from carShareTokenInfo: CarShareTokenInfo, commandMessageProto: Data, signedCommandHash: [UInt8]) -> DeviceMessage {
+    static func build(from carShareTokenInfo: CarShareTokenInfo, commandMessageProto: Data, signedCommandHash: [UInt8]) -> DeviceMessage {
         let deviceMessage = DeviceMessage(reservationSignaturePayload: generateReservationSignaturePayload(from: carShareTokenInfo),
                                           reservationToken: [UInt8](carShareTokenInfo.reservationToken),
                                           commandSignaturePayload: generateCommandSignaturePayload(from: carShareTokenInfo,
