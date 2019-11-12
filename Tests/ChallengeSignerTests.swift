@@ -116,6 +116,14 @@ QtNwj+n8DaCdMr1fpfQ42c5AGwNUbAZoZ/s3Hql3BnokQ/184wp7uw==
         }
         XCTAssertFalse(verifier.verify(signableData.base64EncodedData(), withSigned: signedData))
     }
+    
+    func testSigningFailsIfSignableDataIsNotBase64Encoded() {
+        guard let _ = sut.sign(signableData, signingKey: "incorrectPrivateKey") else {
+            XCTAssert(true)
+            return
+        }
+        XCTFail()
+    }
 
 }
 

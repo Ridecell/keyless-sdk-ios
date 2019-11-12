@@ -91,6 +91,50 @@ class DefaultCommandProtocolTests: XCTestCase {
         XCTAssertTrue([UInt8](delegate.didSucceedData!)[16] == 129)
     }
     
+    func testSendingCommandFailsOnTwoSends() {
+        let carShareTokenInfo = getCarShareTokenInfo()
+        let message = Message(command: .checkIn, carShareTokenInfo: carShareTokenInfo)
+        sut.send(message)
+        transportProtocol.sendCalled = false
+        sut.send(message)
+        XCTAssert(transportProtocol.sendCalled == false)
+    }
+    
+    func testProtocolDidCloseUnexpectedlyPropagatesAfterSend() {
+        openAndSend()
+        transportProtocol.delegate?.protocolDidCloseUnexpectedly(transportProtocol, error: TestError())
+        XCTAssert(delegate.didCloseUnexpectedlyCalled)
+    }
+    
+    func testProtocolDidCloseUnexpectedlyPropagatesBeforeSend() {
+        open()
+        transportProtocol.delegate?.protocolDidCloseUnexpectedly(transportProtocol, error: TestError())
+        XCTAssert(delegate.didCloseUnexpectedlyCalled)
+    }
+    
+    func testProtocolDidFailToSendPropagatesAfterSend() {
+        openAndSend()
+        transportProtocol.delegate?.protocolDidFailToSend(transportProtocol, error: TestError())
+        XCTAssert(delegate.didFailCalled)
+    }
+    func testProtocolDidFailToSendDoesNotPropagateBeforeSend() {
+        open()
+        transportProtocol.delegate?.protocolDidFailToSend(transportProtocol, error: TestError())
+        XCTAssert(delegate.didFailCalled == false)
+    }
+    
+    func testProtocolDidFailToReceivePropagatesAfterSend() {
+        openAndSend()
+        transportProtocol.delegate?.protocolDidFailToReceive(transportProtocol, error: TestError())
+        XCTAssert(delegate.didFailCalled)
+    }
+    
+    func testProtocolDidFailToReceiveDoesNotPropagateBeforeSend() {
+        open()
+        transportProtocol.delegate?.protocolDidFailToReceive(transportProtocol, error: TestError())
+        XCTAssert(delegate.didFailCalled == false)
+    }
+    
     func testSendingCommandFailedOnMalformedChallenge() {
         let carShareTokenInfo = getCarShareTokenInfo()
         let message = Message(command: .checkIn, carShareTokenInfo: carShareTokenInfo)
@@ -138,6 +182,25 @@ class DefaultCommandProtocolTests: XCTestCase {
                                  reservationToken: Data(bytes: reservationToken, count: reservationToken.count),
                                  reservationTokenSignature: Data(bytes: reservationTokenSignature, count: reservationTokenSignature.count))
     }
+    
+    private func open() {
+        let config = BLeSocketConfiguration(serviceID: "SERVICE_ID",
+                                            notifyCharacteristicID: "NOTIFY_ID",
+                                            writeCharacteristicID: "WRITE_ID")
+        sut.open(config)
+    }
+    
+    private func openAndSend() {
+        let config = BLeSocketConfiguration(serviceID: "SERVICE_ID",
+                                            notifyCharacteristicID: "NOTIFY_ID",
+                                            writeCharacteristicID: "WRITE_ID")
+        sut.open(config)
+        let carShareTokenInfo = getCarShareTokenInfo()
+        let message = Message(command: .checkIn, carShareTokenInfo: carShareTokenInfo)
+        sut.send(message)
+    }
+    
+    private struct TestError: Swift.Error{}
 
 }
 
@@ -217,7 +280,7 @@ extension DefaultCommandProtocolTests {
         var transformCalled: Bool = false
         func transform(_ command: Command) -> Data? {
             transformCalled = true
-            return Data(repeating: 0x00, count: 1)
+            return Data(repeating: 0x01, count: 1)
         }
     }
 }
