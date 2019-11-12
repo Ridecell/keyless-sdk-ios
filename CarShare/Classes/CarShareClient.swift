@@ -9,10 +9,6 @@ import Foundation
 
 public class CarShareClient: CommandProtocolDelegate {
 
-    enum DefaultCarShareClientError: Error {
-        case challengeFailed
-        case tokenDecodingFailed
-    }
     private struct CarShareToken {
         let bleServiceUuid: String
         let reservationPrivateKey: String
@@ -23,22 +19,24 @@ public class CarShareClient: CommandProtocolDelegate {
     }
 
     private let commandProtocol: CommandProtocol
+    private let tokenTransformer: TokenTransformer
 
     private var outgoingMessage: Message?
 
     public weak var delegate: CarShareClientDelegate?
 
     public convenience init() {
-        self.init(commandProtocol: DefaultCommandProtocol())
+        self.init(commandProtocol: DefaultCommandProtocol(), tokenTransformer: DefaultCareShareTokenTransformer())
     }
 
-    init(commandProtocol: DefaultCommandProtocol) {
+    init(commandProtocol: CommandProtocol, tokenTransformer: TokenTransformer) {
         self.commandProtocol = commandProtocol
+        self.tokenTransformer = tokenTransformer
     }
 
     public func connect(_ carShareToken: String) throws {
         do {
-            let carShareToken = try transformIntoCarShareTokenInfo(carShareToken)
+            let carShareToken = try tokenTransformer.transform(carShareToken)
             commandProtocol.delegate = self
             commandProtocol.open(generateConfig(bleServiceUUID: carShareToken.bleServiceUuid))
         } catch {
@@ -53,7 +51,7 @@ public class CarShareClient: CommandProtocolDelegate {
 
     public func execute(_ command: Command, with carShareToken: String) throws {
         do {
-            let tokenData = try transformIntoCarShareTokenInfo(carShareToken)
+            let tokenData = try tokenTransformer.transform(carShareToken)
             //remove message and pass down two params
             let message = Message(command: command, carShareTokenInfo: tokenData)
             outgoingMessage = message
@@ -95,22 +93,4 @@ public class CarShareClient: CommandProtocolDelegate {
             notifyCharacteristicID: "430F2EA3-C765-4051-9134-A341254CFD00",
             writeCharacteristicID: "906EE7E0-D8DB-44F3-AF54-6B0DFCECDF1C")
     }
-
-    private func transformIntoCarShareTokenInfo(_ carShareToken: String) throws -> CarShareTokenInfo {
-        guard let decodedData = Data(base64Encoded: carShareToken) else {
-            throw DefaultCarShareClientError.tokenDecodingFailed
-        }
-        do {
-            let token = try CarshareToken(serializedData: decodedData)
-            return CarShareTokenInfo(bleServiceUuid: token.bleServiceUuid,
-                                     reservationPrivateKey: token.reservationPrivateKey,
-                                     reservationModulusHash: token.reservationModulusHash,
-                                     tenantModulusHash: token.tenantModulusHash,
-                                     reservationToken: token.reservationToken,
-                                     reservationTokenSignature: token.reservationTokenSignature)
-        } catch {
-            throw DefaultCarShareClientError.tokenDecodingFailed
-        }
-    }
-
 }
