@@ -28,7 +28,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         super.tearDown()
     }
 
-    func testOpenningSocketPerformsHandshake() {
+    func testOpeningSocketPerformsHandshake() {
         let configuration = BLeSocketConfiguration(
             serviceID: "SERVICE",
             notifyCharacteristicID: "NOTIFY",
@@ -40,7 +40,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         XCTAssertFalse(recorder.didOpen)
 
         socket.delegate?.socketDidOpen(socket)
-
+        
         let sync: [UInt8] = [0x55]
         XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
 
@@ -57,6 +57,25 @@ class DefaultTransportProtocolTests: XCTestCase {
         let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
         XCTAssertTrue(recorder.didOpen)
+    }
+    
+    func testCloseIfUnexpectedAckValues() {
+        let configuration = BLeSocketConfiguration(
+            serviceID: "SERVICE",
+            notifyCharacteristicID: "NOTIFY",
+            writeCharacteristicID: "WRITE")
+        sut.open(configuration)
+        socket.delegate?.socketDidOpen(socket)
+        socket.delegate?.socketDidSend(socket)
+        
+        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
+        
+        socket.delegate?.socketDidSend(socket)
+        
+        let ack: [UInt8] = [0x02, 0x02, 0x07, 0x04, 0x0A, 0x03]
+        socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
+        XCTAssertTrue(recorder.closeError != nil)
     }
 
     func testOpenningSocketPerformsHandshakeButNoAck() {
@@ -271,6 +290,11 @@ class DefaultTransportProtocolTests: XCTestCase {
         let expectedBytes: [UInt8] = [0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20]
         XCTAssertEqual(expectedBytes, [UInt8](recorder.receivedData!))
 
+    }
+    
+    func testSocketCloses() {
+        sut.close()
+        XCTAssert(socket.didClose)
     }
 
     private func openSocket() {

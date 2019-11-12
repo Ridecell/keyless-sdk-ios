@@ -18,11 +18,12 @@ class IncomingChallengeTests: XCTestCase {
     }
     
     func testValidatingInitDataFailsOnWrongDataSize() {
-        let bytes = generateRandom(15)
-        if IncomingChallenge(data: Data(bytes: bytes, count: bytes.count)) == nil {
-            XCTAssert(true)
-        } else {
+        if let _ = generateIncomingChallenge(messageType: [0x01],
+                                             protocolVersion: [0x01, 0x00],
+                                             countOfRandomBytes: 31) {
             XCTFail()
+        } else {
+            XCTAssert(true)
         }
     }
     
