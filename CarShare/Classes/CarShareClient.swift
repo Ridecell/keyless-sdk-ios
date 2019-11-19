@@ -26,7 +26,7 @@ public class CarShareClient: CommandProtocolDelegate {
     public weak var delegate: CarShareClientDelegate?
 
     public convenience init() {
-        self.init(commandProtocol: DefaultCommandProtocol(), tokenTransformer: DefaultCareShareTokenTransformer())
+        self.init(commandProtocol: DefaultCommandProtocol(), tokenTransformer: DefaultCarShareTokenTransformer())
     }
 
     init(commandProtocol: CommandProtocol, tokenTransformer: TokenTransformer) {

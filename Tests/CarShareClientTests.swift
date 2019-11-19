@@ -73,8 +73,39 @@ class CarShareClientTests: XCTestCase {
         XCTAssertEqual(delegate.successfulCommand, Command.checkIn)
     }
     
+    func testConnectFailsWithInvalidToken() {
+        
+        let invalidToken = "INVALID_TOKEN"
+        try? sut.connect(invalidToken)
+        XCTAssertFalse(commandProtocol.openCalled)
+    }
+    
+    func testExecuteFailsWithInvalidToken() {
+        
+        let invalidToken = "INVALID_TOKEN"
+        try? sut.execute(.checkIn, with: invalidToken)
+        XCTAssertFalse(commandProtocol.sendCalled)
+    }
+    
+    func testDidSucceedFailsIfDisconnected() {
+        let validToken = "VALID_TOKEN"
+        try? sut.connect(validToken)
+        let bytes: [UInt8] = [0x01]
+        sut.disconnect()
+        sut.protocol(commandProtocol, command: .closeTrunk, didSucceed: Data(bytes: bytes, count: bytes.count))
+        XCTAssertFalse(delegate.commandDidSucceedCalled)
+    }
+    
+    func testDidFailsFailsIfDisconnected() {
+        let validToken = "VALID_TOKEN"
+        try? sut.connect(validToken)
+        sut.disconnect()
+        sut.protocol(commandProtocol, command: .checkIn, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
+        XCTAssertFalse(delegate.commandDidFail)
+    }
+    
     func testUnsuccessfulCommandPropagates() {
-        let validToken = "INVALID_TOKEN"
+        let validToken = "VALID_TOKEN"
         try? sut.execute(.checkIn, with: validToken)
         sut.protocol(commandProtocol, command: .checkIn, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         
@@ -111,6 +142,9 @@ extension CarShareClientTests {
                 
         var transformCalled: Bool = false
         func transform(_ token: String) throws -> CarShareTokenInfo {
+            if token == "INVALID_TOKEN" {
+                throw DefaultCarShareTokenTransformer.TokenTransformerError.tokenDecodingFailed
+            }
             transformCalled = true
             let reservationTokenSignature: [UInt8] = [0x01, 0x02, 0x03, 0x04, 0x05]
             let reservationToken: [UInt8] = [0x06, 0x07, 0x08, 0x09, 0x10]

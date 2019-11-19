@@ -29,95 +29,32 @@ class DefaultTransportProtocolTests: XCTestCase {
     }
 
     func testOpeningSocketPerformsHandshake() {
-        let configuration = BLeSocketConfiguration(
-            serviceID: "SERVICE",
-            notifyCharacteristicID: "NOTIFY",
-            writeCharacteristicID: "WRITE")
-        sut.open(configuration)
-
-        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
-        XCTAssertTrue(socket.didOpen)
-        XCTAssertFalse(recorder.didOpen)
-
-        socket.delegate?.socketDidOpen(socket)
-        
-        let sync: [UInt8] = [0x55]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
-
-        socket.delegate?.socketDidSend(socket)
-
-        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
-        socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
-
-        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5F, 0x10, 0x01, 0x00, 247, 214, 0x03]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
-
-        socket.delegate?.socketDidSend(socket)
-
-        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
-        socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
+        sutOpen()
+        syncAndShake()
+        confirmAndSend()
+        socket.delegate?.socket(socket, didReceive: validAckData())
         XCTAssertTrue(recorder.didOpen)
     }
     
     func testCloseIfUnexpectedAckValues() {
-        let configuration = BLeSocketConfiguration(
-            serviceID: "SERVICE",
-            notifyCharacteristicID: "NOTIFY",
-            writeCharacteristicID: "WRITE")
-        sut.open(configuration)
-        socket.delegate?.socketDidOpen(socket)
-        socket.delegate?.socketDidSend(socket)
-        
-        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
-        socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
-        
-        socket.delegate?.socketDidSend(socket)
+        sutOpen()
+        syncAndShake()
+        confirmAndSend()
         
         let ack: [UInt8] = [0x02, 0x02, 0x07, 0x04, 0x0A, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
         XCTAssertTrue(recorder.closeError != nil)
     }
 
-    func testOpenningSocketPerformsHandshakeButNoAck() {
-        let configuration = BLeSocketConfiguration(
-            serviceID: "SERVICE",
-            notifyCharacteristicID: "NOTIFY",
-            writeCharacteristicID: "WRITE")
-        sut.open(configuration)
-
-        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
-        XCTAssertTrue(socket.didOpen)
-        XCTAssertFalse(recorder.didOpen)
-
-        socket.delegate?.socketDidOpen(socket)
-
-        let sync: [UInt8] = [0x55]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
-
-        socket.delegate?.socketDidSend(socket)
-
-        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
-        socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
-
-        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5F, 0x10, 0x01, 0x00, 247, 214, 0x03]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
-
-        socket.delegate?.socketDidSend(socket)
-
+    func testOpenningSocketFailsIfHandshakeButNoAck() {
+        sutOpen()
+        syncAndShake()
+        confirmAndSend()
         XCTAssertFalse(recorder.didOpen)
     }
 
     func testHandshakeFail1() {
-        let configuration = BLeSocketConfiguration(
-            serviceID: "SERVICE",
-            notifyCharacteristicID: "NOTIFY",
-            writeCharacteristicID: "WRITE")
-        sut.open(configuration)
-
-        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
-        XCTAssertTrue(socket.didOpen)
-        XCTAssertFalse(recorder.didOpen)
-
+        sutOpen()
         let error = NSError(domain: "", code: 0, userInfo: nil)
         socket.delegate?.socketDidCloseUnexpectedly(socket, error: error)
         XCTAssertTrue(recorder.closeError! as NSError === error)
@@ -125,20 +62,10 @@ class DefaultTransportProtocolTests: XCTestCase {
     }
 
     func testHandshakeFail2() {
-        let configuration = BLeSocketConfiguration(
-            serviceID: "SERVICE",
-            notifyCharacteristicID: "NOTIFY",
-            writeCharacteristicID: "WRITE")
-        sut.open(configuration)
-
-        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
-        XCTAssertTrue(socket.didOpen)
-        XCTAssertFalse(recorder.didOpen)
+        sutOpen()
 
         socket.delegate?.socketDidOpen(socket)
-
-        let sync: [UInt8] = [0x55]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+        XCTAssertEqual(socket.dataToSend, validSyncByte())
 
         let error = NSError(domain: "", code: 0, userInfo: nil)
         socket.delegate?.socketDidFailToSend(socket, error: error)
@@ -146,22 +73,48 @@ class DefaultTransportProtocolTests: XCTestCase {
         XCTAssertNotNil(recorder.closeError)
         XCTAssertTrue(socket.didClose)
     }
+    
+    func testSockDidFailToSendIfConnected() {
+        sutOpen()
+        syncAndShake()
+        confirmAndSend()
+        
+        socket.delegate?.socket(socket, didReceive: validAckData())
+        XCTAssertTrue(recorder.didOpen)
+        let error = NSError(domain: "", code: 0, userInfo: nil)
+        socket.delegate?.socketDidFailToSend(socket, error: error)
+        XCTAssertNotNil(recorder.didFailToSend)
+    }
+    
+    func testSockDidFailToReceiveIfConnected() {
+        sutOpen()
+        syncAndShake()
+        confirmAndSend()
+        socket.delegate?.socket(socket, didReceive: validAckData())
+        XCTAssertTrue(recorder.didOpen)
+        let error = NSError(domain: "", code: 0, userInfo: nil)
+        socket.delegate?.socketDidFailToReceive(socket, error: error)
+        XCTAssertNotNil(recorder.didFailToReceive)
+    }
+    
+    func testSockDidFailToReceiveIfNotConnected() {
+        sutOpen()
+        let error = NSError(domain: "", code: 0, userInfo: nil)
+        socket.delegate?.socketDidFailToReceive(socket, error: error)
+        XCTAssertNotNil(recorder.closeError)
+    }
+    
+    func testSockDidSendFailsIfNoMtu() {
+        sutOpen()
+        socket.mtu = nil
+        sut.send(Data(bytes: [0x01], count: 1))
+        XCTAssertNotNil(recorder.didFailToSend)
+    }
 
     func testHandshakeFail3() {
-        let configuration = BLeSocketConfiguration(
-            serviceID: "SERVICE",
-            notifyCharacteristicID: "NOTIFY",
-            writeCharacteristicID: "WRITE")
-        sut.open(configuration)
-
-        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
-        XCTAssertTrue(socket.didOpen)
-        XCTAssertFalse(recorder.didOpen)
-
+        sutOpen()
         socket.delegate?.socketDidOpen(socket)
-
-        let sync: [UInt8] = [0x55]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+        XCTAssertEqual(socket.dataToSend, validSyncByte())
 
         socket.delegate?.socketDidSend(socket)
 
@@ -173,20 +126,13 @@ class DefaultTransportProtocolTests: XCTestCase {
     }
 
     func testHandshakeFail4() {
-        let configuration = BLeSocketConfiguration(
-            serviceID: "SERVICE",
-            notifyCharacteristicID: "NOTIFY",
-            writeCharacteristicID: "WRITE")
-        sut.open(configuration)
-
+        sutOpen()
         XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
         XCTAssertTrue(socket.didOpen)
         XCTAssertFalse(recorder.didOpen)
 
         socket.delegate?.socketDidOpen(socket)
-
-        let sync: [UInt8] = [0x55]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+        XCTAssertEqual(socket.dataToSend, validSyncByte())
 
         socket.delegate?.socketDidSend(socket)
 
@@ -198,20 +144,10 @@ class DefaultTransportProtocolTests: XCTestCase {
     }
 
     func testHandshakeFail5() {
-        let configuration = BLeSocketConfiguration(
-            serviceID: "SERVICE",
-            notifyCharacteristicID: "NOTIFY",
-            writeCharacteristicID: "WRITE")
-        sut.open(configuration)
-
-        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
-        XCTAssertTrue(socket.didOpen)
-        XCTAssertFalse(recorder.didOpen)
+        sutOpen()
 
         socket.delegate?.socketDidOpen(socket)
-
-        let sync: [UInt8] = [0x55]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: sync, count: 1))
+        XCTAssertEqual(socket.dataToSend, validSyncByte())
 
         socket.delegate?.socketDidSend(socket)
 
@@ -219,8 +155,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         let badHandshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: badHandshake, count: 6))
 
-        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5F, 0x10, 0x01, 0x00, 247, 214, 0x03]
-        XCTAssertEqual(socket.dataToSend, Data(bytes: confirmation, count: 10))
+        XCTAssertEqual(socket.dataToSend, validConfirmation())
 
         let error = NSError(domain: "", code: 0, userInfo: nil)
         socket.delegate?.socketDidFailToSend(socket, error: error)
@@ -262,8 +197,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         XCTAssertEqual(expectedChunk2, [UInt8](socket.dataToSend!))
         socket.delegate?.socketDidSend(socket)
 
-        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
-        socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
+        socket.delegate?.socket(socket, didReceive: validAckData())
         XCTAssertTrue(recorder.didSend)
     }
 
@@ -296,22 +230,56 @@ class DefaultTransportProtocolTests: XCTestCase {
         sut.close()
         XCTAssert(socket.didClose)
     }
-
+    
     private func openSocket() {
+        sutOpen()
+        syncAndShake()
+        socket.delegate?.socketDidSend(socket)
+        socket.delegate?.socket(socket, didReceive: validAckData())
+    }
+    
+    private func sutOpen() {
         let configuration = BLeSocketConfiguration(
             serviceID: "SERVICE",
             notifyCharacteristicID: "NOTIFY",
             writeCharacteristicID: "WRITE")
         sut.open(configuration)
-        socket.delegate?.socketDidOpen(socket)
-        socket.delegate?.socketDidSend(socket)
-        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
-        socket.delegate?.socket(socket, didReceive: Data(bytes: handshake, count: 6))
-        socket.delegate?.socketDidSend(socket)
-        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
-        socket.delegate?.socket(socket, didReceive: Data(bytes: ack, count: ack.count))
+        XCTAssertTrue(socket.delegate as! DefaultTransportProtocol === sut)
+        XCTAssertTrue(socket.didOpen)
+        XCTAssertFalse(recorder.didOpen)
     }
-
+    
+    private func syncAndShake() {
+        socket.delegate?.socketDidOpen(socket)
+        XCTAssertEqual(socket.dataToSend, validSyncByte())
+        socket.delegate?.socketDidSend(socket)
+        socket.delegate?.socket(socket, didReceive: validHandshakeData())
+    }
+    
+    private func confirmAndSend() {
+        XCTAssertEqual(socket.dataToSend, validConfirmation())
+        socket.delegate?.socketDidSend(socket)
+    }
+    
+    private func validHandshakeData() -> Data {
+        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
+        return Data(bytes: handshake, count: 6)
+    }
+    
+    private func validSyncByte() -> Data {
+        let sync: [UInt8] = [0x55]
+        return Data(bytes: sync, count: 1)
+    }
+    
+    private func validAckData() -> Data {
+        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
+        return Data(bytes: ack, count: ack.count)
+    }
+    
+    private func validConfirmation() -> Data {
+        let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5F, 0x10, 0x01, 0x00, 247, 214, 0x03]
+        return Data(bytes: confirmation, count: 10)
+    }
 }
 
 extension DefaultTransportProtocolTests {

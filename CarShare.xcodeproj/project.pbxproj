@@ -19,6 +19,7 @@
 		BB4159002378AD710075350F /* IncomingChallengeAckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4158FF2378AD710075350F /* IncomingChallengeAckTests.swift */; };
 		BB4159022378B2EC0075350F /* IncomingChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4159012378B2EC0075350F /* IncomingChallengeTests.swift */; };
 		BB4159042378D9670075350F /* TokenTransformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4159032378D9670075350F /* TokenTransformerTests.swift */; };
+		BB4159062379C7190075350F /* IOSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4159052379C7190075350F /* IOSocketTests.swift */; };
 		BB4E0A642375CB3600DFEC47 /* CarShareClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4E0A632375CB3600DFEC47 /* CarShareClientTests.swift */; };
 		BB501834236870C400AC2E4D /* DeviceCommandPayloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */; };
 		BB5CCA9B23735ED6006408AC /* DefaultCommandProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */; };
@@ -60,6 +61,7 @@
 		BB4158FF2378AD710075350F /* IncomingChallengeAckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingChallengeAckTests.swift; sourceTree = "<group>"; };
 		BB4159012378B2EC0075350F /* IncomingChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingChallengeTests.swift; sourceTree = "<group>"; };
 		BB4159032378D9670075350F /* TokenTransformerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTransformerTests.swift; sourceTree = "<group>"; };
+		BB4159052379C7190075350F /* IOSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSocketTests.swift; sourceTree = "<group>"; };
 		BB4A6D282374A1E60064F8DC /* ByteGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteGenerator.swift; sourceTree = "<group>"; };
 		BB4E0A632375CB3600DFEC47 /* CarShareClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarShareClientTests.swift; sourceTree = "<group>"; };
 		BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCommandPayloadTests.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */,
 				BB4158FF2378AD710075350F /* IncomingChallengeAckTests.swift */,
 				BB4E0A632375CB3600DFEC47 /* CarShareClientTests.swift */,
+				BB4159052379C7190075350F /* IOSocketTests.swift */,
 				BB4159012378B2EC0075350F /* IncomingChallengeTests.swift */,
 				BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */,
 				BB4159032378D9670075350F /* TokenTransformerTests.swift */,
@@ -392,6 +395,7 @@
 				BB4159022378B2EC0075350F /* IncomingChallengeTests.swift in Sources */,
 				1CEA14AD22D6877A00B1B7DB /* DefaultTransportProtocolTests.swift in Sources */,
 				BB4159002378AD710075350F /* IncomingChallengeAckTests.swift in Sources */,
+				BB4159062379C7190075350F /* IOSocketTests.swift in Sources */,
 				1CEA14AF22DF664400B1B7DB /* SecurityTests.swift in Sources */,
 				BB4E0A642375CB3600DFEC47 /* CarShareClientTests.swift in Sources */,
 				BB4159042378D9670075350F /* TokenTransformerTests.swift in Sources */,

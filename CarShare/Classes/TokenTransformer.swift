@@ -11,7 +11,7 @@ protocol TokenTransformer {
     func transform(_ token: String) throws -> CarShareTokenInfo
 }
 
-class DefaultCareShareTokenTransformer: TokenTransformer {
+class DefaultCarShareTokenTransformer: TokenTransformer {
 
     enum TokenTransformerError: Error {
         case tokenDecodingFailed
