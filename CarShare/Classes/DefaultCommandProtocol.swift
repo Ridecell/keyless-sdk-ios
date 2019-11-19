@@ -109,7 +109,11 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
                 return
             }
 
-            let securePayload = generateSecurePayload(randomBytes, outgoingCommand: outgoingCommand)
+            guard let securePayload = generateSecurePayload(randomBytes, outgoingCommand: outgoingCommand) else {
+                self.delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedData)
+                self.outgoingCommand = nil
+                return
+            }
             guard let encryptionResult = encryptMessage([UInt8](securePayload)) else {
                 self.delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedData)
                 self.outgoingCommand = nil
@@ -167,23 +171,25 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
     }
 
-    private func generateSecurePayload(_ randomBytes: [UInt8], outgoingCommand: OutgoingCommand) -> Data {
-        let signedCommandHash = self.signedCommandHash(with: outgoingCommand.carShareTokenInfo.reservationPrivateKey,
-                                                       commandMessageProto: outgoingCommand.deviceCommandMessage,
-                                                       randomBytes: Data(bytes: randomBytes,
-                                                                         count: randomBytes.count))
+    private func generateSecurePayload(_ randomBytes: [UInt8], outgoingCommand: OutgoingCommand) -> Data? {
+        guard let signedCommandHash = self.signedCommandHash(with: outgoingCommand.carShareTokenInfo.reservationPrivateKey,
+                                                             commandMessageProto: outgoingCommand.deviceCommandMessage,
+                                                             randomBytes: Data(bytes: randomBytes,
+                                                                               count: randomBytes.count)) else {
+                                                                                return nil
+        }
         return DeviceCommandPayload.build(from: outgoingCommand.carShareTokenInfo,
                                           commandMessageProto: outgoingCommand.deviceCommandMessage,
                                           signedCommandHash: signedCommandHash).data
     }
 
-    private func signedCommandHash(with privateKey: String, commandMessageProto: Data, randomBytes: Data) -> [UInt8] {
+    //swiftlint:disable:next discouraged_optional_collection
+    private func signedCommandHash(with privateKey: String, commandMessageProto: Data, randomBytes: Data) -> [UInt8]? {
         var commandMessageProto = [UInt8](commandMessageProto)
         commandMessageProto.append(contentsOf: [UInt8](randomBytes))
         let commandMessageData = Data(bytes: commandMessageProto, count: commandMessageProto.count)
         guard let signedData = challengeSigner.sign(commandMessageData, signingKey: privateKey) else {
-            //throw error?
-            return []
+            return nil
         }
         return [UInt8](signedData)
     }

@@ -5,6 +5,7 @@
 //  Created by Matt Snow on 2019-07-07.
 //
 
+import CoreBluetooth
 import Foundation
 
 private protocol TransportMessage {
@@ -114,6 +115,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     enum DefaultTransportProtocolError: Error {
         case invalidHandshake
         case malformedData
+        case notConnected
     }
 
     private enum ConnectionState {
@@ -135,7 +137,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
     weak var delegate: TransportProtocolDelegate?
 
-    init(executer: AsyncExecuter = MainExecuter(), socket: Socket = IOSSocket()) {
+    init(executer: AsyncExecuter = MainExecuter(), socket: Socket = IOSSocket(peripheral: CBPeripheralManager(delegate: nil, queue: nil))) {
         self.executer = executer
         self.socket = socket
     }
@@ -244,7 +246,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             return
         }
         guard let mtu = socket.mtu else {
-            // error
+            delegate?.protocolDidFailToSend(self, error: DefaultTransportProtocolError.notConnected)
             return
         }
         if let chunk = chunk(outgoing.data, startingAt: outgoing.byteIndex, mtu: mtu) {

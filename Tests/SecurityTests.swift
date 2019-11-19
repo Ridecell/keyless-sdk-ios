@@ -30,33 +30,33 @@ class SecurityTests: XCTestCase {
         return [UInt8](data)
     }
 
-    private func generateSalt() -> [UInt8] {
-        return generateRandom(8)
-    }
-
     private func generateInitializationVector() -> [UInt8] {
         return generateRandom(16)
     }
 
     func testEncryption() {
         let hello = "Hello, world!"
-        let key = "SUPER_SECRET"
-
         let security = AESEncryptionHandler()
-
-        let salt = generateSalt()
         let initializationVector = generateInitializationVector()
         let data = [UInt8](hello.data(using: .utf8)!)
-        let encryptionKey = EncryptionKey(
-            salt: salt,
-            initializationVector: initializationVector,
-            passphrase: key,
-            iterations: 14271)
+        let encryptionKey = security.encryptionKey(initializationVector)
         let encrypted = security.encrypt(data, with: encryptionKey)!
         let decrypted = security.decrypt(encrypted, with: encryptionKey)!
 
         XCTAssertEqual(hello, String(bytes: decrypted, encoding: .utf8))
     }
+    func testEncryptionFails() {
+        let hello = "Hello, world!"
+        let security = AESEncryptionHandler()
+        let data = [UInt8](hello.data(using: .utf8)!)
+        let encryptionKey = EncryptionKey(
+            salt: [],
+            initializationVector: [],
+            passphrase: "",
+            iterations: 0)
+        XCTAssertNil(security.encrypt(data, with: encryptionKey))
+    }
+
 
     func testDecryption() {
         let encrypted: [UInt8] = [
@@ -78,17 +78,6 @@ class SecurityTests: XCTestCase {
             184
         ]
 
-        let salt: [UInt8] = [
-            232,
-            96,
-            98,
-            5,
-            159,
-            228,
-            202,
-            239,
-        ]
-
         let initializationVector: [UInt8] = [
             78,
             53,
@@ -108,16 +97,51 @@ class SecurityTests: XCTestCase {
             104
         ]
 
-        let encryptionKey = EncryptionKey(
-            salt: salt,
-            initializationVector: initializationVector,
-            passphrase: "SUPER_SECRET",
-            iterations: 14271)
-
         let security = AESEncryptionHandler()
+        let encryptionKey = security.encryptionKey(initializationVector)
 
         let decrypted = security.decrypt(encrypted, with: encryptionKey)!
 
         XCTAssertEqual("FOO BAR BAZ", String(bytes: decrypted, encoding: .utf8))
+    }
+    
+    func testDecryptionFails() {
+        let encrypted: [UInt8] = [
+            152,
+            242,
+            236,
+            114,
+            255,
+            70,
+            237,
+            93,
+            32,
+            221,
+            94,
+            228,
+            120,
+            184,
+            185,
+            184
+        ]
+        
+        let encryptionKey = EncryptionKey(
+            salt: [],
+            initializationVector: [],
+            passphrase: "",
+            iterations: 0)
+        
+        let security = AESEncryptionHandler()
+        
+        XCTAssertNil(security.decrypt(encrypted, with: encryptionKey))
+    }
+    
+    func testEncryptionKeyHelperProvidesProperValues() {
+        let security = AESEncryptionHandler()
+        let encryptionKey = security.encryptionKey([0, 0, 0])
+        XCTAssert(encryptionKey.initializationVector == [0, 0, 0])
+        XCTAssert(encryptionKey.salt == [232, 96, 98, 5, 159, 228, 202, 239])
+        XCTAssert(encryptionKey.passphrase == "SUPER_SECRET")
+        XCTAssert(encryptionKey.iterations == 14_271)
     }
 }

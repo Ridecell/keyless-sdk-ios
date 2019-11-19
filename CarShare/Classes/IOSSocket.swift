@@ -23,7 +23,11 @@ class IOSSocket: NSObject, Socket {
         case connected(notifyCharacteristic: CBMutableCharacteristic, writeCharacteristic: CBMutableCharacteristic, central: CBCentral)
     }
 
-    private lazy var peripheral = CBPeripheralManager(delegate: self, queue: nil)
+    private let peripheral: CBPeripheralManager
+
+    init(peripheral: CBPeripheralManager) {
+        self.peripheral = peripheral
+    }
 
     private var state: State = .idle
 
