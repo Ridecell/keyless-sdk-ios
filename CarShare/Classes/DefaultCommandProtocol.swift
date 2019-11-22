@@ -121,6 +121,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
             }
             sendChallengeResponse(encryptionResult.initVector, encryptedMessage: encryptionResult.encryptedMessage)
             self.outgoingCommand?.state = .issuingCommand
+
         case .issuingCommand:
             return
         case .awaitingChallengeAck:

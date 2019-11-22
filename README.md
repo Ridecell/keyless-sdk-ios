@@ -27,3 +27,85 @@ source 'https://github.com/CocoaPods/Specs.git'
 # add the pod to your target
 pod 'CarShare'
 ```
+
+## Detailed diagram of mobile application and integration points
+
+[SDK Diagrams](CarShare/Classes/README.md)
+
+## Usage
+
+The **CarShareClient** class is initialized with default parameters that are already provided by the SDK.
+The **CarShareClient** class provides a set of functions that can be used to interact with a CarShare device via Bluetooth. The **CarShareClient** provides feedback to the integrator via the delegate. Therefore, in order to be notified on the status of the execution of a command or the connection attempt, the **CarShareClientDelegate** must be implemented.
+
+**CarShareClient Class**
+
+```swift
+public func connect(_ carShareToken: String) throws
+```
+
+To communicate with a carshare device, the connect function must first be invoked with a valid **CarShareToken**.The **carShareToken** parameter represents a valid reservation key which the carshare device authenticates against. Once the connection has been established, the delegate method ```protocolDidOpen(_ protocol: CommandProtocol)``` is called. Should the connection close suddenly, the delegate method ```protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error)``` is invoked.
+
+```swift
+public func execute(_ command: Command, with carShareToken: String) throws
+```
+
+With an established connection to the carshare device, commands can be executed with the command passed in and valid a carshareToken. The execution of the command will result in either the ```protocol(_ protocol: CommandProtocol, command: Command, didSucceed response: Data)``` or ```protocol(_ protocol: CommandProtocol, command: Command, didFail error: Error)``` being called.
+
+**Command Enum**
+
+* .checkIn
+* .checkOut
+* .lock
+* .unlockAll
+* .locate
+
+### Swift
+
+```swift
+import UIKit
+import CarShare
+
+class ViewController: UIViewController, CarShareClientDelegate {
+
+    private let client = CarShareClient()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        client.delegate = self
+    }
+    
+    @IBAction func didTapConnect(_ sender: Any) {
+    //Pass in a CarShareToken from the signing service
+        do {
+            try client.connect(reservation)
+        } catch {
+            print(error)
+        }
+    }
+    
+    @IBAction func didTapCheckIn() {
+        do {
+            try client.execute(.unlockAll, with: reservation)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func clientDidConnect(_ client: CarShareClient) {
+
+    }
+    
+    func clientCommandDidSucceed(_ client: CarShareClient, command: Command) {
+
+    }
+}
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
+

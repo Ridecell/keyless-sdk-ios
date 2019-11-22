@@ -1,0 +1,494 @@
+<svg id="mermaid-1574182320761" width="1065.1015625" xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="-10 -10 716.734375 265.3125"><style>
+
+
+
+#mermaid-1574182320761 .label {
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  color: #333; }
+
+#mermaid-1574182320761 .label text {
+  fill: #333; }
+
+#mermaid-1574182320761 .node rect,
+#mermaid-1574182320761 .node circle,
+#mermaid-1574182320761 .node ellipse,
+#mermaid-1574182320761 .node polygon {
+  fill: #ECECFF;
+  stroke: #9370DB;
+  stroke-width: 1px; }
+
+#mermaid-1574182320761 .node .label {
+  text-align: center; }
+
+#mermaid-1574182320761 .node.clickable {
+  cursor: pointer; }
+
+#mermaid-1574182320761 .arrowheadPath {
+  fill: #333333; }
+
+#mermaid-1574182320761 .edgePath .path {
+  stroke: #333333;
+  stroke-width: 1.5px; }
+
+#mermaid-1574182320761 .edgeLabel {
+  background-color: #e8e8e8;
+  text-align: center; }
+
+#mermaid-1574182320761 .cluster rect {
+  fill: #ffffde;
+  stroke: #aaaa33;
+  stroke-width: 1px; }
+
+#mermaid-1574182320761 .cluster text {
+  fill: #333; }
+
+#mermaid-1574182320761 div.mermaidTooltip {
+  position: absolute;
+  text-align: center;
+  max-width: 200px;
+  padding: 2px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 12px;
+  background: #ffffde;
+  border: 1px solid #aaaa33;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 100; }
+
+#mermaid-1574182320761 .actor {
+  stroke: #CCCCFF;
+  fill: #ECECFF; }
+
+#mermaid-1574182320761 text.actor {
+  fill: black;
+  stroke: none; }
+
+#mermaid-1574182320761 .actor-line {
+  stroke: grey; }
+
+#mermaid-1574182320761 .messageLine0 {
+  stroke-width: 1.5;
+  stroke-dasharray: '2 2';
+  stroke: #333; }
+
+#mermaid-1574182320761 .messageLine1 {
+  stroke-width: 1.5;
+  stroke-dasharray: '2 2';
+  stroke: #333; }
+
+#mermaid-1574182320761 #arrowhead {
+  fill: #333; }
+
+#mermaid-1574182320761 .sequenceNumber {
+  fill: white; }
+
+#mermaid-1574182320761 #sequencenumber {
+  fill: #333; }
+
+#mermaid-1574182320761 #crosshead path {
+  fill: #333 !important;
+  stroke: #333 !important; }
+
+#mermaid-1574182320761 .messageText {
+  fill: #333;
+  stroke: none; }
+
+#mermaid-1574182320761 .labelBox {
+  stroke: #CCCCFF;
+  fill: #ECECFF; }
+
+#mermaid-1574182320761 .labelText {
+  fill: black;
+  stroke: none; }
+
+#mermaid-1574182320761 .loopText {
+  fill: black;
+  stroke: none; }
+
+#mermaid-1574182320761 .loopLine {
+  stroke-width: 2;
+  stroke-dasharray: '2 2';
+  stroke: #CCCCFF; }
+
+#mermaid-1574182320761 .note {
+  stroke: #aaaa33;
+  fill: #fff5ad; }
+
+#mermaid-1574182320761 .noteText {
+  fill: black;
+  stroke: none;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 14px; }
+
+#mermaid-1574182320761 .activation0 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+#mermaid-1574182320761 .activation1 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+#mermaid-1574182320761 .activation2 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+
+#mermaid-1574182320761 .mermaid-main-font {
+  font-family: "trebuchet ms", verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 .section {
+  stroke: none;
+  opacity: 0.2; }
+
+#mermaid-1574182320761 .section0 {
+  fill: rgba(102, 102, 255, 0.49); }
+
+#mermaid-1574182320761 .section2 {
+  fill: #fff400; }
+
+#mermaid-1574182320761 .section1,
+#mermaid-1574182320761 .section3 {
+  fill: white;
+  opacity: 0.2; }
+
+#mermaid-1574182320761 .sectionTitle0 {
+  fill: #333; }
+
+#mermaid-1574182320761 .sectionTitle1 {
+  fill: #333; }
+
+#mermaid-1574182320761 .sectionTitle2 {
+  fill: #333; }
+
+#mermaid-1574182320761 .sectionTitle3 {
+  fill: #333; }
+
+#mermaid-1574182320761 .sectionTitle {
+  text-anchor: start;
+  font-size: 11px;
+  text-height: 14px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+
+#mermaid-1574182320761 .grid .tick {
+  stroke: lightgrey;
+  opacity: 0.3;
+  shape-rendering: crispEdges; }
+#mermaid-1574182320761   .grid .tick text {
+    font-family: 'trebuchet ms', verdana, arial;
+    font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 .grid path {
+  stroke-width: 0; }
+
+
+#mermaid-1574182320761 .today {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px; }
+
+
+
+#mermaid-1574182320761 .task {
+  stroke-width: 2; }
+
+#mermaid-1574182320761 .taskText {
+  text-anchor: middle;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 .taskText:not([font-size]) {
+  font-size: 11px; }
+
+#mermaid-1574182320761 .taskTextOutsideRight {
+  fill: black;
+  text-anchor: start;
+  font-size: 11px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 .taskTextOutsideLeft {
+  fill: black;
+  text-anchor: end;
+  font-size: 11px; }
+
+
+#mermaid-1574182320761 .task.clickable {
+  cursor: pointer; }
+
+#mermaid-1574182320761 .taskText.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+#mermaid-1574182320761 .taskTextOutsideLeft.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+#mermaid-1574182320761 .taskTextOutsideRight.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+
+#mermaid-1574182320761 .taskText0,
+#mermaid-1574182320761 .taskText1,
+#mermaid-1574182320761 .taskText2,
+#mermaid-1574182320761 .taskText3 {
+  fill: white; }
+
+#mermaid-1574182320761 .task0,
+#mermaid-1574182320761 .task1,
+#mermaid-1574182320761 .task2,
+#mermaid-1574182320761 .task3 {
+  fill: #8a90dd;
+  stroke: #534fbc; }
+
+#mermaid-1574182320761 .taskTextOutside0,
+#mermaid-1574182320761 .taskTextOutside2 {
+  fill: black; }
+
+#mermaid-1574182320761 .taskTextOutside1,
+#mermaid-1574182320761 .taskTextOutside3 {
+  fill: black; }
+
+
+#mermaid-1574182320761 .active0,
+#mermaid-1574182320761 .active1,
+#mermaid-1574182320761 .active2,
+#mermaid-1574182320761 .active3 {
+  fill: #bfc7ff;
+  stroke: #534fbc; }
+
+#mermaid-1574182320761 .activeText0,
+#mermaid-1574182320761 .activeText1,
+#mermaid-1574182320761 .activeText2,
+#mermaid-1574182320761 .activeText3 {
+  fill: black !important; }
+
+
+#mermaid-1574182320761 .done0,
+#mermaid-1574182320761 .done1,
+#mermaid-1574182320761 .done2,
+#mermaid-1574182320761 .done3 {
+  stroke: grey;
+  fill: lightgrey;
+  stroke-width: 2; }
+
+#mermaid-1574182320761 .doneText0,
+#mermaid-1574182320761 .doneText1,
+#mermaid-1574182320761 .doneText2,
+#mermaid-1574182320761 .doneText3 {
+  fill: black !important; }
+
+
+#mermaid-1574182320761 .crit0,
+#mermaid-1574182320761 .crit1,
+#mermaid-1574182320761 .crit2,
+#mermaid-1574182320761 .crit3 {
+  stroke: #ff8888;
+  fill: red;
+  stroke-width: 2; }
+
+#mermaid-1574182320761 .activeCrit0,
+#mermaid-1574182320761 .activeCrit1,
+#mermaid-1574182320761 .activeCrit2,
+#mermaid-1574182320761 .activeCrit3 {
+  stroke: #ff8888;
+  fill: #bfc7ff;
+  stroke-width: 2; }
+
+#mermaid-1574182320761 .doneCrit0,
+#mermaid-1574182320761 .doneCrit1,
+#mermaid-1574182320761 .doneCrit2,
+#mermaid-1574182320761 .doneCrit3 {
+  stroke: #ff8888;
+  fill: lightgrey;
+  stroke-width: 2;
+  cursor: pointer;
+  shape-rendering: crispEdges; }
+
+#mermaid-1574182320761 .milestone {
+  transform: rotate(45deg) scale(0.8, 0.8); }
+
+#mermaid-1574182320761 .milestoneText {
+  font-style: italic; }
+
+#mermaid-1574182320761 .doneCritText0,
+#mermaid-1574182320761 .doneCritText1,
+#mermaid-1574182320761 .doneCritText2,
+#mermaid-1574182320761 .doneCritText3 {
+  fill: black !important; }
+
+#mermaid-1574182320761 .activeCritText0,
+#mermaid-1574182320761 .activeCritText1,
+#mermaid-1574182320761 .activeCritText2,
+#mermaid-1574182320761 .activeCritText3 {
+  fill: black !important; }
+
+#mermaid-1574182320761 .titleText {
+  text-anchor: middle;
+  font-size: 18px;
+  fill: black;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 g.classGroup text {
+  fill: #9370DB;
+  stroke: none;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 10px; }
+#mermaid-1574182320761   g.classGroup text .title {
+    font-weight: bolder; }
+
+#mermaid-1574182320761 g.classGroup rect {
+  fill: #ECECFF;
+  stroke: #9370DB; }
+
+#mermaid-1574182320761 g.classGroup line {
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 .classLabel .box {
+  stroke: none;
+  stroke-width: 0;
+  fill: #ECECFF;
+  opacity: 0.5; }
+
+#mermaid-1574182320761 .classLabel .label {
+  fill: #9370DB;
+  font-size: 10px; }
+
+#mermaid-1574182320761 .relation {
+  stroke: #9370DB;
+  stroke-width: 1;
+  fill: none; }
+
+#mermaid-1574182320761 #compositionStart {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 #compositionEnd {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 #aggregationStart {
+  fill: #ECECFF;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 #aggregationEnd {
+  fill: #ECECFF;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 #dependencyStart {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 #dependencyEnd {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 #extensionStart {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 #extensionEnd {
+  fill: #9370DB;
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 .commit-id,
+#mermaid-1574182320761 .commit-msg,
+#mermaid-1574182320761 .branch-label {
+  fill: lightgrey;
+  color: lightgrey;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 .pieTitleText {
+  text-anchor: middle;
+  font-size: 25px;
+  fill: black;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 .slice {
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 g.stateGroup text {
+  fill: #9370DB;
+  stroke: none;
+  font-size: 10px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1574182320761 g.stateGroup text {
+  fill: #9370DB;
+  stroke: none;
+  font-size: 10px; }
+
+#mermaid-1574182320761 g.stateGroup .state-title {
+  font-weight: bolder;
+  fill: black; }
+
+#mermaid-1574182320761 g.stateGroup rect {
+  fill: #ECECFF;
+  stroke: #9370DB; }
+
+#mermaid-1574182320761 g.stateGroup line {
+  stroke: #9370DB;
+  stroke-width: 1; }
+
+#mermaid-1574182320761 .transition {
+  stroke: #9370DB;
+  stroke-width: 1;
+  fill: none; }
+
+#mermaid-1574182320761 .stateGroup .composit {
+  fill: white;
+  border-bottom: 1px; }
+
+#mermaid-1574182320761 .state-note {
+  stroke: #aaaa33;
+  fill: #fff5ad; }
+#mermaid-1574182320761   .state-note text {
+    fill: black;
+    stroke: none;
+    font-size: 10px; }
+
+#mermaid-1574182320761 .stateLabel .box {
+  stroke: none;
+  stroke-width: 0;
+  fill: #ECECFF;
+  opacity: 0.5; }
+
+#mermaid-1574182320761 .stateLabel text {
+  fill: black;
+  font-size: 10px;
+  font-weight: bold;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+:root {
+  --mermaid-font-family: '"trebuchet ms", verdana, arial';
+  --mermaid-font-family: "Comic Sans MS", "Comic Sans", cursive; }
+
+:root { --mermaid-font-family: "trebuchet ms", verdana, arial;}</style><style>#mermaid-1574182320761 {
+    color: rgba(0, 0, 0, 0.65);
+    font: ;
+  }</style><g></g><defs><marker id="extensionStart" class="extension" refX="0" refY="7" markerWidth="190" markerHeight="240" orient="auto"><path d="M 1,7 L18,13 V 1 Z"></path></marker></defs><defs><marker id="extensionEnd" refX="19" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 1,1 V 13 L18,7 Z"></path></marker></defs><defs><marker id="compositionStart" class="extension" refX="0" refY="7" markerWidth="190" markerHeight="240" orient="auto"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="compositionEnd" refX="19" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="aggregationStart" class="extension" refX="0" refY="7" markerWidth="190" markerHeight="240" orient="auto"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="aggregationEnd" refX="19" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="dependencyStart" class="extension" refX="0" refY="7" markerWidth="190" markerHeight="240" orient="auto"><path d="M 5,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="dependencyEnd" refX="19" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L14,7 L9,1 Z"></path></marker></defs><g id="classId0" class="classGroup" transform="translate(0,0 )"><rect x="0" y="0" width="207.515625" height="87.15625"></rect><text y="15" x="0"><tspan x="24.453125">«protocol»</tspan><tspan class="title" dy="10" x="24.453125">CarShareClientDelegate</tspan></text><line x1="0" y1="31.0625" y2="31.0625" x2="207.515625"></line><text x="5" y="41.0625" fill="white" class="classText"></text><line x1="0" y1="36.0625" y2="36.0625" x2="207.515625"></line><text x="5" y="51.0625" fill="white" class="classText"><tspan x="5">clientDidConnect(_:)</tspan><tspan x="5" dy="10">clientCommandDidSucceed(_: command:)</tspan><tspan x="5" dy="10">clientCommandDidFail(_:command:error:)</tspan><tspan x="5" dy="10">clientDidDisconnectUnexpectedly(_:error:)</tspan></text></g><g id="classId1" class="classGroup" transform="translate(257.515625,0 )"><rect x="0" y="0" width="194.453125" height="87.15625"></rect><text y="15" x="0"><tspan x="10.2265625">«protocol»</tspan><tspan class="title" dy="10" x="10.2265625">CommandProtocolDelegate</tspan></text><line x1="0" y1="31.0625" y2="31.0625" x2="194.453125"></line><text x="5" y="41.0625" fill="white" class="classText"></text><line x1="0" y1="36.0625" y2="36.0625" x2="194.453125"></line><text x="5" y="51.0625" fill="white" class="classText"><tspan x="5">protocolDidOpen(_:)</tspan><tspan x="5" dy="10">protocol(_:command:didSucceed:)</tspan><tspan x="5" dy="10">protocol(_:command:didFail:)</tspan><tspan x="5" dy="10">protocolDidCloseUnexpectedly(_:error:)</tspan></text></g><g id="classId2" class="classGroup" transform="translate(260.796875,137.15625 )"><rect x="0" y="0" width="187.890625" height="108.15625"></rect><text y="15" x="0"><tspan class="title" x="59.0546875">CarShareClient</tspan></text><line x1="0" y1="21" y2="21" x2="187.890625"></line><text x="5" y="31" fill="white" class="classText"><tspan x="5">-commandProtocol: CommandProtocol</tspan><tspan x="5" dy="10">-tokenTransformer: TokenTransformer</tspan><tspan x="5" dy="10">-outgoingMessage: Message</tspan><tspan x="5" dy="10">+delegate: CarShareClientDelegate?</tspan></text><line x1="0" y1="67.0625" y2="67.0625" x2="187.890625"></line><text x="5" y="82.0625" fill="white" class="classText"><tspan x="5">+connect(_:)</tspan><tspan x="5" dy="10">+execute(command:with:)</tspan><tspan x="5" dy="10">+disconnect()</tspan></text></g><g id="classId3" class="classGroup" transform="translate(501.96875,18.046875 )"><rect x="0" y="0" width="194.765625" height="51.0625"></rect><text y="15" x="0"><tspan class="title" x="78.4296875">Message</tspan></text><line x1="0" y1="21.0625" y2="21.0625" x2="194.765625"></line><text x="5" y="31.0625" fill="white" class="classText"><tspan x="5">+command: Command</tspan><tspan x="5" dy="10">+carShareTokenInfo: CarShareTokenInfo</tspan></text><line x1="0" y1="47.0625" y2="47.0625" x2="194.765625"></line><text x="5" y="62.0625" fill="white" class="classText"></text></g><path d="M354.7421875,87.15625L354.7421875,91.32291666666667C354.7421875,95.48958333333333,354.7421875,103.82291666666667,354.7421875,112.15625C354.7421875,120.48958333333333,354.7421875,128.82291666666666,354.7421875,132.98958333333334L354.7421875,137.15625" id="edge504" class="relation" marker-start="url(#extensionStart)"></path><g class="classLabel"><rect class="box" x="326.0625" y="100.65625" width="57.359375" height="16.0625"></rect><text class="label" x="354.7421875" y="112.15625" fill="red" text-anchor="middle">implements</text></g></svg>
