@@ -7,6 +7,20 @@
 
 import Foundation
 
+/** This class is for handling interactions between the mobile application and the GO9 device. In order to respond
+ to feedback from the SDK, you must set the delegate of the CarShareClient.
+ 
+ ### Usage Example: ###
+ ````
+ private let client = CarShareClient()
+ 
+ override func viewDidLoad() {
+    super.viewDidLoad()
+    client.delegate = self
+ }
+ ````
+*/
+
 public class CarShareClient: CommandProtocolDelegate {
 
     private struct CarShareToken {
@@ -25,6 +39,12 @@ public class CarShareClient: CommandProtocolDelegate {
 
     public weak var delegate: CarShareClientDelegate?
 
+    /**
+     Call this function to initialize the CarShareClient.
+     The init function has been given default paramaters
+     so there is no need to pass anything in.
+     */
+
     public convenience init() {
         self.init(commandProtocol: DefaultCommandProtocol(), tokenTransformer: DefaultCarShareTokenTransformer())
     }
@@ -33,6 +53,28 @@ public class CarShareClient: CommandProtocolDelegate {
         self.commandProtocol = commandProtocol
         self.tokenTransformer = tokenTransformer
     }
+
+    /**
+     To communicate with a carshare device, the connect function must first be invoked with valid
+     carShareToken. The carShareToken parameter represents a valid reservation key which
+     the carshare device authenticates against. Once the connection has been established,
+     the delegate method clientDidConnect(_ client: CarShareClient) is called. Should the
+     connection close suddenly, the delegate method
+     clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error) is called.
+
+     - Parameter carShareToken: A valid, signed, reservation.
+     
+     - Throws: `TokenTransformerError.tokenDecodingFailed` if decoding carShareToken fails
+     
+     ### Usage Example: ###
+     ````
+     do {
+        try client.connect("CiQwNTc0NTgzQi0wRDh...")
+     } catch {
+        print(error)
+     }
+     ````
+     */
 
     public func connect(_ carShareToken: String) throws {
         do {
@@ -45,9 +87,40 @@ public class CarShareClient: CommandProtocolDelegate {
         }
     }
 
+    /**
+     Must be called to disconnect / cancel the Bluetooth connection between the SDK and the GO9 device.
+     
+     ### Usage Example: ###
+     ````
+     client.disconnect()
+     ````
+     */
+
     public func disconnect() {
         commandProtocol.close()
     }
+
+    /**
+     With a connection established to the carshare device, commands can be executed with the
+     command passed in and a valid carShareToken. The execution of the command will result in
+     either the CarShareClientDelegate method
+     `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) or
+     `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error) being called.
+
+     - Parameter command: An executable command.
+     - Parameter carShareToken: A valid, signed, reservation.
+     
+     - Throws: `TokenTransformerError.tokenDecodingFailed` if decoding carShareToken fails
+     
+     ### Usage Example: ###
+     ````
+     do {
+        try client.execute(.checkIn, with: "CiQwNTc0NTgzQi0wRDh...")
+     } catch {
+        print(error)
+     }
+     ````
+     */
 
     public func execute(_ command: Command, with carShareToken: String) throws {
         do {

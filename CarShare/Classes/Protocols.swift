@@ -82,9 +82,42 @@ protocol CommandProtocolDelegate: AnyObject {
 }
 
 public protocol CarShareClientDelegate: AnyObject {
+
+    /**
+     This is the delegate callback that is called once a `client.connect()' call has succeeded.
+     
+     - Parameter client: The CarShareClient instance that called the method.
+     */
+
     func clientDidConnect(_ client: CarShareClient)
+
+    /**
+     This is the delegate callback that is called due to the Bluetooth connection between
+     the SDK and the GO9 being terminated.
+     
+     - Parameter client: The CarShareClient instance that called the method.
+     - Parameter error: The error that caused the disconnect.
+     */
+
     func clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error)
+
+    /**
+     This is the delegate callback that is called once a `execute(_ command: Command, with carShareToken: String)' call has succeeded.
+     
+     - Parameter client: The CarShareClient instance that called the method.
+     - Parameter command: The command that succeeded.
+     */
+
     func clientCommandDidSucceed(_ client: CarShareClient, command: Command)
+
+    /**
+     This is the delegate callback that is called if a `execute(_ command: Command, with carShareToken: String)' call has failed.
+     
+     - Parameter client: The CarShareClient instance that called the method.
+     - Parameter command: The command that failed.
+     - Parameter error: The error that caused the failure.
+     */
+
     func clientCommandDidFail(_ client: CarShareClient, command: Command, error: Error)
 }
 
