@@ -97,6 +97,7 @@ public class CarShareClient: CommandProtocolDelegate {
      */
 
     public func disconnect() {
+        outgoingMessage = nil
         commandProtocol.close()
     }
 

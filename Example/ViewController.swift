@@ -8,7 +8,6 @@
 
 import UIKit
 import CarShare
-import CommonCrypto
 
 class ViewController: UIViewController, CarShareClientDelegate {
 
