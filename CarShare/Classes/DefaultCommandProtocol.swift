@@ -36,6 +36,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         static let encryptionSalt: [UInt8] = [232, 96, 98, 5, 159, 228, 202, 239]
         static let encryptionPassphrase: String = "SUPER_SECRET"
         static let encryptionIterations: Int = 14_271
+        static let deviceToAppAckValue: UInt8 = 0x00
     }
 
     private var outgoingCommand: OutgoingCommand?
@@ -43,21 +44,15 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
     private let transportProtocol: TransportProtocol
     private let deviceCommandTransformer: DeviceCommandTransformer
     private let challengeSigner: ChallengeSigner
-    private let encryptionHandler: EncryptionHandler
-    private let byteGenerator: ByteGenerator
 
     weak var delegate: CommandProtocolDelegate?
 
     init(transportProtocol: TransportProtocol = DefaultTransportProtocol(),
          deviceCommandTransformer: DeviceCommandTransformer = ProtobufDeviceCommandTransformer(),
-         challengeSigner: ChallengeSigner = DefaultChallengeSigner(),
-         encryptionHandler: EncryptionHandler = AESEncryptionHandler(),
-         byteGenerator: ByteGenerator = DefaultByteGenerator()) {
+         challengeSigner: ChallengeSigner = DefaultChallengeSigner()) {
         self.transportProtocol = transportProtocol
         self.deviceCommandTransformer = deviceCommandTransformer
         self.challengeSigner = challengeSigner
-        self.encryptionHandler = encryptionHandler
-        self.byteGenerator = byteGenerator
     }
 
     func open(_ configuration: BLeSocketConfiguration) {
@@ -114,13 +109,8 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
                 self.outgoingCommand = nil
                 return
             }
-            guard let encryptionResult = encryptMessage([UInt8](securePayload)) else {
-                self.delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedData)
-                self.outgoingCommand = nil
-                return
-            }
             self.outgoingCommand?.state = .issuingCommand
-            sendChallengeResponse(encryptionResult.initVector, encryptedMessage: encryptionResult.encryptedMessage)
+            sendChallengeResponse(ChallengeResponseValues.challengeResponseType, message: [UInt8](securePayload))
 
         case .issuingCommand:
             return
@@ -195,36 +185,20 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         return [UInt8](signedData)
     }
 
-    private func encryptMessage(_ messageToEncrypt: [UInt8]) -> (initVector: [UInt8], encryptedMessage: [UInt8])? {
-        let encryptionKey = encryptionHandler.encryptionKey(byteGenerator.generate(16))
-        var bytesToEncrypt: [UInt8] = []
-        bytesToEncrypt.append(ChallengeResponseValues.challengeResponseType)
-        bytesToEncrypt.append(contentsOf: messageToEncrypt)
-        guard let encryptedMessage = encryptionHandler.encrypt(bytesToEncrypt, with: encryptionKey) else {
-            return nil
-        }
-        return (encryptionKey.initializationVector, encryptedMessage)
-    }
-
     private func handleAck(_ data: Data) -> Result<Void, DefaultCommandProtocolError> {
         guard let incomingChallengeAck = IncomingChallengeAck(data: data) else {
             return .failure(DefaultCommandProtocolError.malformedData)
         }
-        let encryptionKey = encryptionHandler.encryptionKey(incomingChallengeAck.initVector)
-        guard let decryptedMessage = encryptionHandler.decrypt(incomingChallengeAck.encryptedMessage, with: encryptionKey) else {
-            return .failure(DefaultCommandProtocolError.malformedData)
-        }
-        guard incomingChallengeAck.validatePayload(decryptedMessage) else {
-            //future check for specific ack error codes
+        guard incomingChallengeAck.result == ChallengeResponseValues.deviceToAppAckValue else {
             return .failure(DefaultCommandProtocolError.ackError)
         }
         return .success(())
     }
 
-    private func sendChallengeResponse(_ initializationVector: [UInt8], encryptedMessage: [UInt8]) {
+    private func sendChallengeResponse(_ type: UInt8, message: [UInt8]) {
         var response: [UInt8] = []
-        response.append(contentsOf: initializationVector)
-        response.append(contentsOf: encryptedMessage)
+        response.append(type)
+        response.append(contentsOf: message)
         transportProtocol.send(Data(bytes: response, count: response.count))
     }
 }

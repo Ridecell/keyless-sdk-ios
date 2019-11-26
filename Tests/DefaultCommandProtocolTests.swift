@@ -14,28 +14,23 @@ class DefaultCommandProtocolTests: XCTestCase {
     var sut: DefaultCommandProtocol!
     var deviceCommandTransformer: FakeDeviceCommandTransformer!
     var challengeSigner: FakeChallengeSigner!
-    var encryptionHandler: FakeEncryptionHandler!
     var transportProtocol: FakeTransportProtocol!
-    var byteGenerator: ByteGenerator!
     var delegate: CommandDelegate!
+    var byteGenerator: ByteGenerator!
 
     override func setUp() {
         let transportProtocol = FakeTransportProtocol()
         let deviceCommandTransformer = FakeDeviceCommandTransformer()
         let challengeSigner = FakeChallengeSigner()
-        let encryptionHandler = FakeEncryptionHandler()
         byteGenerator = DefaultByteGenerator()
         let defaultCommandProtocol = DefaultCommandProtocol(transportProtocol: transportProtocol,
                                                             deviceCommandTransformer: deviceCommandTransformer,
-                                                            challengeSigner: challengeSigner,
-                                                            encryptionHandler: encryptionHandler,
-                                                            byteGenerator: DefaultByteGenerator())
+                                                            challengeSigner: challengeSigner)
         let delegate = CommandDelegate()
         defaultCommandProtocol.delegate = delegate
         self.sut = defaultCommandProtocol
         self.deviceCommandTransformer = deviceCommandTransformer
         self.challengeSigner = challengeSigner
-        self.encryptionHandler = encryptionHandler
         self.transportProtocol = transportProtocol
         self.delegate = delegate
     }
@@ -44,7 +39,6 @@ class DefaultCommandProtocolTests: XCTestCase {
         self.sut = nil
         self.deviceCommandTransformer = nil
         self.challengeSigner = nil
-        self.encryptionHandler = nil
         self.transportProtocol = nil
         self.byteGenerator = nil
         self.delegate = nil
@@ -85,53 +79,12 @@ class DefaultCommandProtocolTests: XCTestCase {
         sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
         
         sut.protocolDidSend(transportProtocol)
-        var iv = byteGenerator.generate(16)
-        iv.append(contentsOf: [0x81,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
+        let ack: [UInt8] = [0x81, 0x00]
         
-        sut.protocol(transportProtocol, didReceive: Data(bytes: iv, count: iv.count))
+        sut.protocol(transportProtocol, didReceive: Data(bytes: ack, count: ack.count))
         XCTAssertTrue(delegate.didSucceedCalled)
         XCTAssertTrue(delegate.didSucceedData != nil)
-        XCTAssertTrue([UInt8](delegate.didSucceedData!)[16] == 129)
-    }
-    
-    func testCommandFailsIfEncryptionFails() {
-        encryptionHandler.stubbedEncryptSuccess = false
-        openAndSend()
-        
-        sut.protocolDidSend(transportProtocol)
-        let randomBytes = byteGenerator.generate(32)
-        var challenge: [UInt8] = [0x01, 0x01, 0x00]
-        challenge.append(contentsOf: randomBytes)
-        sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
-        
-        sut.protocolDidSend(transportProtocol)
-        var iv = byteGenerator.generate(16)
-        iv.append(contentsOf: [0x81,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
-        
-        sut.protocol(transportProtocol, didReceive: Data(bytes: iv, count: iv.count))
-        XCTAssertFalse(delegate.didSucceedCalled)
-        XCTAssertTrue(delegate.didSucceedData == nil)
-        XCTAssertTrue(delegate.didFailCalled)
-    }
-    
-    func testCommandFailsIfDecryptionFails() {
-        encryptionHandler.stubbedDecryptSuccess = false
-        openAndSend()
-        
-        sut.protocolDidSend(transportProtocol)
-        let randomBytes = byteGenerator.generate(32)
-        var challenge: [UInt8] = [0x01, 0x01, 0x00]
-        challenge.append(contentsOf: randomBytes)
-        sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
-        
-        sut.protocolDidSend(transportProtocol)
-        var iv = byteGenerator.generate(16)
-        iv.append(contentsOf: [0x81,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
-        
-        sut.protocol(transportProtocol, didReceive: Data(bytes: iv, count: iv.count))
-        XCTAssertFalse(delegate.didSucceedCalled)
-        XCTAssertTrue(delegate.didSucceedData == nil)
-        XCTAssertTrue(delegate.didFailCalled)
+        XCTAssertTrue([UInt8](delegate.didSucceedData!)[0] == 129)
     }
     
     func testCommandFailsIfSigningFails() {
@@ -145,10 +98,9 @@ class DefaultCommandProtocolTests: XCTestCase {
         sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
         
         sut.protocolDidSend(transportProtocol)
-        var iv = byteGenerator.generate(16)
-        iv.append(contentsOf: [0x81,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
+        let ack: [UInt8] = [0x81, 0x00]
         
-        sut.protocol(transportProtocol, didReceive: Data(bytes: iv, count: iv.count))
+        sut.protocol(transportProtocol, didReceive: Data(bytes: ack, count: ack.count))
         XCTAssertFalse(delegate.didSucceedCalled)
         XCTAssertTrue(delegate.didSucceedData == nil)
         XCTAssertTrue(delegate.didFailCalled)
@@ -228,10 +180,9 @@ class DefaultCommandProtocolTests: XCTestCase {
         sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
         
         sut.protocolDidSend(transportProtocol)
-        var iv = byteGenerator.generate(16)
-        iv.append(contentsOf: [0x81,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
+        let nack: [UInt8] = [0x81, 0x01]
         
-        sut.protocol(transportProtocol, didReceive: Data(bytes: iv, count: iv.count))
+        sut.protocol(transportProtocol, didReceive: Data(bytes: nack, count: nack.count))
         XCTAssertTrue(delegate.didFailCalled)
     }
     
@@ -245,10 +196,9 @@ class DefaultCommandProtocolTests: XCTestCase {
         sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
         
         sut.protocolDidSend(transportProtocol)
-        var iv = byteGenerator.generate(16)
-        iv.append(contentsOf: [0x81,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
+        let ack: [UInt8] = [0x81, 0x00, 0x00]
         
-        sut.protocol(transportProtocol, didReceive: Data(bytes: iv, count: iv.count))
+        sut.protocol(transportProtocol, didReceive: Data(bytes: ack, count: ack.count))
         XCTAssertTrue(delegate.didFailCalled)
     }
     
