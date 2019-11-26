@@ -1,6 +1,6 @@
 # CommandProtocol
 
-The **CommandProtocol** layer provides an abstraction around the commands sent to the GO device, the challange and response flow and the AES encryption of outgoing commands.
+The **CommandProtocol** layer provides an abstraction around the commands sent to the GO device and the challange and response flow.
 
 When the **CommandProtocol** layer receives a command message from the **CarShareClient**, the layer goes from a **nil** state to **.requestingToSendMessage** state, the outgoing command is stored in memory and the **appToDeviceMessageRequest** is sent.
 

@@ -11,7 +11,6 @@ import Foundation
 protocol EncryptionHandler: AnyObject {
     func encrypt(_ message: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8]?
     func decrypt(_ encrypted: [UInt8], with encryptionKey: EncryptionKey) -> [UInt8]?
-    func encryptionKey(_ initVector: [UInt8]) -> EncryptionKey
 }
 
 class AESEncryptionHandler: EncryptionHandler {
@@ -102,13 +101,4 @@ class AESEncryptionHandler: EncryptionHandler {
         let data = Data(bytes: message, count: messageSize)
         return [UInt8](data)
     }
-
-    func encryptionKey(_ initVector: [UInt8]) -> EncryptionKey {
-        return EncryptionKey(
-            salt: [232, 96, 98, 5, 159, 228, 202, 239],
-            initializationVector: initVector,
-            passphrase: "SUPER_SECRET",
-            iterations: 14_271)
-    }
-
 }

@@ -141,31 +141,22 @@ struct IncomingChallenge {
 
 struct IncomingChallengeAck {
     private enum IncomingChallengeAckValues {
-        static let length: Int = 32
-        static let ivLength: Int = 16
-        static let encryptedMessageLength: Int = 16
+        static let length: Int = 2
         static let deviceToAppAckType: UInt8 = 0x81
-        static let deviceToAppAckValue: UInt8 = 0x00
     }
 
-    let initVector: [UInt8]
-    let encryptedMessage: [UInt8]
+    let result: UInt8
 
     init?(data: Data) {
         guard data.count == IncomingChallengeAckValues.length else {
             return nil
         }
-        initVector = [UInt8](data.prefix(IncomingChallengeAckValues.ivLength))
-        encryptedMessage = data.suffix(IncomingChallengeAckValues.encryptedMessageLength)
-    }
-
-    func validatePayload(_ challengeAckPayload: [UInt8]) -> Bool {
-        guard challengeAckPayload[0] == IncomingChallengeAckValues.deviceToAppAckType else {
-            return false
+        guard [UInt8](data)[0] == IncomingChallengeAckValues.deviceToAppAckType else {
+            return nil
         }
-        guard challengeAckPayload[1] == IncomingChallengeAckValues.deviceToAppAckValue else {
-            return false
+        guard let deviceToAppAckValue = data.last else {
+            return nil
         }
-        return true
+        result = deviceToAppAckValue
     }
 }
