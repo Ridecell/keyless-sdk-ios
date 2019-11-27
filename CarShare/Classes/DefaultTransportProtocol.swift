@@ -143,6 +143,9 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     }
 
     func open(_ configuration: BLeSocketConfiguration) {
+        guard case .idle = connectionState else {
+            return
+        }
         socket.delegate = self
         connectionState = .connecting
         socket.open(configuration)
