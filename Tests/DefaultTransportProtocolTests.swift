@@ -32,7 +32,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         sutOpen()
         syncAndShake()
         confirmAndSend()
-        socket.delegate?.socket(socket, didReceive: validAckData())
+        socket.delegate?.socket(socket, didReceive: validHandshakeAck())
         XCTAssertTrue(recorder.didOpen)
     }
     
@@ -79,7 +79,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         syncAndShake()
         confirmAndSend()
         
-        socket.delegate?.socket(socket, didReceive: validAckData())
+        socket.delegate?.socket(socket, didReceive: validHandshakeAck())
         XCTAssertTrue(recorder.didOpen)
         let error = NSError(domain: "", code: 0, userInfo: nil)
         socket.delegate?.socketDidFailToSend(socket, error: error)
@@ -90,7 +90,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         sutOpen()
         syncAndShake()
         confirmAndSend()
-        socket.delegate?.socket(socket, didReceive: validAckData())
+        socket.delegate?.socket(socket, didReceive: validHandshakeAck())
         XCTAssertTrue(recorder.didOpen)
         let error = NSError(domain: "", code: 0, userInfo: nil)
         socket.delegate?.socketDidFailToReceive(socket, error: error)
@@ -197,7 +197,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         XCTAssertEqual(expectedChunk2, [UInt8](socket.dataToSend!))
         socket.delegate?.socketDidSend(socket)
 
-        socket.delegate?.socket(socket, didReceive: validAckData())
+        socket.delegate?.socket(socket, didReceive: validBinaryDataResponse())
         XCTAssertTrue(recorder.didSend)
     }
 
@@ -235,7 +235,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         sutOpen()
         syncAndShake()
         socket.delegate?.socketDidSend(socket)
-        socket.delegate?.socket(socket, didReceive: validAckData())
+        socket.delegate?.socket(socket, didReceive: validHandshakeAck())
     }
     
     private func sutOpen() {
@@ -271,9 +271,14 @@ class DefaultTransportProtocolTests: XCTestCase {
         return Data(bytes: sync, count: 1)
     }
     
-    private func validAckData() -> Data {
+    private func validHandshakeAck() -> Data {
         let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
         return Data(bytes: ack, count: ack.count)
+    }
+    
+    private func validBinaryDataResponse() -> Data {
+        let binaryDataResponse: [UInt8] = [0x02, 0x22, 0x04, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03]
+        return Data(bytes: binaryDataResponse, count: binaryDataResponse.count)
     }
     
     private func validConfirmation() -> Data {

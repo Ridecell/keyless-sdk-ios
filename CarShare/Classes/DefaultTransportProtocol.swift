@@ -116,6 +116,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         case invalidHandshake
         case malformedData
         case notConnected
+        case binaryDataAckFailed
     }
 
     private enum ConnectionState {
@@ -124,6 +125,11 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         case syncing
         case handshaking
         case connected
+    }
+
+    private enum Constants {
+        static let binaryDataResponseAckSize = 10
+        static let binaryDataResponseAckMsgType: UInt8 = 0x22
     }
 
     private let socket: Socket
@@ -190,12 +196,13 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             let length = Int(data[3]) << 8 + Int(data[2]) + 7
             self.incoming = (data, length)
         } else if data.count == 6 && (data[1] == 0x01 || data[1] == 0x02) {
-            self.incoming = (data, 6)
+            self.incoming = (data, data.count)
+        } else if data.count == Constants.binaryDataResponseAckSize && data[1] == Constants.binaryDataResponseAckMsgType {
+            self.incoming = (data, data.count)
         } else {
             // some kind of error?
         }
         guard let incoming = incoming else {
-            // wtf?
             return
         }
         if incoming.data.count > incoming.dataLength {
@@ -229,13 +236,18 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
                 closeUnexpectedly(with: DefaultTransportProtocolError.invalidHandshake)
             }
         case .connected:
-            let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
-            if data == Data(bytes: ack, count: ack.count) {
-                delegate?.protocolDidSend(self)
-            } else if let message = IncomingExtendedAppDataMessage(messageData: data) {
-                delegate?.protocol(self, didReceive: Data(bytes: message.body, count: message.body.count))
+            if let binaryDataResponse = BinaryDataResponse(data: data) {
+                if binaryDataResponse.transmissionSuccess {
+                    delegate?.protocolDidSend(self)
+                } else {
+                    delegate?.protocolDidFailToSend(self, error: DefaultTransportProtocolError.binaryDataAckFailed)
+                }
             } else {
-                delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
+                if let message = IncomingExtendedAppDataMessage(messageData: data) {
+                    delegate?.protocol(self, didReceive: Data(bytes: message.body, count: message.body.count))
+                } else {
+                    delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
+                }
             }
         }
     }

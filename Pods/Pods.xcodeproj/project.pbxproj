@@ -100,6 +100,7 @@
 		BB4A6D2D2374A3AD0064F8DC /* ByteGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4A6D2C2374A3AD0064F8DC /* ByteGenerator.swift */; };
 		BB4E0A662375CBA800DFEC47 /* TokenTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4E0A652375CBA800DFEC47 /* TokenTransformer.swift */; };
 		BB5CCA99237310F2006408AC /* DeviceCommandTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5CCA98237310F2006408AC /* DeviceCommandTransformer.swift */; };
+		BB7A818E23959A49005B1E4B /* BinaryDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A818D23959A49005B1E4B /* BinaryDataResponse.swift */; };
 		BE2D42A9484EBB69B07E66BA7DE0718B /* DefaultChallengeSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE21E08840F10490D6D9FD65177DBED /* DefaultChallengeSigner.swift */; };
 		BE81E3F22B6A4C756A1AE9715BB819B8 /* ZigZag.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE77FFFF6036ABF85A4816CD77411CF3 /* ZigZag.swift */; };
 		C0371039A60E5B7C923277C0DB80F630 /* EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF33E2ED1A236E976222A96A3837EE /* EncryptionKey.swift */; };
@@ -276,6 +277,7 @@
 		BB4A6D2C2374A3AD0064F8DC /* ByteGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ByteGenerator.swift; path = CarShare/Classes/ByteGenerator.swift; sourceTree = "<group>"; };
 		BB4E0A652375CBA800DFEC47 /* TokenTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TokenTransformer.swift; path = CarShare/Classes/TokenTransformer.swift; sourceTree = "<group>"; };
 		BB5CCA98237310F2006408AC /* DeviceCommandTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceCommandTransformer.swift; path = CarShare/Classes/DeviceCommandTransformer.swift; sourceTree = "<group>"; };
+		BB7A818D23959A49005B1E4B /* BinaryDataResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BinaryDataResponse.swift; path = CarShare/Classes/BinaryDataResponse.swift; sourceTree = "<group>"; };
 		BCB962468AF95B35985F2D057683009A /* Google_Protobuf_Struct+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Struct+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Struct+Extensions.swift"; sourceTree = "<group>"; };
 		BCDE3D0997EDA6D8F730A35D08D25F7C /* duration.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = duration.pb.swift; path = Sources/SwiftProtobuf/duration.pb.swift; sourceTree = "<group>"; };
 		BDAF63ACE6C94F7B64EE0F9ABC23D1E3 /* CarshareToken.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CarshareToken.pb.swift; path = CarShare/Classes/CarshareToken.pb.swift; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 				BB1837AD235DF24700513851 /* carshare_messaging.pb.swift */,
 				BDAF63ACE6C94F7B64EE0F9ABC23D1E3 /* CarshareToken.pb.swift */,
 				BB4A6D2C2374A3AD0064F8DC /* ByteGenerator.swift */,
+				BB7A818D23959A49005B1E4B /* BinaryDataResponse.swift */,
 				6EE21E08840F10490D6D9FD65177DBED /* DefaultChallengeSigner.swift */,
 				FFFFB97C2F40A0CD6447682F523653E4 /* CarShareClient.swift */,
 				BB1837B3235E224100513851 /* CarshareToken.pb.swift */,
@@ -920,6 +923,7 @@
 				BB4E0A662375CBA800DFEC47 /* TokenTransformer.swift in Sources */,
 				BB5CCA99237310F2006408AC /* DeviceCommandTransformer.swift in Sources */,
 				BB1837AA2358F7E400513851 /* DeviceCommandPayload.swift in Sources */,
+				BB7A818E23959A49005B1E4B /* BinaryDataResponse.swift in Sources */,
 				32DAE0A149762786A68936F0893F6F76 /* DefaultTransportProtocol.swift in Sources */,
 				C0371039A60E5B7C923277C0DB80F630 /* EncryptionKey.swift in Sources */,
 				51E3929EC69472303102557F31D7FAC9 /* IOSSocket.swift in Sources */,
