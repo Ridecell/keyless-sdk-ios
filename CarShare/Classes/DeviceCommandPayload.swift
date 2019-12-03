@@ -24,7 +24,6 @@ enum DeviceCommandPayload {
                                                                                                    commandMessageProto: commandMessageProto,
                                                                                                    signedCommandHash: signedCommandHash),
                                           commandMessageProto: [UInt8](commandMessageProto))
-        print("\(deviceMessage.description)")
         return deviceMessage
     }
 
