@@ -19,10 +19,7 @@ public enum Command {
     case checkOut
     case lock
     case locate
-    case unlockDriver
     case unlockAll
-    case openTrunk
-    case closeTrunk
 }
 
 public struct Message {

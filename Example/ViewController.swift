@@ -52,18 +52,6 @@ class ViewController: UIViewController, CarShareClientDelegate {
         try? client.execute(.unlockAll, with: reservation)
     }
 
-    @IBAction func didTapUnlockDriver(_ sender: Any) {
-        try? client.execute(.unlockDriver, with: reservation)
-    }
-    
-    @IBAction func didTapOpenTrunk(_ sender: Any) {
-        try? client.execute(.openTrunk, with: reservation)
-    }
-    
-    @IBAction func didTapCloseTrunk(_ sender: Any) {
-        try? client.execute(.closeTrunk, with: reservation)
-    }
-
     func clientDidConnect(_ client: CarShareClient) {
         let alert = UIAlertController(title: "Connected", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

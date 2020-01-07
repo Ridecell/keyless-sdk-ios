@@ -92,7 +92,7 @@ class CarShareClientTests: XCTestCase {
         try? sut.connect(validToken)
         let bytes: [UInt8] = [0x01]
         sut.disconnect()
-        sut.protocol(commandProtocol, command: .closeTrunk, didSucceed: Data(bytes: bytes, count: bytes.count))
+        sut.protocol(commandProtocol, command: .locate, didSucceed: Data(bytes: bytes, count: bytes.count))
         XCTAssertFalse(delegate.commandDidSucceedCalled)
     }
     
@@ -198,14 +198,14 @@ extension CarShareClientTests {
         }
         
         var commandDidSucceedCalled: Bool = false
-        var successfulCommand: Command = .openTrunk
+        var successfulCommand: Command = .locate
         func clientCommandDidSucceed(_ client: CarShareClient, command: Command) {
             commandDidSucceedCalled = true
             successfulCommand = command
         }
         
         var commandDidFail: Bool = false
-        var failedCommand: Command = .openTrunk
+        var failedCommand: Command = .locate
         func clientCommandDidFail(_ client: CarShareClient, command: Command, error: Error) {
             commandDidFail = true
             failedCommand = command

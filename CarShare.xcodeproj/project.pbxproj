@@ -23,6 +23,7 @@
 		BB501834236870C400AC2E4D /* DeviceCommandPayloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */; };
 		BB5CCA9B23735ED6006408AC /* DefaultCommandProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */; };
 		BB7A81922395B750005B1E4B /* BinaryResponseDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A81912395B750005B1E4B /* BinaryResponseDataTests.swift */; };
+		BBB9D56E23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9D56D23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift */; };
 		CF84DD5C9A9D1E0D32366124 /* Pods_CarShare_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8401BE84B5C46710A0C8C9 /* Pods_CarShare_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 		BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCommandPayloadTests.swift; sourceTree = "<group>"; };
 		BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCommandProtocolTests.swift; sourceTree = "<group>"; };
 		BB7A81912395B750005B1E4B /* BinaryResponseDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryResponseDataTests.swift; sourceTree = "<group>"; };
+		BBB9D56D23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtobufDeviceCommandTransformerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				BB4E0A632375CB3600DFEC47 /* CarShareClientTests.swift */,
 				BB4159052379C7190075350F /* IOSocketTests.swift */,
 				BB7A81912395B750005B1E4B /* BinaryResponseDataTests.swift */,
+				BBB9D56D23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift */,
 				BB4159012378B2EC0075350F /* IncomingChallengeTests.swift */,
 				BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */,
 				BB4159032378D9670075350F /* TokenTransformerTests.swift */,
@@ -396,6 +399,7 @@
 				1CEA14AD22D6877A00B1B7DB /* DefaultTransportProtocolTests.swift in Sources */,
 				BB4159002378AD710075350F /* IncomingChallengeAckTests.swift in Sources */,
 				BB4159062379C7190075350F /* IOSocketTests.swift in Sources */,
+				BBB9D56E23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift in Sources */,
 				BB4E0A642375CB3600DFEC47 /* CarShareClientTests.swift in Sources */,
 				BB4159042378D9670075350F /* TokenTransformerTests.swift in Sources */,
 				BB7A81922395B750005B1E4B /* BinaryResponseDataTests.swift in Sources */,
