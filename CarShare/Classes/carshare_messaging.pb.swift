@@ -24,6 +24,7 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
 /// Beyond 32 permissions, we have to start a new enum type and permissions field.
 enum PermissionFlags: SwiftProtobuf.Enum {
   typealias RawValue = Int
+  case permissionsNone // = 0
   case lock // = 1
   case unlockDriver // = 2
   case unlockAll // = 4
@@ -46,13 +47,15 @@ enum PermissionFlags: SwiftProtobuf.Enum {
   case serviceModeRequest // = 524288
   case blacklistUser // = 1048576
   case remoteStart // = 2097152
+  case UNRECOGNIZED(Int)
 
   init() {
-    self = .lock
+    self = .permissionsNone
   }
 
   init?(rawValue: Int) {
     switch rawValue {
+    case 0: self = .permissionsNone
     case 1: self = .lock
     case 2: self = .unlockDriver
     case 4: self = .unlockAll
@@ -75,12 +78,13 @@ enum PermissionFlags: SwiftProtobuf.Enum {
     case 524288: self = .serviceModeRequest
     case 1048576: self = .blacklistUser
     case 2097152: self = .remoteStart
-    default: return nil
+    default: self = .UNRECOGNIZED(rawValue)
     }
   }
 
   var rawValue: Int {
     switch self {
+    case .permissionsNone: return 0
     case .lock: return 1
     case .unlockDriver: return 2
     case .unlockAll: return 4
@@ -103,6 +107,7 @@ enum PermissionFlags: SwiftProtobuf.Enum {
     case .serviceModeRequest: return 524288
     case .blacklistUser: return 1048576
     case .remoteStart: return 2097152
+    case .UNRECOGNIZED(let i): return i
     }
   }
 
@@ -111,44 +116,74 @@ enum PermissionFlags: SwiftProtobuf.Enum {
 #if swift(>=4.2)
 
 extension PermissionFlags: CaseIterable {
-  // Support synthesized by the compiler.
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  static var allCases: [PermissionFlags] = [
+    .permissionsNone,
+    .lock,
+    .unlockDriver,
+    .unlockAll,
+    .openTrunk,
+    .closeTrunk,
+    .locate,
+    .immobilize,
+    .mobilize,
+    .panicAlarmOn,
+    .panicAlarmOff,
+    .checkin,
+    .checkout,
+    .connect,
+    .disconnect,
+    .observe,
+    .createReservation,
+    .readReservation,
+    .modifyReservation,
+    .deleteReservation,
+    .serviceModeRequest,
+    .blacklistUser,
+    .remoteStart,
+  ]
 }
 
 #endif  // swift(>=4.2)
 
 enum VehicleSecureConditionsFlags: SwiftProtobuf.Enum {
   typealias RawValue = Int
+  case secureConditionNone // = 0
   case windowsUp // = 1
   case sunroofClosed // = 2
   case convertibleClosed // = 4
   case doorsClosed // = 8
   case ignitionOff // = 16
   case lightsOff // = 32
+  case UNRECOGNIZED(Int)
 
   init() {
-    self = .windowsUp
+    self = .secureConditionNone
   }
 
   init?(rawValue: Int) {
     switch rawValue {
+    case 0: self = .secureConditionNone
     case 1: self = .windowsUp
     case 2: self = .sunroofClosed
     case 4: self = .convertibleClosed
     case 8: self = .doorsClosed
     case 16: self = .ignitionOff
     case 32: self = .lightsOff
-    default: return nil
+    default: self = .UNRECOGNIZED(rawValue)
     }
   }
 
   var rawValue: Int {
     switch self {
+    case .secureConditionNone: return 0
     case .windowsUp: return 1
     case .sunroofClosed: return 2
     case .convertibleClosed: return 4
     case .doorsClosed: return 8
     case .ignitionOff: return 16
     case .lightsOff: return 32
+    case .UNRECOGNIZED(let i): return i
     }
   }
 
@@ -157,7 +192,16 @@ enum VehicleSecureConditionsFlags: SwiftProtobuf.Enum {
 #if swift(>=4.2)
 
 extension VehicleSecureConditionsFlags: CaseIterable {
-  // Support synthesized by the compiler.
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  static var allCases: [VehicleSecureConditionsFlags] = [
+    .secureConditionNone,
+    .windowsUp,
+    .sunroofClosed,
+    .convertibleClosed,
+    .doorsClosed,
+    .ignitionOff,
+    .lightsOff,
+  ]
 }
 
 #endif  // swift(>=4.2)
@@ -212,7 +256,7 @@ struct DeviceToAppMessage {
     set {_uniqueStorage()._message = newValue}
   }
 
-  /// TODO: add context to this message
+  /// TODO: add context to this message 
   var result: ResultMessage {
     get {
       if case .result(let v)? = _storage._message {return v}
@@ -224,7 +268,7 @@ struct DeviceToAppMessage {
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Message: Equatable {
-    /// TODO: add context to this message
+    /// TODO: add context to this message 
     case result(ResultMessage)
 
   #if !swift(>=4.1)
@@ -247,19 +291,13 @@ struct DeviceCommandMessage {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var command: DeviceCommandMessage.Command {
-    get {return _command ?? .lock}
-    set {_command = newValue}
-  }
-  /// Returns true if `command` has been explicitly set.
-  var hasCommand: Bool {return self._command != nil}
-  /// Clears the value of `command`. Subsequent reads from it will return its default value.
-  mutating func clearCommand() {self._command = nil}
+  var command: UInt32 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum Command: SwiftProtobuf.Enum {
     typealias RawValue = Int
+    case noCommand // = 0
     case lock // = 1
     case unlockDriver // = 2
     case unlockAll // = 4
@@ -270,13 +308,15 @@ struct DeviceCommandMessage {
     case mobilize // = 128
     case checkin // = 1024
     case checkout // = 2048
+    case UNRECOGNIZED(Int)
 
     init() {
-      self = .lock
+      self = .noCommand
     }
 
     init?(rawValue: Int) {
       switch rawValue {
+      case 0: self = .noCommand
       case 1: self = .lock
       case 2: self = .unlockDriver
       case 4: self = .unlockAll
@@ -287,12 +327,13 @@ struct DeviceCommandMessage {
       case 128: self = .mobilize
       case 1024: self = .checkin
       case 2048: self = .checkout
-      default: return nil
+      default: self = .UNRECOGNIZED(rawValue)
       }
     }
 
     var rawValue: Int {
       switch self {
+      case .noCommand: return 0
       case .lock: return 1
       case .unlockDriver: return 2
       case .unlockAll: return 4
@@ -303,20 +344,32 @@ struct DeviceCommandMessage {
       case .mobilize: return 128
       case .checkin: return 1024
       case .checkout: return 2048
+      case .UNRECOGNIZED(let i): return i
       }
     }
 
   }
 
   init() {}
-
-  fileprivate var _command: DeviceCommandMessage.Command? = nil
 }
 
 #if swift(>=4.2)
 
 extension DeviceCommandMessage.Command: CaseIterable {
-  // Support synthesized by the compiler.
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  static var allCases: [DeviceCommandMessage.Command] = [
+    .noCommand,
+    .lock,
+    .unlockDriver,
+    .unlockAll,
+    .openTrunk,
+    .closeTrunk,
+    .locate,
+    .immobilize,
+    .mobilize,
+    .checkin,
+    .checkout,
+  ]
 }
 
 #endif  // swift(>=4.2)
@@ -327,20 +380,11 @@ struct ResultMessage {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var success: Bool {
-    get {return _success ?? false}
-    set {_success = newValue}
-  }
-  /// Returns true if `success` has been explicitly set.
-  var hasSuccess: Bool {return self._success != nil}
-  /// Clears the value of `success`. Subsequent reads from it will return its default value.
-  mutating func clearSuccess() {self._success = nil}
+  var success: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
-
-  fileprivate var _success: Bool? = nil
 }
 
 struct DeviceReservationMessage {
@@ -350,40 +394,24 @@ struct DeviceReservationMessage {
 
   /// GO only supports a public exponent of 0x10001 so a modulus is enough to determine the public key
   var appPublicModulus: Data {
-    get {return _storage._appPublicModulus ?? SwiftProtobuf.Internal.emptyData}
+    get {return _storage._appPublicModulus}
     set {_uniqueStorage()._appPublicModulus = newValue}
   }
-  /// Returns true if `appPublicModulus` has been explicitly set.
-  var hasAppPublicModulus: Bool {return _storage._appPublicModulus != nil}
-  /// Clears the value of `appPublicModulus`. Subsequent reads from it will return its default value.
-  mutating func clearAppPublicModulus() {_uniqueStorage()._appPublicModulus = nil}
 
   var keyExpiry: UInt64 {
-    get {return _storage._keyExpiry ?? 0}
+    get {return _storage._keyExpiry}
     set {_uniqueStorage()._keyExpiry = newValue}
   }
-  /// Returns true if `keyExpiry` has been explicitly set.
-  var hasKeyExpiry: Bool {return _storage._keyExpiry != nil}
-  /// Clears the value of `keyExpiry`. Subsequent reads from it will return its default value.
-  mutating func clearKeyExpiry() {_uniqueStorage()._keyExpiry = nil}
 
-  var reservationID: Data {
-    get {return _storage._reservationID ?? SwiftProtobuf.Internal.emptyData}
+  var reservationID: String {
+    get {return _storage._reservationID}
     set {_uniqueStorage()._reservationID = newValue}
   }
-  /// Returns true if `reservationID` has been explicitly set.
-  var hasReservationID: Bool {return _storage._reservationID != nil}
-  /// Clears the value of `reservationID`. Subsequent reads from it will return its default value.
-  mutating func clearReservationID() {_uniqueStorage()._reservationID = nil}
 
   var deviceHardwareID: UInt64 {
-    get {return _storage._deviceHardwareID ?? 0}
+    get {return _storage._deviceHardwareID}
     set {_uniqueStorage()._deviceHardwareID = newValue}
   }
-  /// Returns true if `deviceHardwareID` has been explicitly set.
-  var hasDeviceHardwareID: Bool {return _storage._deviceHardwareID != nil}
-  /// Clears the value of `deviceHardwareID`. Subsequent reads from it will return its default value.
-  mutating func clearDeviceHardwareID() {_uniqueStorage()._deviceHardwareID = nil}
 
   var account: Account {
     get {return _storage._account ?? Account()}
@@ -396,41 +424,25 @@ struct DeviceReservationMessage {
 
   /// Timestamp represented by seconds since Unix Epoch
   var reservationStartTime: UInt64 {
-    get {return _storage._reservationStartTime ?? 0}
+    get {return _storage._reservationStartTime}
     set {_uniqueStorage()._reservationStartTime = newValue}
   }
-  /// Returns true if `reservationStartTime` has been explicitly set.
-  var hasReservationStartTime: Bool {return _storage._reservationStartTime != nil}
-  /// Clears the value of `reservationStartTime`. Subsequent reads from it will return its default value.
-  mutating func clearReservationStartTime() {_uniqueStorage()._reservationStartTime = nil}
 
   /// Timestamp represented by seconds since Unix Epoch
   var reservationEndTime: UInt64 {
-    get {return _storage._reservationEndTime ?? 0}
+    get {return _storage._reservationEndTime}
     set {_uniqueStorage()._reservationEndTime = newValue}
   }
-  /// Returns true if `reservationEndTime` has been explicitly set.
-  var hasReservationEndTime: Bool {return _storage._reservationEndTime != nil}
-  /// Clears the value of `reservationEndTime`. Subsequent reads from it will return its default value.
-  mutating func clearReservationEndTime() {_uniqueStorage()._reservationEndTime = nil}
 
   var gracePeriodSeconds: UInt32 {
-    get {return _storage._gracePeriodSeconds ?? 0}
+    get {return _storage._gracePeriodSeconds}
     set {_uniqueStorage()._gracePeriodSeconds = newValue}
   }
-  /// Returns true if `gracePeriodSeconds` has been explicitly set.
-  var hasGracePeriodSeconds: Bool {return _storage._gracePeriodSeconds != nil}
-  /// Clears the value of `gracePeriodSeconds`. Subsequent reads from it will return its default value.
-  mutating func clearGracePeriodSeconds() {_uniqueStorage()._gracePeriodSeconds = nil}
 
   var securePeriodSeconds: UInt32 {
-    get {return _storage._securePeriodSeconds ?? 0}
+    get {return _storage._securePeriodSeconds}
     set {_uniqueStorage()._securePeriodSeconds = newValue}
   }
-  /// Returns true if `securePeriodSeconds` has been explicitly set.
-  var hasSecurePeriodSeconds: Bool {return _storage._securePeriodSeconds != nil}
-  /// Clears the value of `securePeriodSeconds`. Subsequent reads from it will return its default value.
-  mutating func clearSecurePeriodSeconds() {_uniqueStorage()._securePeriodSeconds = nil}
 
   var endBookConditions: EndBookConditions {
     get {return _storage._endBookConditions ?? EndBookConditions()}
@@ -440,6 +452,11 @@ struct DeviceReservationMessage {
   var hasEndBookConditions: Bool {return _storage._endBookConditions != nil}
   /// Clears the value of `endBookConditions`. Subsequent reads from it will return its default value.
   mutating func clearEndBookConditions() {_uniqueStorage()._endBookConditions = nil}
+
+  var proxCardID: UInt32 {
+    get {return _storage._proxCardID}
+    set {_uniqueStorage()._proxCardID = newValue}
+  }
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -453,14 +470,10 @@ struct Account {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var id: UInt32 {
-    get {return _storage._id ?? 0}
+  var id: String {
+    get {return _storage._id}
     set {_uniqueStorage()._id = newValue}
   }
-  /// Returns true if `id` has been explicitly set.
-  var hasID: Bool {return _storage._id != nil}
-  /// Clears the value of `id`. Subsequent reads from it will return its default value.
-  mutating func clearID() {_uniqueStorage()._id = nil}
 
   /// enum Permission
   var permissions: PermissionList {
@@ -487,20 +500,11 @@ struct PermissionList {
   // methods supported on all messages.
 
   /// enum PermissionFlags
-  var permissions: UInt32 {
-    get {return _permissions ?? 0}
-    set {_permissions = newValue}
-  }
-  /// Returns true if `permissions` has been explicitly set.
-  var hasPermissions: Bool {return self._permissions != nil}
-  /// Clears the value of `permissions`. Subsequent reads from it will return its default value.
-  mutating func clearPermissions() {self._permissions = nil}
+  var permissions: UInt32 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
-
-  fileprivate var _permissions: UInt32? = nil
 }
 
 struct EndBookConditions {
@@ -527,22 +531,14 @@ struct EndBookConditions {
   mutating func clearHomePoint() {_uniqueStorage()._homePoint = nil}
 
   var homeRadius: UInt32 {
-    get {return _storage._homeRadius ?? 0}
+    get {return _storage._homeRadius}
     set {_uniqueStorage()._homeRadius = newValue}
   }
-  /// Returns true if `homeRadius` has been explicitly set.
-  var hasHomeRadius: Bool {return _storage._homeRadius != nil}
-  /// Clears the value of `homeRadius`. Subsequent reads from it will return its default value.
-  mutating func clearHomeRadius() {_uniqueStorage()._homeRadius = nil}
 
   var fuelTankGreaterThan: Float {
-    get {return _storage._fuelTankGreaterThan ?? 0}
+    get {return _storage._fuelTankGreaterThan}
     set {_uniqueStorage()._fuelTankGreaterThan = newValue}
   }
-  /// Returns true if `fuelTankGreaterThan` has been explicitly set.
-  var hasFuelTankGreaterThan: Bool {return _storage._fuelTankGreaterThan != nil}
-  /// Clears the value of `fuelTankGreaterThan`. Subsequent reads from it will return its default value.
-  mutating func clearFuelTankGreaterThan() {_uniqueStorage()._fuelTankGreaterThan = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -557,20 +553,11 @@ struct VehicleSecureConditions {
   // methods supported on all messages.
 
   /// enum VehicleSecureConditionsFlags
-  var vehicleSecureConditions: UInt32 {
-    get {return _vehicleSecureConditions ?? 0}
-    set {_vehicleSecureConditions = newValue}
-  }
-  /// Returns true if `vehicleSecureConditions` has been explicitly set.
-  var hasVehicleSecureConditions: Bool {return self._vehicleSecureConditions != nil}
-  /// Clears the value of `vehicleSecureConditions`. Subsequent reads from it will return its default value.
-  mutating func clearVehicleSecureConditions() {self._vehicleSecureConditions = nil}
+  var vehicleSecureConditions: UInt32 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
-
-  fileprivate var _vehicleSecureConditions: UInt32? = nil
 }
 
 struct GpsCoordinate {
@@ -578,36 +565,39 @@ struct GpsCoordinate {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var latitude: Float {
-    get {return _latitude ?? 0}
-    set {_latitude = newValue}
-  }
-  /// Returns true if `latitude` has been explicitly set.
-  var hasLatitude: Bool {return self._latitude != nil}
-  /// Clears the value of `latitude`. Subsequent reads from it will return its default value.
-  mutating func clearLatitude() {self._latitude = nil}
+  var latitude: Float = 0
 
-  var longitude: Float {
-    get {return _longitude ?? 0}
-    set {_longitude = newValue}
-  }
-  /// Returns true if `longitude` has been explicitly set.
-  var hasLongitude: Bool {return self._longitude != nil}
-  /// Clears the value of `longitude`. Subsequent reads from it will return its default value.
-  mutating func clearLongitude() {self._longitude = nil}
+  var longitude: Float = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
+}
 
-  fileprivate var _latitude: Float? = nil
-  fileprivate var _longitude: Float? = nil
+///*
+/// Carshare Public Key Message
+/// Generated in the Carshare Service, consumed by the Go device.
+struct CarsharePublicKeyMessage {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Timestamp represented by seconds since Unix Epoch
+  var rotationTimestamp: Int64 = 0
+
+  /// An empty byte string on this property indicates that there is no active public key for the device 
+  var publicModulus: Data = SwiftProtobuf.Internal.emptyData
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 extension PermissionFlags: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "PERMISSIONS_NONE"),
     1: .same(proto: "LOCK"),
     2: .same(proto: "UNLOCK_DRIVER"),
     4: .same(proto: "UNLOCK_ALL"),
@@ -635,6 +625,7 @@ extension PermissionFlags: SwiftProtobuf._ProtoNameProviding {
 
 extension VehicleSecureConditionsFlags: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "SECURE_CONDITION_NONE"),
     1: .same(proto: "WINDOWS_UP"),
     2: .same(proto: "SUNROOF_CLOSED"),
     4: .same(proto: "CONVERTIBLE_CLOSED"),
@@ -667,13 +658,6 @@ extension AppToDeviceMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
       _storage = _StorageClass(copying: _storage)
     }
     return _storage
-  }
-
-  public var isInitialized: Bool {
-    return withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if case .command(let v)? = _storage._message, !v.isInitialized {return false}
-      return true
-    }
   }
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -744,13 +728,6 @@ extension DeviceToAppMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
     return _storage
   }
 
-  public var isInitialized: Bool {
-    return withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if case .result(let v)? = _storage._message, !v.isInitialized {return false}
-      return true
-    }
-  }
-
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     _ = _uniqueStorage()
     try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
@@ -800,29 +777,24 @@ extension DeviceCommandMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
     1: .same(proto: "command"),
   ]
 
-  public var isInitialized: Bool {
-    if self._command == nil {return false}
-    return true
-  }
-
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeSingularEnumField(value: &self._command)
+      case 1: try decoder.decodeSingularFixed32Field(value: &self.command)
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._command {
-      try visitor.visitSingularEnumField(value: v, fieldNumber: 1)
+    if self.command != 0 {
+      try visitor.visitSingularFixed32Field(value: self.command, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: DeviceCommandMessage, rhs: DeviceCommandMessage) -> Bool {
-    if lhs._command != rhs._command {return false}
+    if lhs.command != rhs.command {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -830,6 +802,7 @@ extension DeviceCommandMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
 
 extension DeviceCommandMessage.Command: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "NO_COMMAND"),
     1: .same(proto: "LOCK"),
     2: .same(proto: "UNLOCK_DRIVER"),
     4: .same(proto: "UNLOCK_ALL"),
@@ -849,29 +822,24 @@ extension ResultMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     1: .same(proto: "success"),
   ]
 
-  public var isInitialized: Bool {
-    if self._success == nil {return false}
-    return true
-  }
-
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeSingularBoolField(value: &self._success)
+      case 1: try decoder.decodeSingularBoolField(value: &self.success)
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._success {
-      try visitor.visitSingularBoolField(value: v, fieldNumber: 1)
+    if self.success != false {
+      try visitor.visitSingularBoolField(value: self.success, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: ResultMessage, rhs: ResultMessage) -> Bool {
-    if lhs._success != rhs._success {return false}
+    if lhs.success != rhs.success {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -890,19 +858,21 @@ extension DeviceReservationMessage: SwiftProtobuf.Message, SwiftProtobuf._Messag
     8: .standard(proto: "grace_period_seconds"),
     9: .standard(proto: "secure_period_seconds"),
     10: .standard(proto: "end_book_conditions"),
+    11: .standard(proto: "prox_card_id"),
   ]
 
   fileprivate class _StorageClass {
-    var _appPublicModulus: Data? = nil
-    var _keyExpiry: UInt64? = nil
-    var _reservationID: Data? = nil
-    var _deviceHardwareID: UInt64? = nil
+    var _appPublicModulus: Data = SwiftProtobuf.Internal.emptyData
+    var _keyExpiry: UInt64 = 0
+    var _reservationID: String = String()
+    var _deviceHardwareID: UInt64 = 0
     var _account: Account? = nil
-    var _reservationStartTime: UInt64? = nil
-    var _reservationEndTime: UInt64? = nil
-    var _gracePeriodSeconds: UInt32? = nil
-    var _securePeriodSeconds: UInt32? = nil
+    var _reservationStartTime: UInt64 = 0
+    var _reservationEndTime: UInt64 = 0
+    var _gracePeriodSeconds: UInt32 = 0
+    var _securePeriodSeconds: UInt32 = 0
     var _endBookConditions: EndBookConditions? = nil
+    var _proxCardID: UInt32 = 0
 
     static let defaultInstance = _StorageClass()
 
@@ -919,6 +889,7 @@ extension DeviceReservationMessage: SwiftProtobuf.Message, SwiftProtobuf._Messag
       _gracePeriodSeconds = source._gracePeriodSeconds
       _securePeriodSeconds = source._securePeriodSeconds
       _endBookConditions = source._endBookConditions
+      _proxCardID = source._proxCardID
     }
   }
 
@@ -929,24 +900,6 @@ extension DeviceReservationMessage: SwiftProtobuf.Message, SwiftProtobuf._Messag
     return _storage
   }
 
-  public var isInitialized: Bool {
-    return withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if _storage._appPublicModulus == nil {return false}
-      if _storage._keyExpiry == nil {return false}
-      if _storage._reservationID == nil {return false}
-      if _storage._deviceHardwareID == nil {return false}
-      if _storage._account == nil {return false}
-      if _storage._reservationStartTime == nil {return false}
-      if _storage._reservationEndTime == nil {return false}
-      if _storage._gracePeriodSeconds == nil {return false}
-      if _storage._securePeriodSeconds == nil {return false}
-      if _storage._endBookConditions == nil {return false}
-      if let v = _storage._account, !v.isInitialized {return false}
-      if let v = _storage._endBookConditions, !v.isInitialized {return false}
-      return true
-    }
-  }
-
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     _ = _uniqueStorage()
     try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
@@ -954,7 +907,7 @@ extension DeviceReservationMessage: SwiftProtobuf.Message, SwiftProtobuf._Messag
         switch fieldNumber {
         case 1: try decoder.decodeSingularBytesField(value: &_storage._appPublicModulus)
         case 2: try decoder.decodeSingularUInt64Field(value: &_storage._keyExpiry)
-        case 3: try decoder.decodeSingularBytesField(value: &_storage._reservationID)
+        case 3: try decoder.decodeSingularStringField(value: &_storage._reservationID)
         case 4: try decoder.decodeSingularUInt64Field(value: &_storage._deviceHardwareID)
         case 5: try decoder.decodeSingularMessageField(value: &_storage._account)
         case 6: try decoder.decodeSingularUInt64Field(value: &_storage._reservationStartTime)
@@ -962,6 +915,7 @@ extension DeviceReservationMessage: SwiftProtobuf.Message, SwiftProtobuf._Messag
         case 8: try decoder.decodeSingularUInt32Field(value: &_storage._gracePeriodSeconds)
         case 9: try decoder.decodeSingularUInt32Field(value: &_storage._securePeriodSeconds)
         case 10: try decoder.decodeSingularMessageField(value: &_storage._endBookConditions)
+        case 11: try decoder.decodeSingularUInt32Field(value: &_storage._proxCardID)
         default: break
         }
       }
@@ -970,35 +924,38 @@ extension DeviceReservationMessage: SwiftProtobuf.Message, SwiftProtobuf._Messag
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if let v = _storage._appPublicModulus {
-        try visitor.visitSingularBytesField(value: v, fieldNumber: 1)
+      if !_storage._appPublicModulus.isEmpty {
+        try visitor.visitSingularBytesField(value: _storage._appPublicModulus, fieldNumber: 1)
       }
-      if let v = _storage._keyExpiry {
-        try visitor.visitSingularUInt64Field(value: v, fieldNumber: 2)
+      if _storage._keyExpiry != 0 {
+        try visitor.visitSingularUInt64Field(value: _storage._keyExpiry, fieldNumber: 2)
       }
-      if let v = _storage._reservationID {
-        try visitor.visitSingularBytesField(value: v, fieldNumber: 3)
+      if !_storage._reservationID.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._reservationID, fieldNumber: 3)
       }
-      if let v = _storage._deviceHardwareID {
-        try visitor.visitSingularUInt64Field(value: v, fieldNumber: 4)
+      if _storage._deviceHardwareID != 0 {
+        try visitor.visitSingularUInt64Field(value: _storage._deviceHardwareID, fieldNumber: 4)
       }
       if let v = _storage._account {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
       }
-      if let v = _storage._reservationStartTime {
-        try visitor.visitSingularUInt64Field(value: v, fieldNumber: 6)
+      if _storage._reservationStartTime != 0 {
+        try visitor.visitSingularUInt64Field(value: _storage._reservationStartTime, fieldNumber: 6)
       }
-      if let v = _storage._reservationEndTime {
-        try visitor.visitSingularUInt64Field(value: v, fieldNumber: 7)
+      if _storage._reservationEndTime != 0 {
+        try visitor.visitSingularUInt64Field(value: _storage._reservationEndTime, fieldNumber: 7)
       }
-      if let v = _storage._gracePeriodSeconds {
-        try visitor.visitSingularUInt32Field(value: v, fieldNumber: 8)
+      if _storage._gracePeriodSeconds != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._gracePeriodSeconds, fieldNumber: 8)
       }
-      if let v = _storage._securePeriodSeconds {
-        try visitor.visitSingularUInt32Field(value: v, fieldNumber: 9)
+      if _storage._securePeriodSeconds != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._securePeriodSeconds, fieldNumber: 9)
       }
       if let v = _storage._endBookConditions {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 10)
+      }
+      if _storage._proxCardID != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._proxCardID, fieldNumber: 11)
       }
     }
     try unknownFields.traverse(visitor: &visitor)
@@ -1019,6 +976,7 @@ extension DeviceReservationMessage: SwiftProtobuf.Message, SwiftProtobuf._Messag
         if _storage._gracePeriodSeconds != rhs_storage._gracePeriodSeconds {return false}
         if _storage._securePeriodSeconds != rhs_storage._securePeriodSeconds {return false}
         if _storage._endBookConditions != rhs_storage._endBookConditions {return false}
+        if _storage._proxCardID != rhs_storage._proxCardID {return false}
         return true
       }
       if !storagesAreEqual {return false}
@@ -1036,7 +994,7 @@ extension Account: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBa
   ]
 
   fileprivate class _StorageClass {
-    var _id: UInt32? = nil
+    var _id: String = String()
     var _permissions: PermissionList? = nil
 
     static let defaultInstance = _StorageClass()
@@ -1056,20 +1014,12 @@ extension Account: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBa
     return _storage
   }
 
-  public var isInitialized: Bool {
-    return withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if _storage._id == nil {return false}
-      if let v = _storage._permissions, !v.isInitialized {return false}
-      return true
-    }
-  }
-
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     _ = _uniqueStorage()
     try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
       while let fieldNumber = try decoder.nextFieldNumber() {
         switch fieldNumber {
-        case 1: try decoder.decodeSingularUInt32Field(value: &_storage._id)
+        case 1: try decoder.decodeSingularStringField(value: &_storage._id)
         case 2: try decoder.decodeSingularMessageField(value: &_storage._permissions)
         default: break
         }
@@ -1079,8 +1029,8 @@ extension Account: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBa
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if let v = _storage._id {
-        try visitor.visitSingularUInt32Field(value: v, fieldNumber: 1)
+      if !_storage._id.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._id, fieldNumber: 1)
       }
       if let v = _storage._permissions {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
@@ -1111,29 +1061,24 @@ extension PermissionList: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
     1: .same(proto: "permissions"),
   ]
 
-  public var isInitialized: Bool {
-    if self._permissions == nil {return false}
-    return true
-  }
-
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeSingularFixed32Field(value: &self._permissions)
+      case 1: try decoder.decodeSingularFixed32Field(value: &self.permissions)
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._permissions {
-      try visitor.visitSingularFixed32Field(value: v, fieldNumber: 1)
+    if self.permissions != 0 {
+      try visitor.visitSingularFixed32Field(value: self.permissions, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: PermissionList, rhs: PermissionList) -> Bool {
-    if lhs._permissions != rhs._permissions {return false}
+    if lhs.permissions != rhs.permissions {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1151,8 +1096,8 @@ extension EndBookConditions: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
   fileprivate class _StorageClass {
     var _vehicleSecureConditions: VehicleSecureConditions? = nil
     var _homePoint: GpsCoordinate? = nil
-    var _homeRadius: UInt32? = nil
-    var _fuelTankGreaterThan: Float? = nil
+    var _homeRadius: UInt32 = 0
+    var _fuelTankGreaterThan: Float = 0
 
     static let defaultInstance = _StorageClass()
 
@@ -1171,15 +1116,6 @@ extension EndBookConditions: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
       _storage = _StorageClass(copying: _storage)
     }
     return _storage
-  }
-
-  public var isInitialized: Bool {
-    return withExtendedLifetime(_storage) { (_storage: _StorageClass) in
-      if _storage._vehicleSecureConditions == nil {return false}
-      if let v = _storage._vehicleSecureConditions, !v.isInitialized {return false}
-      if let v = _storage._homePoint, !v.isInitialized {return false}
-      return true
-    }
   }
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1205,11 +1141,11 @@ extension EndBookConditions: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
       if let v = _storage._homePoint {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
       }
-      if let v = _storage._homeRadius {
-        try visitor.visitSingularUInt32Field(value: v, fieldNumber: 3)
+      if _storage._homeRadius != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._homeRadius, fieldNumber: 3)
       }
-      if let v = _storage._fuelTankGreaterThan {
-        try visitor.visitSingularFloatField(value: v, fieldNumber: 4)
+      if _storage._fuelTankGreaterThan != 0 {
+        try visitor.visitSingularFloatField(value: _storage._fuelTankGreaterThan, fieldNumber: 4)
       }
     }
     try unknownFields.traverse(visitor: &visitor)
@@ -1239,29 +1175,24 @@ extension VehicleSecureConditions: SwiftProtobuf.Message, SwiftProtobuf._Message
     1: .standard(proto: "vehicle_secure_conditions"),
   ]
 
-  public var isInitialized: Bool {
-    if self._vehicleSecureConditions == nil {return false}
-    return true
-  }
-
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeSingularFixed32Field(value: &self._vehicleSecureConditions)
+      case 1: try decoder.decodeSingularFixed32Field(value: &self.vehicleSecureConditions)
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._vehicleSecureConditions {
-      try visitor.visitSingularFixed32Field(value: v, fieldNumber: 1)
+    if self.vehicleSecureConditions != 0 {
+      try visitor.visitSingularFixed32Field(value: self.vehicleSecureConditions, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: VehicleSecureConditions, rhs: VehicleSecureConditions) -> Bool {
-    if lhs._vehicleSecureConditions != rhs._vehicleSecureConditions {return false}
+    if lhs.vehicleSecureConditions != rhs.vehicleSecureConditions {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1274,35 +1205,64 @@ extension GpsCoordinate: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     2: .same(proto: "longitude"),
   ]
 
-  public var isInitialized: Bool {
-    if self._latitude == nil {return false}
-    if self._longitude == nil {return false}
-    return true
-  }
-
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeSingularFloatField(value: &self._latitude)
-      case 2: try decoder.decodeSingularFloatField(value: &self._longitude)
+      case 1: try decoder.decodeSingularFloatField(value: &self.latitude)
+      case 2: try decoder.decodeSingularFloatField(value: &self.longitude)
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._latitude {
-      try visitor.visitSingularFloatField(value: v, fieldNumber: 1)
+    if self.latitude != 0 {
+      try visitor.visitSingularFloatField(value: self.latitude, fieldNumber: 1)
     }
-    if let v = self._longitude {
-      try visitor.visitSingularFloatField(value: v, fieldNumber: 2)
+    if self.longitude != 0 {
+      try visitor.visitSingularFloatField(value: self.longitude, fieldNumber: 2)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: GpsCoordinate, rhs: GpsCoordinate) -> Bool {
-    if lhs._latitude != rhs._latitude {return false}
-    if lhs._longitude != rhs._longitude {return false}
+    if lhs.latitude != rhs.latitude {return false}
+    if lhs.longitude != rhs.longitude {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension CarsharePublicKeyMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "CarsharePublicKeyMessage"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "rotation_timestamp"),
+    2: .standard(proto: "public_modulus"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularInt64Field(value: &self.rotationTimestamp)
+      case 2: try decoder.decodeSingularBytesField(value: &self.publicModulus)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.rotationTimestamp != 0 {
+      try visitor.visitSingularInt64Field(value: self.rotationTimestamp, fieldNumber: 1)
+    }
+    if !self.publicModulus.isEmpty {
+      try visitor.visitSingularBytesField(value: self.publicModulus, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: CarsharePublicKeyMessage, rhs: CarsharePublicKeyMessage) -> Bool {
+    if lhs.rotationTimestamp != rhs.rotationTimestamp {return false}
+    if lhs.publicModulus != rhs.publicModulus {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

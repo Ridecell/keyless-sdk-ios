@@ -15,26 +15,10 @@ protocol DeviceCommandTransformer {
 class ProtobufDeviceCommandTransformer: DeviceCommandTransformer {
     func transform(_ command: Command) -> Data? {
         let deviceCommandMessage = DeviceCommandMessage.with { populator in
-            populator.command = {
-                switch command {
-                case .checkIn:
-                    return DeviceCommandMessage.Command.checkin
-                case .checkOut:
-                    return DeviceCommandMessage.Command.checkout
-                case .locate:
-                    return DeviceCommandMessage.Command.locate
-                case .lock:
-                    return DeviceCommandMessage.Command.lock
-                case .unlockAll:
-                    return DeviceCommandMessage.Command.unlockAll
-                case .unlockDriver:
-                    return DeviceCommandMessage.Command.unlockDriver
-                case .openTrunk:
-                    return DeviceCommandMessage.Command.openTrunk
-                case .closeTrunk:
-                    return DeviceCommandMessage.Command.closeTrunk
-                }
-            }()
+            populator.command = subCommands(in: command)
+                .map { UInt32($0.rawValue) }
+                .reduce(0, |)
+
         }
         do {
             return try deviceCommandMessage.serializedData()
@@ -43,4 +27,20 @@ class ProtobufDeviceCommandTransformer: DeviceCommandTransformer {
             return nil
         }
     }
+
+    private func subCommands(in command: Command) -> Set<DeviceCommandMessage.Command> {
+        switch command {
+        case .checkIn:
+            return [.checkin, .mobilize, .locate]
+        case .checkOut:
+            return [.checkout, .immobilize, .lock]
+        case .locate:
+            return [.locate]
+        case .lock:
+            return [.lock, .immobilize]
+        case .unlockAll:
+            return [.unlockAll, .mobilize]
+        }
+    }
+
 }
