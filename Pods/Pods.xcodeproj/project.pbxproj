@@ -96,6 +96,7 @@
 		BB1837B0235DFA7F00513851 /* CarShareTokenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */; };
 		BB1837B5235E239A00513851 /* CarshareToken.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837B3235E224100513851 /* CarshareToken.pb.swift */; };
 		BB1837B72360C7A700513851 /* DeviceMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1837B62360C7A700513851 /* DeviceMessage.swift */; };
+		BB3A010023C8F4B700F4D88B /* DeviceToAppMessageTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3A00FF23C8F4B600F4D88B /* DeviceToAppMessageTransformer.swift */; };
 		BB4A6D2D2374A3AD0064F8DC /* ByteGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4A6D2C2374A3AD0064F8DC /* ByteGenerator.swift */; };
 		BB4E0A662375CBA800DFEC47 /* TokenTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4E0A652375CBA800DFEC47 /* TokenTransformer.swift */; };
 		BB5CCA99237310F2006408AC /* DeviceCommandTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5CCA98237310F2006408AC /* DeviceCommandTransformer.swift */; };
@@ -273,6 +274,7 @@
 		BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarShareTokenInfo.swift; path = CarShare/Classes/CarShareTokenInfo.swift; sourceTree = "<group>"; };
 		BB1837B3235E224100513851 /* CarshareToken.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarshareToken.pb.swift; path = CarShare/Classes/CarshareToken.pb.swift; sourceTree = "<group>"; };
 		BB1837B62360C7A700513851 /* DeviceMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceMessage.swift; path = CarShare/Classes/DeviceMessage.swift; sourceTree = "<group>"; };
+		BB3A00FF23C8F4B600F4D88B /* DeviceToAppMessageTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceToAppMessageTransformer.swift; path = CarShare/Classes/DeviceToAppMessageTransformer.swift; sourceTree = "<group>"; };
 		BB4A6D2C2374A3AD0064F8DC /* ByteGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ByteGenerator.swift; path = CarShare/Classes/ByteGenerator.swift; sourceTree = "<group>"; };
 		BB4E0A652375CBA800DFEC47 /* TokenTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TokenTransformer.swift; path = CarShare/Classes/TokenTransformer.swift; sourceTree = "<group>"; };
 		BB5CCA98237310F2006408AC /* DeviceCommandTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceCommandTransformer.swift; path = CarShare/Classes/DeviceCommandTransformer.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				BB1837AF235DFA7F00513851 /* CarShareTokenInfo.swift */,
 				BB1837B62360C7A700513851 /* DeviceMessage.swift */,
 				BB5CCA98237310F2006408AC /* DeviceCommandTransformer.swift */,
+				BB3A00FF23C8F4B600F4D88B /* DeviceToAppMessageTransformer.swift */,
 				BB1837A92358F7E400513851 /* DeviceCommandPayload.swift */,
 				68B7F8CB0D04393211A6C9B6421AC1C9 /* DefaultTransportProtocol.swift */,
 				A1CF33E2ED1A236E976222A96A3837EE /* EncryptionKey.swift */,
@@ -928,6 +931,7 @@
 				C0371039A60E5B7C923277C0DB80F630 /* EncryptionKey.swift in Sources */,
 				51E3929EC69472303102557F31D7FAC9 /* IOSSocket.swift in Sources */,
 				115EB65054C3EFBF5F909010929909B4 /* DefaultCommandProtocol.swift in Sources */,
+				BB3A010023C8F4B700F4D88B /* DeviceToAppMessageTransformer.swift in Sources */,
 				52DEE6BB53F279DCC734782A373FA786 /* Protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

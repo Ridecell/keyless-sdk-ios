@@ -19,6 +19,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         case waitingForChallenge
         case issuingCommand
         case awaitingChallengeAck
+        case awaitingDeviceAck
     }
 
     private struct OutgoingCommand {
@@ -43,15 +44,18 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
 
     private let transportProtocol: TransportProtocol
     private let deviceCommandTransformer: DeviceCommandTransformer
+    private let deviceToAppMessageTransformer: DeviceToAppMessageTransformer
     private let challengeSigner: ChallengeSigner
 
     weak var delegate: CommandProtocolDelegate?
 
     init(transportProtocol: TransportProtocol = DefaultTransportProtocol(),
          deviceCommandTransformer: DeviceCommandTransformer = ProtobufDeviceCommandTransformer(),
+         deviceToAppMessageTransformer: DeviceToAppMessageTransformer = ProtobufDeviceToAppMessageTransformer(),
          challengeSigner: ChallengeSigner = DefaultChallengeSigner()) {
         self.transportProtocol = transportProtocol
         self.deviceCommandTransformer = deviceCommandTransformer
+        self.deviceToAppMessageTransformer = deviceToAppMessageTransformer
         self.challengeSigner = challengeSigner
     }
 
@@ -87,7 +91,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
     func protocolDidOpen(_ protocol: TransportProtocol) {
         delegate?.protocolDidOpen(self)
     }
-
+    //swiftlint:disable:next cyclomatic_complexity
     func `protocol`(_ protocol: TransportProtocol, didReceive data: Data) {
         guard let outgoingCommand = outgoingCommand else {
             return
@@ -115,8 +119,16 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         case .issuingCommand:
             return
         case .awaitingChallengeAck:
+            switch handleChallengeAck(data) {
+            case .success:
+                self.outgoingCommand?.state = .awaitingDeviceAck
+            case .failure(let error):
+                self.outgoingCommand = nil
+                delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+            }
+        case .awaitingDeviceAck:
             self.outgoingCommand = nil
-            switch handleAck(data) {
+            switch handleDeviceAck(data) {
             case .success:
                 delegate?.protocol(self, command: outgoingCommand.command, didSucceed: data)
             case .failure(let error):
@@ -132,12 +144,14 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         switch outgoingCommand.state {
         case .requestingToSendMessage:
             self.outgoingCommand?.state = .waitingForChallenge
-        case .awaitingChallengeAck:
-            return
         case .waitingForChallenge:
             return
         case .issuingCommand:
             self.outgoingCommand?.state = .awaitingChallengeAck
+        case .awaitingChallengeAck:
+            return
+        case .awaitingDeviceAck:
+            return
         }
     }
 
@@ -185,7 +199,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         return [UInt8](signedData)
     }
 
-    private func handleAck(_ data: Data) -> Result<Void, DefaultCommandProtocolError> {
+    private func handleChallengeAck(_ data: Data) -> Result<Void, DefaultCommandProtocolError> {
         guard let incomingChallengeAck = IncomingChallengeAck(data: data) else {
             return .failure(DefaultCommandProtocolError.malformedData)
         }
@@ -200,5 +214,9 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         response.append(type)
         response.append(contentsOf: message)
         transportProtocol.send(Data(bytes: response, count: response.count))
+    }
+
+    private func handleDeviceAck(_ result: Data) -> Result<Bool, Error> {
+        return deviceToAppMessageTransformer.transform(result)
     }
 }
