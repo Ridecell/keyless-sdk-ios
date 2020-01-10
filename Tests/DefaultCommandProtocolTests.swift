@@ -80,11 +80,56 @@ class DefaultCommandProtocolTests: XCTestCase {
         
         sut.protocolDidSend(transportProtocol)
         let ack: [UInt8] = [0x81, 0x00]
-        
         sut.protocol(transportProtocol, didReceive: Data(bytes: ack, count: ack.count))
+        
+        guard let deviceAck = deviceToAppMessage(success: true) else {
+            XCTFail()
+            return
+        }
+        sut.protocol(transportProtocol, didReceive: deviceAck)
+        
         XCTAssertTrue(delegate.didSucceedCalled)
         XCTAssertTrue(delegate.didSucceedData != nil)
-        XCTAssertTrue([UInt8](delegate.didSucceedData!)[0] == 129)
+        XCTAssertTrue(delegate.didSucceedData == deviceAck)
+    }
+    
+    func testSendingCommandDeviceAckFailure() {
+        openAndSend()
+        XCTAssertTrue(transportProtocol.sendCalled)
+        XCTAssertTrue(transportProtocol.sentData != nil)
+        XCTAssertTrue([UInt8](transportProtocol.sentData!) == [0x00, 0x01, 0x00])
+        sut.protocolDidSend(transportProtocol)
+        let randomBytes = byteGenerator.generate(32)
+        var challenge: [UInt8] = [0x01, 0x01, 0x00]
+        challenge.append(contentsOf: randomBytes)
+        sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
+        
+        sut.protocolDidSend(transportProtocol)
+        let ack: [UInt8] = [0x81, 0x00]
+        sut.protocol(transportProtocol, didReceive: Data(bytes: ack, count: ack.count))
+        
+        guard let deviceAck = deviceToAppMessage(success: false) else {
+            XCTFail()
+            return
+        }
+        sut.protocol(transportProtocol, didReceive: deviceAck)
+        
+        XCTAssertFalse(delegate.didSucceedCalled)
+        XCTAssertTrue(delegate.didSucceedData == nil)
+    }
+    
+    private func deviceToAppMessage(success: Bool) -> Data? {
+        let deviceToAppMessage = DeviceToAppMessage.with { populator in
+            let resultMessage = ResultMessage.with { populator in
+                populator.success = success
+            }
+            populator.message = DeviceToAppMessage.OneOf_Message.result(resultMessage)
+        }
+        do {
+            return try deviceToAppMessage.serializedData()
+        } catch {
+            return nil
+        }
     }
     
     func testCommandFailsIfSigningFails() {
