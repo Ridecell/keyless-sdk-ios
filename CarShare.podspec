@@ -2,16 +2,16 @@
 
 Pod::Spec.new do |s|
   s.name = 'CarShare'
-  s.version = '0.0.8-preview1'
+  s.version = '0.0.8-preview2'
   s.summary = 'An iOS framework for car share clients.'
   s.description = <<~DESC
     An iOS framework that communicates with Geotab Go9 devices for car share clients.
   DESC
-  s.homepage = 'https://https://github.com/FleetCarma/carshare-sdk-ios'
+  s.homepage = 'https://github.com/Geotab/carshare-sdk-ios'
   s.license = { type: 'MIT', file: 'LICENSE' }
   s.author = { 'msnow-bsm' => 'matt.snow@bsmtechnologies.com' }
   s.source = {
-    git: 'https://github.com/FleetCarma/carshare-sdk-ios.git',
+    git: 'https://github.com/Geotab/carshare-sdk-ios.git',
     tag: "v#{s.version}"
   }
 
