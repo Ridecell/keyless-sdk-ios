@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name = 'CarShare'
-  s.version = '0.0.8-preview2'
+  s.version = '0.0.8'
   s.summary = 'An iOS framework for car share clients.'
   s.description = <<~DESC
     An iOS framework that communicates with Geotab Go9 devices for car share clients.
