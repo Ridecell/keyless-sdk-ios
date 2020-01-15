@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.license = { type: 'MIT', file: 'LICENSE' }
   s.author = { 'msnow-bsm' => 'matt.snow@bsmtechnologies.com' }
   s.source = {
-    git: 'https://github.com/Geotab/carshare-sdk-ios.git',
+    git: 'git@github.com:Geotab/carshare-sdk-ios.git',
     tag: "v#{s.version}"
   }
 
