@@ -21,7 +21,7 @@ CarShare is available through [CocoaPods](https://cocoapods.org). To install it,
 
 ```ruby
 
-source 'http://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-podspec.git'
+source 'git@github.com:Geotab/carshare-sdk-podspec.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 # add the pod to your target
@@ -33,6 +33,13 @@ pod 'CarShare'
 [SDK Diagrams](CarShare/Classes/README.md)
 
 ## Usage
+
+Add a usage description to your Info.plist for the following keys as Bluetooth is required in order for the SDK to operate:
+```swift
+Privacy - Bluetooth Peripheral Usage Description
+Privacy - Bluetooth Always Usage Description
+```
+
 
 The **CarShareClient** class is initialized with default parameters that are already provided by the SDK.
 The **CarShareClient** class provides a set of functions that can be used to interact with a CarShare device via Bluetooth. The **CarShareClient** provides feedback to the integrator via the delegate. Therefore, in order to be notified on the status of the execution of a command or the connection attempt, the **CarShareClientDelegate** must be implemented.
