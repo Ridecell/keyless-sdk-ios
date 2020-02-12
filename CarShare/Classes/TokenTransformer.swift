@@ -13,13 +13,23 @@ protocol TokenTransformer {
 
 class DefaultCarShareTokenTransformer: TokenTransformer {
 
-    enum TokenTransformerError: Error {
+    enum TokenTransformerError: Swift.Error, CustomStringConvertible {
         case tokenDecodingFailed
+        case base64DecodingFailed
+
+        var description: String {
+            switch self {
+            case .tokenDecodingFailed:
+                return "Failed to decode Car Share token protobuf data."
+            case .base64DecodingFailed:
+                return "Failed to base64decode the CarShare token."
+            }
+        }
     }
 
     func transform(_ token: String) throws -> CarShareTokenInfo {
         guard let decodedData = Data(base64Encoded: token) else {
-            throw TokenTransformerError.tokenDecodingFailed
+            throw TokenTransformerError.base64DecodingFailed
         }
         do {
             let token = try CarshareToken(serializedData: decodedData)

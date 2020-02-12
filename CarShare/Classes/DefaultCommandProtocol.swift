@@ -9,9 +9,18 @@ import Foundation
 
 class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
 
-    enum DefaultCommandProtocolError: Swift.Error {
+    enum DefaultCommandProtocolError: Swift.Error, CustomStringConvertible {
         case ackError
         case malformedData
+
+        var description: String {
+            switch self {
+            case .ackError:
+                return "Challenge Failed"
+            case .malformedData:
+                return "Malformed Data"
+            }
+        }
     }
 
     private enum CommandState {

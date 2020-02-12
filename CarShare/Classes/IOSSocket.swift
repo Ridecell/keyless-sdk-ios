@@ -10,10 +10,24 @@ import Foundation
 
 class IOSSocket: NSObject, Socket {
 
-    enum IOSSocketError: Error {
+    enum IOSSocketError: Swift.Error, CustomStringConvertible {
+        case bluetoothOff
         case notConnected
         case noData
         case badResponse
+
+        var description: String {
+            switch self {
+            case .bluetoothOff:
+                return "Bluetooth is turned off."
+            case .notConnected:
+                return "Not Connected."
+            case .noData:
+                return "No Data"
+            case .badResponse:
+                return "Bad Response"
+            }
+        }
     }
 
     private enum State {
@@ -87,12 +101,10 @@ class IOSSocket: NSObject, Socket {
 
 extension IOSSocket: CBPeripheralManagerDelegate {
 
-    struct BluetoothOffError: Swift.Error {}
-
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
 
         if peripheral.state == .poweredOff {
-            delegate?.socketDidCloseUnexpectedly(self, error: BluetoothOffError())
+            delegate?.socketDidCloseUnexpectedly(self, error: IOSSocketError.bluetoothOff)
         }
         guard peripheral.state == .poweredOn else {
             return
