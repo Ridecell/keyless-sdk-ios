@@ -112,11 +112,24 @@ private struct IncomingExtendedAppDataMessage {
 
 class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
-    enum DefaultTransportProtocolError: Error {
+    enum DefaultTransportProtocolError: Error, CustomStringConvertible {
         case invalidHandshake
         case malformedData
         case notConnected
         case binaryDataAckFailed
+
+        var description: String {
+            switch self {
+            case .invalidHandshake:
+                return "Invalid Handshake."
+            case .malformedData:
+                return "Malformed Data."
+            case .notConnected:
+                return "Not Connected"
+            case .binaryDataAckFailed:
+                return "Binary Data Ack Failed"
+            }
+        }
     }
 
     private enum ConnectionState {
