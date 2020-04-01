@@ -18,13 +18,26 @@ public enum Command {
     case checkIn
     case checkOut
     case lock
-    case locate
     case unlockAll
+    case locate
 }
 
-public struct Message {
-    let command: Command
-    let carShareTokenInfo: CarShareTokenInfo
+public enum CarOperation {
+    case checkIn
+    case checkOut
+    case lock
+    case unlockAll
+    case unlockDriver
+    case locate
+    case mobilize
+    case immobilize
+    case openTrunk
+    case closeTrunk
+}
+
+protocol MessageStrategy {
+    func didFail(_ carShareClient: CarShareClient, error: Swift.Error)
+    func didSucceed(_ carShareClient: CarShareClient)
 }
 
 protocol Socket: AnyObject {
@@ -68,14 +81,28 @@ protocol CommandProtocol: AnyObject {
 
     func open(_ configuration: BLeSocketConfiguration)
     func close()
-    func send(_ command: Message)
+    func send(_ command: OutgoingCommand)
+}
+
+struct OutgoingCommand {
+    let deviceCommandMessage: Data
+    let carShareTokenInfo: CarShareTokenInfo
+    var state: CommandState
+}
+
+enum CommandState {
+    case requestingToSendMessage
+    case waitingForChallenge
+    case issuingCommand
+    case awaitingChallengeAck
+    case awaitingDeviceAck
 }
 
 protocol CommandProtocolDelegate: AnyObject {
     func protocolDidOpen(_ protocol: CommandProtocol)
     func protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error)
-    func `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data)
-    func `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error)
+    func `protocol`(_ protocol: CommandProtocol, didSucceed response: Data)
+    func `protocol`(_ protocol: CommandProtocol, didFail error: Error)
 }
 
 public protocol CarShareClientDelegate: AnyObject {
@@ -116,6 +143,25 @@ public protocol CarShareClientDelegate: AnyObject {
      */
 
     func clientCommandDidFail(_ client: CarShareClient, command: Command, error: Error)
+
+    /**
+     This is the delegate callback that is called once a `execute(_ operations: Set<CarOperation>, with carShareToken: String)' call has succeeded.
+     
+     - Parameter client: The CarShareClient instance that called the method.
+     - Parameter operations: The set of operations that succeeded.
+     */
+
+    func clientOperationsDidSucceed(_ client: CarShareClient, operations: Set<CarOperation>)
+
+    /**
+     This is the delegate callback that is called if a `execute(_ operations: Set<CarOperation>, with carShareToken: String)' call has failed.
+     
+     - Parameter client: The CarShareClient instance that called the method.
+     - Parameter operations: The set of operations that failed.
+     - Parameter error: The error that caused the failure.
+     */
+
+    func clientOperationsDidFail(_ client: CarShareClient, operations: Set<CarOperation>, error: Error)
 }
 
 public protocol Verifier: AnyObject {

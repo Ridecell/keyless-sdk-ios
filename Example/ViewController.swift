@@ -82,5 +82,19 @@ class ViewController: UIViewController, CarShareClientDelegate {
         print("Command: \(String(describing: command.self))  Failed with error: \(error)")
     }
 
+    func clientOperationsDidSucceed(_ client: CarShareClient, operations: Set<CarOperation>) {
+        let alert = UIAlertController(title: String(describing: operations), message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        print("Command Succeded: \(String(describing: operations))")
+    }
+
+    func clientOperationsDidFail(_ client: CarShareClient, operations: Set<CarOperation>, error: Error) {
+        let alert = UIAlertController(title: "\(String(describing: operations)) failed", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        print("Command: \(String(describing: operations))  Failed with error: \(error)")
+    }
+
 }
 
