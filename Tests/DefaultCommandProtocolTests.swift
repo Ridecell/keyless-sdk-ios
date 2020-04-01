@@ -12,7 +12,6 @@ import XCTest
 class DefaultCommandProtocolTests: XCTestCase {
     
     var sut: DefaultCommandProtocol!
-    var deviceCommandTransformer: FakeDeviceCommandTransformer!
     var challengeSigner: FakeChallengeSigner!
     var transportProtocol: FakeTransportProtocol!
     var delegate: CommandDelegate!
@@ -20,16 +19,13 @@ class DefaultCommandProtocolTests: XCTestCase {
 
     override func setUp() {
         let transportProtocol = FakeTransportProtocol()
-        let deviceCommandTransformer = FakeDeviceCommandTransformer()
         let challengeSigner = FakeChallengeSigner()
         byteGenerator = DefaultByteGenerator()
         let defaultCommandProtocol = DefaultCommandProtocol(transportProtocol: transportProtocol,
-                                                            deviceCommandTransformer: deviceCommandTransformer,
                                                             challengeSigner: challengeSigner)
         let delegate = CommandDelegate()
         defaultCommandProtocol.delegate = delegate
         self.sut = defaultCommandProtocol
-        self.deviceCommandTransformer = deviceCommandTransformer
         self.challengeSigner = challengeSigner
         self.transportProtocol = transportProtocol
         self.delegate = delegate
@@ -37,7 +33,6 @@ class DefaultCommandProtocolTests: XCTestCase {
 
     override func tearDown() {
         self.sut = nil
-        self.deviceCommandTransformer = nil
         self.challengeSigner = nil
         self.transportProtocol = nil
         self.byteGenerator = nil
@@ -49,6 +44,7 @@ class DefaultCommandProtocolTests: XCTestCase {
                                             notifyCharacteristicID: "NOTIFY_ID",
                                             writeCharacteristicID: "WRITE_ID")
         sut.open(config)
+        
         XCTAssertTrue(transportProtocol.openCalled)
         sut.protocolDidOpen(transportProtocol)
         XCTAssertTrue(delegate.didOpenCalled)
@@ -57,14 +53,6 @@ class DefaultCommandProtocolTests: XCTestCase {
     func testClosingTransportProtocol() {
         sut.close()
         XCTAssertTrue(transportProtocol.closeCalled)
-    }
-    
-    func testSendFailsIfCommandTransformFails() {
-        deviceCommandTransformer.stubbedTransformSuccess = false
-        openAndSend()
-        XCTAssertTrue(deviceCommandTransformer.transformCalled)
-        XCTAssertFalse(transportProtocol.sendCalled)
-        XCTAssertTrue(transportProtocol.sentData == nil)
     }
     
     func testSendingCommandSuccess() {
@@ -163,10 +151,10 @@ class DefaultCommandProtocolTests: XCTestCase {
     
     func testSendingCommandFailsOnTwoSends() {
         let carShareTokenInfo = getCarShareTokenInfo()
-        let message = Message(command: .checkIn, carShareTokenInfo: carShareTokenInfo)
-        sut.send(message)
+        let outgoingCommand = OutgoingCommand(deviceCommandMessage: Data(bytes: [0x00], count: 1), carShareTokenInfo: carShareTokenInfo, state: .requestingToSendMessage)
+        sut.send(outgoingCommand)
         transportProtocol.sendCalled = false
-        sut.send(message)
+        sut.send(outgoingCommand)
         XCTAssert(transportProtocol.sendCalled == false)
     }
     
@@ -273,8 +261,8 @@ class DefaultCommandProtocolTests: XCTestCase {
                                             writeCharacteristicID: "WRITE_ID")
         sut.open(config)
         let carShareTokenInfo = getCarShareTokenInfo()
-        let message = Message(command: .checkIn, carShareTokenInfo: carShareTokenInfo)
-        sut.send(message)
+        let outgoingCommand = OutgoingCommand(deviceCommandMessage: Data(bytes: [0x00], count: 1), carShareTokenInfo: carShareTokenInfo, state: .requestingToSendMessage)
+        sut.send(outgoingCommand)
     }
     
     private struct TestError: Swift.Error{}
@@ -333,7 +321,7 @@ extension DefaultCommandProtocolTests {
     }
     
     class CommandDelegate: CommandProtocolDelegate {
-        
+
         var didOpenCalled: Bool = false
         func protocolDidOpen(_ protocol: CommandProtocol) {
             didOpenCalled = true
@@ -343,27 +331,17 @@ extension DefaultCommandProtocolTests {
         func protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error) {
             didCloseUnexpectedlyCalled = true
         }
-        
+
         var didSucceedCalled: Bool = false
         var didSucceedData: Data? = nil
-        func `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) {
+        func `protocol`(_ protocol: CommandProtocol, didSucceed response: Data) {
             didSucceedCalled = true
             didSucceedData = response
         }
-        
+
         var didFailCalled: Bool = false
-        func `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error) {
+        func `protocol`(_ protocol: CommandProtocol, didFail error: Error) {
             didFailCalled = true
-        }
-    }
-    
-    class FakeDeviceCommandTransformer: DeviceCommandTransformer {
-        
-        var transformCalled: Bool = false
-        var stubbedTransformSuccess: Bool = true
-        func transform(_ command: Command) -> Data? {
-            transformCalled = true
-            return stubbedTransformSuccess ? Data(repeating: 0x01, count: 1) : nil
         }
     }
 }

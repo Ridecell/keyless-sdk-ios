@@ -23,21 +23,6 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         }
     }
 
-    private enum CommandState {
-        case requestingToSendMessage
-        case waitingForChallenge
-        case issuingCommand
-        case awaitingChallengeAck
-        case awaitingDeviceAck
-    }
-
-    private struct OutgoingCommand {
-        let command: Command
-        let deviceCommandMessage: Data
-        let carShareTokenInfo: CarShareTokenInfo
-        var state: CommandState
-    }
-
     private enum ChallengeResponseValues {
         static let messageRequestType: UInt8 = 0x00
         static let messageRequestProtocolVersion: [UInt8] = [0x01, 0x00]
@@ -52,18 +37,15 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
     private var outgoingCommand: OutgoingCommand?
 
     private let transportProtocol: TransportProtocol
-    private let deviceCommandTransformer: DeviceCommandTransformer
     private let deviceToAppMessageTransformer: DeviceToAppMessageTransformer
     private let challengeSigner: ChallengeSigner
 
     weak var delegate: CommandProtocolDelegate?
 
     init(transportProtocol: TransportProtocol = DefaultTransportProtocol(),
-         deviceCommandTransformer: DeviceCommandTransformer = ProtobufDeviceCommandTransformer(),
          deviceToAppMessageTransformer: DeviceToAppMessageTransformer = ProtobufDeviceToAppMessageTransformer(),
          challengeSigner: ChallengeSigner = DefaultChallengeSigner()) {
         self.transportProtocol = transportProtocol
-        self.deviceCommandTransformer = deviceCommandTransformer
         self.deviceToAppMessageTransformer = deviceToAppMessageTransformer
         self.challengeSigner = challengeSigner
     }
@@ -79,14 +61,11 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         transportProtocol.close()
     }
 
-    func send(_ message: Message) {
+    func send(_ command: OutgoingCommand) {
         guard outgoingCommand == nil else {
             return
         }
-        guard let commandProto = deviceCommandTransformer.transform(message.command) else {
-            return
-        }
-        outgoingCommand = OutgoingCommand(command: message.command, deviceCommandMessage: commandProto, carShareTokenInfo: message.carShareTokenInfo, state: .requestingToSendMessage)
+        outgoingCommand = command
         transportProtocol.send(appToDeviceMessageRequest)
     }
 
@@ -110,15 +89,13 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
             return
         case .waitingForChallenge:
             guard let randomBytes = IncomingChallenge(data: data)?.randomBytes else {
-                delegate?.protocol(self,
-                                   command: outgoingCommand.command,
-                                   didFail: DefaultCommandProtocolError.malformedData)
+                delegate?.protocol(self, didFail: DefaultCommandProtocolError.malformedData)
                 self.outgoingCommand = nil
                 return
             }
 
             guard let securePayload = generateSecurePayload(randomBytes, outgoingCommand: outgoingCommand) else {
-                self.delegate?.protocol(self, command: outgoingCommand.command, didFail: DefaultCommandProtocolError.malformedData)
+                self.delegate?.protocol(self, didFail: DefaultCommandProtocolError.malformedData)
                 self.outgoingCommand = nil
                 return
             }
@@ -133,15 +110,15 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
                 self.outgoingCommand?.state = .awaitingDeviceAck
             case .failure(let error):
                 self.outgoingCommand = nil
-                delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+                delegate?.protocol(self, didFail: error)
             }
         case .awaitingDeviceAck:
             self.outgoingCommand = nil
             switch handleDeviceAck(data) {
             case .success:
-                delegate?.protocol(self, command: outgoingCommand.command, didSucceed: data)
+                delegate?.protocol(self, didSucceed: data)
             case .failure(let error):
-                delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+                delegate?.protocol(self, didFail: error)
             }
         }
     }
@@ -170,19 +147,19 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
     }
 
     func protocolDidFailToSend(_ protocol: TransportProtocol, error: Error) {
-        guard let outgoingCommand = outgoingCommand else {
+        guard outgoingCommand != nil else {
             return
         }
         self.outgoingCommand = nil
-        delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+        delegate?.protocol(self, didFail: error)
     }
 
     func protocolDidFailToReceive(_ protocol: TransportProtocol, error: Error) {
-        guard let outgoingCommand = outgoingCommand else {
+        guard outgoingCommand != nil else {
             return
         }
         self.outgoingCommand = nil
-        delegate?.protocol(self, command: outgoingCommand.command, didFail: error)
+        delegate?.protocol(self, didFail: error)
     }
 
     private func generateSecurePayload(_ randomBytes: [UInt8], outgoingCommand: OutgoingCommand) -> Data? {

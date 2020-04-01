@@ -14,17 +14,23 @@ class CarShareClientTests: XCTestCase {
     private var sut: CarShareClient!
     private var delegate: FakeCarShareClientDelegate!
     private var tokenTransformer: FakeTokenTransformer!
+    private var deviceCommandTransformer: FakeDeviceCommandTransformer!
     private var commandProtocol: FakeCommandProtocol!
 
     override func setUp() {
-        let tokenTransformer = FakeTokenTransformer()
+        
         let commandProtocol = FakeCommandProtocol()
+        let tokenTransformer = FakeTokenTransformer()
+        let deviceCommandTransformer = FakeDeviceCommandTransformer()
         let delegate = FakeCarShareClientDelegate()
-        let client = CarShareClient(commandProtocol: commandProtocol, tokenTransformer: tokenTransformer)
+        let client = CarShareClient(commandProtocol: commandProtocol,
+                                    tokenTransformer: tokenTransformer,
+                                    deviceCommandTransformer: deviceCommandTransformer)
         client.delegate = delegate
         self.sut = client
         self.delegate = delegate
         self.tokenTransformer = tokenTransformer
+        self.deviceCommandTransformer = deviceCommandTransformer
         self.commandProtocol = commandProtocol
     }
 
@@ -32,6 +38,7 @@ class CarShareClientTests: XCTestCase {
         self.sut = nil
         self.delegate = nil
         self.tokenTransformer = nil
+        self.deviceCommandTransformer = nil
         self.commandProtocol = nil
     }
     
@@ -67,10 +74,20 @@ class CarShareClientTests: XCTestCase {
         let validToken = "VALID_TOKEN"
         try? sut.execute(.checkIn, with: validToken)
         let bytes: [UInt8] = [0x01]
-        sut.protocol(commandProtocol, command: .checkIn, didSucceed: Data(bytes: bytes, count: bytes.count))
+        sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
         
         XCTAssertTrue(delegate.commandDidSucceedCalled)
         XCTAssertEqual(delegate.successfulCommand, Command.checkIn)
+    }
+    
+    func testSuccessfulOperationsPropagates() {
+        let validToken = "VALID_TOKEN"
+        try? sut.execute([.checkIn], with: validToken)
+        let bytes: [UInt8] = [0x01]
+        sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
+        
+        XCTAssertTrue(delegate.operationsDidSucceedCalled)
+        XCTAssertEqual(delegate.successfulOperations, [CarOperation.checkIn])
     }
     
     func testConnectFailsWithInvalidToken() {
@@ -79,20 +96,41 @@ class CarShareClientTests: XCTestCase {
         try? sut.connect(invalidToken)
         XCTAssertFalse(commandProtocol.openCalled)
     }
-    
-    func testExecuteFailsWithInvalidToken() {
+
+    func testExecuteCommandFailsWithInvalidToken() {
         
         let invalidToken = "INVALID_TOKEN"
         try? sut.execute(.checkIn, with: invalidToken)
         XCTAssertFalse(commandProtocol.sendCalled)
     }
+
+    func testExecuteOperationFailsWithInvalidToken() {
+        
+        let invalidToken = "INVALID_TOKEN"
+        try? sut.execute([.checkIn], with: invalidToken)
+        XCTAssertFalse(commandProtocol.sendCalled)
+    }
     
+    func testExecuteCommandFailsIfCommandTransformFails() {
+        let validToken = "VALID_TOKEN"
+        deviceCommandTransformer.stubbedTransformSuccess = false
+        try? sut.execute(.checkIn, with: validToken)
+        XCTAssertFalse(commandProtocol.sendCalled)
+    }
+    
+    func testExecuteOperationsFailsIfCommandTransformFails() {
+        let validToken = "VALID_TOKEN"
+        deviceCommandTransformer.stubbedTransformSuccess = false
+        try? sut.execute([.checkIn], with: validToken)
+        XCTAssertFalse(commandProtocol.sendCalled)
+    }
+
     func testDidSucceedFailsIfDisconnected() {
         let validToken = "VALID_TOKEN"
         try? sut.connect(validToken)
         let bytes: [UInt8] = [0x01]
         sut.disconnect()
-        sut.protocol(commandProtocol, command: .locate, didSucceed: Data(bytes: bytes, count: bytes.count))
+        sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
         XCTAssertFalse(delegate.commandDidSucceedCalled)
     }
     
@@ -100,17 +138,26 @@ class CarShareClientTests: XCTestCase {
         let validToken = "VALID_TOKEN"
         try? sut.connect(validToken)
         sut.disconnect()
-        sut.protocol(commandProtocol, command: .checkIn, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
+        sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         XCTAssertFalse(delegate.commandDidFail)
     }
     
     func testUnsuccessfulCommandPropagates() {
         let validToken = "VALID_TOKEN"
         try? sut.execute(.checkIn, with: validToken)
-        sut.protocol(commandProtocol, command: .checkIn, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
+        sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         
         XCTAssertTrue(delegate.commandDidFail)
         XCTAssertEqual(delegate.failedCommand, Command.checkIn)
+    }
+    
+    func testUnsuccessfulOperationsPropagates() {
+        let validToken = "VALID_TOKEN"
+        try? sut.execute([.checkIn], with: validToken)
+        sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
+        
+        XCTAssertTrue(delegate.operationsDidFail)
+        XCTAssertEqual(delegate.failedOperations, [CarOperation.checkIn])
     }
     
     func testUnexpectedDisconnectPropagatesError() {
@@ -161,6 +208,35 @@ extension CarShareClientTests {
         
     }
     
+    private struct TestError: Swift.Error{}
+    
+    class FakeDeviceCommandTransformer: DeviceCommandTransformer {
+        
+        
+        
+        var transformCalled: Bool = false
+        var stubbedTransformSuccess: Bool = true
+        func transform(_ command: Command) throws -> Data {
+            transformCalled = true
+            if stubbedTransformSuccess {
+                return Data(repeating: 0x01, count: 1)
+            } else {
+               throw TestError()
+            }
+        }
+        
+        func transform(_ operations: Set<CarOperation>) throws -> Data {
+            transformCalled = true
+            if stubbedTransformSuccess {
+                return Data(repeating: 0x01, count: 1)
+            } else {
+               throw TestError()
+            }
+        }
+        
+        
+    }
+    
     class FakeCommandProtocol: CommandProtocol {
         
         var delegate: CommandProtocolDelegate?
@@ -178,7 +254,7 @@ extension CarShareClientTests {
         }
         
         var sendCalled: Bool = false
-        func send(_ command: Message) {
+        func send(_ command: OutgoingCommand) {
             sendCalled = true
         }
         
@@ -186,7 +262,7 @@ extension CarShareClientTests {
     }
     
     class FakeCarShareClientDelegate: CarShareClientDelegate {
-        
+
         var didConnectCalled: Bool = false
         func clientDidConnect(_ client: CarShareClient) {
             didConnectCalled = true
@@ -210,8 +286,20 @@ extension CarShareClientTests {
             commandDidFail = true
             failedCommand = command
         }
+
+        var operationsDidSucceedCalled: Bool = false
+        var successfulOperations: Set<CarOperation> = [.locate, .lock]
+        func clientOperationsDidSucceed(_ client: CarShareClient, operations: Set<CarOperation>) {
+            operationsDidSucceedCalled = true
+            successfulOperations = operations
+        }
         
-        
+        var operationsDidFail: Bool = false
+        var failedOperations: Set<CarOperation> = [.locate, .lock]
+        func clientOperationsDidFail(_ client: CarShareClient, operations: Set<CarOperation>, error: Error) {
+            operationsDidFail = true
+            failedOperations = operations
+        }
     }
     
 }

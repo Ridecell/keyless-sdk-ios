@@ -34,8 +34,9 @@ public class CarShareClient: CommandProtocolDelegate {
 
     private let commandProtocol: CommandProtocol
     private let tokenTransformer: TokenTransformer
+    private let deviceCommandTransformer: DeviceCommandTransformer
 
-    private var outgoingMessage: Message?
+    private var outgoingMessage: MessageStrategy?
 
     public weak var delegate: CarShareClientDelegate?
 
@@ -46,12 +47,13 @@ public class CarShareClient: CommandProtocolDelegate {
      */
 
     public convenience init() {
-        self.init(commandProtocol: DefaultCommandProtocol(), tokenTransformer: DefaultCarShareTokenTransformer())
+        self.init(commandProtocol: DefaultCommandProtocol(), tokenTransformer: DefaultCarShareTokenTransformer(), deviceCommandTransformer: ProtobufDeviceCommandTransformer())
     }
 
-    init(commandProtocol: CommandProtocol, tokenTransformer: TokenTransformer) {
+    init(commandProtocol: CommandProtocol, tokenTransformer: TokenTransformer, deviceCommandTransformer: DeviceCommandTransformer) {
         self.commandProtocol = commandProtocol
         self.tokenTransformer = tokenTransformer
+        self.deviceCommandTransformer = deviceCommandTransformer
     }
 
     /**
@@ -123,13 +125,52 @@ public class CarShareClient: CommandProtocolDelegate {
      ````
      */
 
+    @available(*, deprecated, message: "This function will be removed in the next release. Use execute(_ operations: Set<CarOperation>, with carShareToken: String) instead.")
     public func execute(_ command: Command, with carShareToken: String) throws {
         do {
             let tokenData = try tokenTransformer.transform(carShareToken)
-            //remove message and pass down two params
-            let message = Message(command: command, carShareTokenInfo: tokenData)
+            let commandProto = try deviceCommandTransformer.transform(command)
+            outgoingMessage = CommandMessageStrategy(command: command)
+            commandProtocol.send(OutgoingCommand(deviceCommandMessage: commandProto,
+                                                 carShareTokenInfo: tokenData,
+                                                 state: .requestingToSendMessage))
+        } catch {
+            print("Failed to decode reservation token")
+            throw error
+        }
+    }
+
+    /**
+     With a connection established to the carshare device, commands can be executed with the
+     command set passed in and a valid carShareToken. The execution of the command will result in
+     either the CarShareClientDelegate method
+     `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) or
+     `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error) being called.
+
+     - Parameter [commands]: Executable commands.
+     - Parameter carShareToken: A valid, signed, reservation.
+     
+     - Throws: `TokenTransformerError.tokenDecodingFailed` if decoding carShareToken fails
+     
+     ### Usage Example: ###
+     ````
+     do {
+        try client.execute([.unlock, .mobilize, .locate], with: "CiQwNTc0NTgzQi0wRDh...")
+     } catch {
+        print(error)
+     }
+     ````
+     */
+
+    public func execute(_ operations: Set<CarOperation>, with carShareToken: String) throws {
+        do {
+            let tokenData = try tokenTransformer.transform(carShareToken)
+            let commandProto = try deviceCommandTransformer.transform(operations)
+            let message = OperationMessageStrategy(operations: operations)
             outgoingMessage = message
-            commandProtocol.send(message)
+            commandProtocol.send(OutgoingCommand(deviceCommandMessage: commandProto,
+                                                 carShareTokenInfo: tokenData,
+                                                 state: .requestingToSendMessage))
         } catch {
             print("Failed to decode reservation token")
             throw error
@@ -145,20 +186,20 @@ public class CarShareClient: CommandProtocolDelegate {
         disconnect()
     }
 
-    func `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) {
-        guard outgoingMessage != nil else {
+    func `protocol`(_ protocol: CommandProtocol, didSucceed response: Data) {
+        guard let outgoingMessage = outgoingMessage else {
             return
         }
-        outgoingMessage = nil
-        delegate?.clientCommandDidSucceed(self, command: command)
+        self.outgoingMessage = nil
+        outgoingMessage.didSucceed(self)
     }
 
-    func `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error) {
-         guard outgoingMessage != nil else {
+    func `protocol`(_ protocol: CommandProtocol, didFail error: Error) {
+        guard let outgoingMessage = outgoingMessage else {
             return
         }
-        outgoingMessage = nil
-        delegate?.clientCommandDidFail(self, command: command, error: error)
+        self.outgoingMessage = nil
+        outgoingMessage.didFail(self, error: error)
     }
 
     private func generateConfig(bleServiceUUID: String) -> BLeSocketConfiguration {
@@ -166,5 +207,32 @@ public class CarShareClient: CommandProtocolDelegate {
             serviceID: bleServiceUUID,
             notifyCharacteristicID: "430F2EA3-C765-4051-9134-A341254CFD00",
             writeCharacteristicID: "906EE7E0-D8DB-44F3-AF54-6B0DFCECDF1C")
+    }
+}
+
+extension CarShareClient {
+    struct CommandMessageStrategy: MessageStrategy {
+
+        let command: Command
+
+        func didFail(_ carShareClient: CarShareClient, error: Swift.Error) {
+            carShareClient.delegate?.clientCommandDidFail(carShareClient, command: command, error: error)
+        }
+
+        func didSucceed(_ carShareClient: CarShareClient) {
+            carShareClient.delegate?.clientCommandDidSucceed(carShareClient, command: command)
+        }
+    }
+
+    struct OperationMessageStrategy: MessageStrategy {
+
+        let operations: Set<CarOperation>
+
+        func didFail(_ carShareClient: CarShareClient, error: Swift.Error) {
+            carShareClient.delegate?.clientOperationsDidFail(carShareClient, operations: operations, error: error)
+        }
+        func didSucceed(_ carShareClient: CarShareClient) {
+            carShareClient.delegate?.clientOperationsDidSucceed(carShareClient, operations: operations)
+        }
     }
 }
