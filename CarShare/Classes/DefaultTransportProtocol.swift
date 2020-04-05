@@ -156,7 +156,11 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
 
     weak var delegate: TransportProtocolDelegate?
 
-    init(executer: AsyncExecuter = MainExecuter(), socket: Socket = IOSSocket(peripheral: CBPeripheralManager(delegate: nil, queue: nil))) {
+    convenience init(logger: Logger) {
+        self.init(executer: MainExecuter(), socket: PeripheralManagerSocket(logger: logger))
+    }
+
+    init(executer: AsyncExecuter, socket: Socket) {
         self.executer = executer
         self.socket = socket
     }

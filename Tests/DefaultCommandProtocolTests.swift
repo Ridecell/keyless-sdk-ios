@@ -21,8 +21,10 @@ class DefaultCommandProtocolTests: XCTestCase {
         let transportProtocol = FakeTransportProtocol()
         let challengeSigner = FakeChallengeSigner()
         byteGenerator = DefaultByteGenerator()
-        let defaultCommandProtocol = DefaultCommandProtocol(transportProtocol: transportProtocol,
-                                                            challengeSigner: challengeSigner)
+        let defaultCommandProtocol = DefaultCommandProtocol(
+            transportProtocol: transportProtocol,
+            deviceToAppMessageTransformer: ProtobufDeviceToAppMessageTransformer(),
+            challengeSigner: challengeSigner)
         let delegate = CommandDelegate()
         defaultCommandProtocol.delegate = delegate
         self.sut = defaultCommandProtocol

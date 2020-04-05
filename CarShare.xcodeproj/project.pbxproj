@@ -18,7 +18,7 @@
 		BB4159002378AD710075350F /* IncomingChallengeAckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4158FF2378AD710075350F /* IncomingChallengeAckTests.swift */; };
 		BB4159022378B2EC0075350F /* IncomingChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4159012378B2EC0075350F /* IncomingChallengeTests.swift */; };
 		BB4159042378D9670075350F /* TokenTransformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4159032378D9670075350F /* TokenTransformerTests.swift */; };
-		BB4159062379C7190075350F /* IOSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4159052379C7190075350F /* IOSocketTests.swift */; };
+		BB4159062379C7190075350F /* PeripheralManagerSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4159052379C7190075350F /* PeripheralManagerSocketTests.swift */; };
 		BB4E0A642375CB3600DFEC47 /* CarShareClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4E0A632375CB3600DFEC47 /* CarShareClientTests.swift */; };
 		BB501834236870C400AC2E4D /* DeviceCommandPayloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */; };
 		BB5CCA9B23735ED6006408AC /* DefaultCommandProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */; };
@@ -61,8 +61,7 @@
 		BB4158FF2378AD710075350F /* IncomingChallengeAckTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingChallengeAckTests.swift; sourceTree = "<group>"; };
 		BB4159012378B2EC0075350F /* IncomingChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingChallengeTests.swift; sourceTree = "<group>"; };
 		BB4159032378D9670075350F /* TokenTransformerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTransformerTests.swift; sourceTree = "<group>"; };
-		BB4159052379C7190075350F /* IOSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSocketTests.swift; sourceTree = "<group>"; };
-		BB4A6D282374A1E60064F8DC /* ByteGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteGenerator.swift; sourceTree = "<group>"; };
+		BB4159052379C7190075350F /* PeripheralManagerSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralManagerSocketTests.swift; sourceTree = "<group>"; };
 		BB4E0A632375CB3600DFEC47 /* CarShareClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarShareClientTests.swift; sourceTree = "<group>"; };
 		BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCommandPayloadTests.swift; sourceTree = "<group>"; };
 		BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCommandProtocolTests.swift; sourceTree = "<group>"; };
@@ -93,7 +92,6 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				BB4A6D282374A1E60064F8DC /* ByteGenerator.swift */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for CarShare */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -141,7 +139,7 @@
 				BB501833236870C400AC2E4D /* DeviceCommandPayloadTests.swift */,
 				BB4158FF2378AD710075350F /* IncomingChallengeAckTests.swift */,
 				BB4E0A632375CB3600DFEC47 /* CarShareClientTests.swift */,
-				BB4159052379C7190075350F /* IOSocketTests.swift */,
+				BB4159052379C7190075350F /* PeripheralManagerSocketTests.swift */,
 				BB7A81912395B750005B1E4B /* BinaryResponseDataTests.swift */,
 				BBB9D56D23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift */,
 				BB4159012378B2EC0075350F /* IncomingChallengeTests.swift */,
@@ -245,12 +243,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 8BZ74MLD32;
+						DevelopmentTeam = 9PE2444ZAR;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 7HJ579GXRU;
+						DevelopmentTeam = 9PE2444ZAR;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -398,7 +396,7 @@
 				BB4159022378B2EC0075350F /* IncomingChallengeTests.swift in Sources */,
 				1CEA14AD22D6877A00B1B7DB /* DefaultTransportProtocolTests.swift in Sources */,
 				BB4159002378AD710075350F /* IncomingChallengeAckTests.swift in Sources */,
-				BB4159062379C7190075350F /* IOSocketTests.swift in Sources */,
+				BB4159062379C7190075350F /* PeripheralManagerSocketTests.swift in Sources */,
 				BBB9D56E23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift in Sources */,
 				BB4E0A642375CB3600DFEC47 /* CarShareClientTests.swift in Sources */,
 				BB4159042378D9670075350F /* TokenTransformerTests.swift in Sources */,
@@ -550,7 +548,7 @@
 			baseConfigurationReference = 1483E7C6CB46CE2B016D54DC /* Pods-CarShare_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8BZ74MLD32;
+				DEVELOPMENT_TEAM = 9PE2444ZAR;
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -565,7 +563,7 @@
 			baseConfigurationReference = 04B4B884002743CBF8D8F335 /* Pods-CarShare_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8BZ74MLD32;
+				DEVELOPMENT_TEAM = 9PE2444ZAR;
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -579,7 +577,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 88733455025506464A85DF0B /* Pods-CarShare_Tests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 7HJ579GXRU;
+				DEVELOPMENT_TEAM = 9PE2444ZAR;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -601,7 +599,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 84F6E1E09708ADF6E8686692 /* Pods-CarShare_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 7HJ579GXRU;
+				DEVELOPMENT_TEAM = 9PE2444ZAR;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",

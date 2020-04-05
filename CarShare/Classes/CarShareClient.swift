@@ -46,8 +46,8 @@ public class CarShareClient: CommandProtocolDelegate {
      so there is no need to pass anything in.
      */
 
-    public convenience init() {
-        self.init(commandProtocol: DefaultCommandProtocol(), tokenTransformer: DefaultCarShareTokenTransformer(), deviceCommandTransformer: ProtobufDeviceCommandTransformer())
+    public convenience init(logger: Logger = NoopLogger()) {
+        self.init(commandProtocol: DefaultCommandProtocol(logger: logger), tokenTransformer: DefaultCarShareTokenTransformer(), deviceCommandTransformer: ProtobufDeviceCommandTransformer())
     }
 
     init(commandProtocol: CommandProtocol, tokenTransformer: TokenTransformer, deviceCommandTransformer: DeviceCommandTransformer) {
