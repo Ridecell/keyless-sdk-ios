@@ -1,9 +1,9 @@
 {
   "name": "CarShare",
-  "version": "0.0.6",
+  "version": "0.0.10",
   "summary": "An iOS framework for car share clients.",
   "description": "An iOS framework that communicates with Geotab Go9 devices for car share clients.",
-  "homepage": "https://gitlab.voffice.bsmtechnologies.com/bsm/illuminate/mobile/car-share-ios",
+  "homepage": "https://github.com/Geotab/carshare-sdk-ios",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,8 +12,8 @@
     "msnow-bsm": "matt.snow@bsmtechnologies.com"
   },
   "source": {
-    "git": "git@gitlab.voffice.bsmtechnologies.com:bsm/illuminate/mobile/car-share-ios.git",
-    "tag": "v0.0.6"
+    "git": "git@github.com:Geotab/carshare-sdk-ios.git",
+    "tag": "v0.0.10"
   },
   "platforms": {
     "ios": "11.0"

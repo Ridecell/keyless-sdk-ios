@@ -42,12 +42,17 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
 
     weak var delegate: CommandProtocolDelegate?
 
-    init(transportProtocol: TransportProtocol = DefaultTransportProtocol(),
-         deviceToAppMessageTransformer: DeviceToAppMessageTransformer = ProtobufDeviceToAppMessageTransformer(),
-         challengeSigner: ChallengeSigner = DefaultChallengeSigner()) {
+    init(transportProtocol: TransportProtocol, deviceToAppMessageTransformer: DeviceToAppMessageTransformer, challengeSigner: ChallengeSigner) {
         self.transportProtocol = transportProtocol
         self.deviceToAppMessageTransformer = deviceToAppMessageTransformer
         self.challengeSigner = challengeSigner
+    }
+
+    convenience init(logger: Logger) {
+        self.init(
+            transportProtocol: DefaultTransportProtocol(logger: logger),
+            deviceToAppMessageTransformer: ProtobufDeviceToAppMessageTransformer(),
+            challengeSigner: DefaultChallengeSigner())
     }
 
     func open(_ configuration: BLeSocketConfiguration) {
