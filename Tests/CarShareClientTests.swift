@@ -72,22 +72,26 @@ class CarShareClientTests: XCTestCase {
     
     func testSuccessfulCommandPropagates() {
         let validToken = "VALID_TOKEN"
+        connect(validToken)
         try? sut.execute(.checkIn, with: validToken)
         let bytes: [UInt8] = [0x01]
         sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
         
         XCTAssertTrue(delegate.commandDidSucceedCalled)
         XCTAssertEqual(delegate.successfulCommand, Command.checkIn)
+        XCTAssertTrue(sut.isConnected)
     }
     
     func testSuccessfulOperationsPropagates() {
         let validToken = "VALID_TOKEN"
+        connect(validToken)
         try? sut.execute([.checkIn], with: validToken)
         let bytes: [UInt8] = [0x01]
         sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
         
         XCTAssertTrue(delegate.operationsDidSucceedCalled)
         XCTAssertEqual(delegate.successfulOperations, [CarOperation.checkIn])
+        XCTAssertTrue(sut.isConnected)
     }
     
     func testConnectFailsWithInvalidToken() {
@@ -95,6 +99,7 @@ class CarShareClientTests: XCTestCase {
         let invalidToken = "INVALID_TOKEN"
         try? sut.connect(invalidToken)
         XCTAssertFalse(commandProtocol.openCalled)
+        XCTAssertFalse(sut.isConnected)
     }
 
     func testExecuteCommandFailsWithInvalidToken() {
@@ -132,18 +137,21 @@ class CarShareClientTests: XCTestCase {
         sut.disconnect()
         sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
         XCTAssertFalse(delegate.commandDidSucceedCalled)
+        XCTAssertFalse(sut.isConnected)
     }
     
-    func testDidFailsFailsIfDisconnected() {
+    func testDidFailFailsIfDisconnected() {
         let validToken = "VALID_TOKEN"
         try? sut.connect(validToken)
         sut.disconnect()
         sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         XCTAssertFalse(delegate.commandDidFail)
+        XCTAssertFalse(sut.isConnected)
     }
     
     func testUnsuccessfulCommandPropagates() {
         let validToken = "VALID_TOKEN"
+        connect(validToken)
         try? sut.execute(.checkIn, with: validToken)
         sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         
@@ -153,6 +161,7 @@ class CarShareClientTests: XCTestCase {
     
     func testUnsuccessfulOperationsPropagates() {
         let validToken = "VALID_TOKEN"
+        connect(validToken)
         try? sut.execute([.checkIn], with: validToken)
         sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         
@@ -161,21 +170,23 @@ class CarShareClientTests: XCTestCase {
     }
     
     func testUnexpectedDisconnectPropagatesError() {
-        connect()
+        let validToken = "VALID_TOKEN"
+        connect(validToken)
         sut.protocolDidCloseUnexpectedly(commandProtocol, error: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         XCTAssertTrue(delegate.didDisconnectUnexpectedlyCalled)
     }
     
     func testCloseConnection() {
-        connect()
+        let validToken = "VALID_TOKEN"
+        connect(validToken)
         sut.disconnect()
         XCTAssertTrue(commandProtocol.closeCalled)
+        XCTAssertFalse(sut.isConnected)
     }
 
-    private func connect() {
-        let carShareToken = "VALID_TOKEN"
+    private func connect(_ token: String) {
         do {
-            try sut.connect(carShareToken)
+            try sut.connect(token)
         } catch {
             XCTFail()
         }
