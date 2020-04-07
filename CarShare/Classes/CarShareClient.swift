@@ -23,6 +23,20 @@ import Foundation
 
 public class CarShareClient: CommandProtocolDelegate {
 
+    enum CarShareClientError: Swift.Error, CustomStringConvertible {
+        case notConnected
+        case alreadyConnected
+
+        var description: String {
+            switch self {
+            case .notConnected:
+                return "Please establish a connection with the GO9 prior to executing a command. This can be done by calling the connect() function"
+            case .alreadyConnected:
+                return "You are already connected"
+            }
+        }
+    }
+
     private struct CarShareToken {
         let bleServiceUuid: String
         let reservationPrivateKey: String
@@ -67,6 +81,7 @@ public class CarShareClient: CommandProtocolDelegate {
      - Parameter carShareToken: A valid, signed, reservation.
      
      - Throws: `TokenTransformerError.tokenDecodingFailed` if decoding carShareToken fails
+     - Throws: `CarShareClientError.alreadyConnected` if the connection has already been established
      
      ### Usage Example: ###
      ````
@@ -79,15 +94,16 @@ public class CarShareClient: CommandProtocolDelegate {
      */
 
     public func connect(_ carShareToken: String) throws {
-        do {
-            let carShareToken = try tokenTransformer.transform(carShareToken)
-            commandProtocol.delegate = self
-            commandProtocol.open(generateConfig(bleServiceUUID: carShareToken.bleServiceUuid))
-        } catch {
-            print("Failed to decode reservation token")
-            throw error
+        guard !isConnected else {
+            throw CarShareClientError.alreadyConnected
         }
+        let carShareToken = try tokenTransformer.transform(carShareToken)
+        commandProtocol.delegate = self
+        commandProtocol.open(generateConfig(bleServiceUUID: carShareToken.bleServiceUuid))
     }
+
+    /// can be queried to determine if the SDK considers itself connected to a GO9.
+    private(set) var isConnected: Bool = false
 
     /**
      Must be called to disconnect / cancel the Bluetooth connection between the SDK and the GO9 device.
@@ -100,6 +116,7 @@ public class CarShareClient: CommandProtocolDelegate {
 
     public func disconnect() {
         outgoingMessage = nil
+        isConnected = false
         commandProtocol.close()
     }
 
@@ -113,7 +130,9 @@ public class CarShareClient: CommandProtocolDelegate {
      - Parameter command: An executable command.
      - Parameter carShareToken: A valid, signed, reservation.
      
+     - Throws: `CarShareClientError.notConnected` if the connection has yet to be established
      - Throws: `TokenTransformerError.tokenDecodingFailed` if decoding carShareToken fails
+     - Throws: 'ProtobufDeviceCommandTransformerError.transformFailed(error: error)' if encoding fails
      
      ### Usage Example: ###
      ````
@@ -127,17 +146,15 @@ public class CarShareClient: CommandProtocolDelegate {
 
     @available(*, deprecated, message: "This function will be removed in the next release. Use execute(_ operations: Set<CarOperation>, with carShareToken: String) instead.")
     public func execute(_ command: Command, with carShareToken: String) throws {
-        do {
-            let tokenData = try tokenTransformer.transform(carShareToken)
-            let commandProto = try deviceCommandTransformer.transform(command)
-            outgoingMessage = CommandMessageStrategy(command: command)
-            commandProtocol.send(OutgoingCommand(deviceCommandMessage: commandProto,
-                                                 carShareTokenInfo: tokenData,
-                                                 state: .requestingToSendMessage))
-        } catch {
-            print("Failed to decode reservation token")
-            throw error
+        guard isConnected else {
+            throw CarShareClientError.notConnected
         }
+        let tokenData = try tokenTransformer.transform(carShareToken)
+        let commandProto = try deviceCommandTransformer.transform(command)
+        outgoingMessage = CommandMessageStrategy(command: command)
+        commandProtocol.send(OutgoingCommand(deviceCommandMessage: commandProto,
+                                             carShareTokenInfo: tokenData,
+                                             state: .requestingToSendMessage))
     }
 
     /**
@@ -150,7 +167,9 @@ public class CarShareClient: CommandProtocolDelegate {
      - Parameter [commands]: Executable commands.
      - Parameter carShareToken: A valid, signed, reservation.
      
+     - Throws: `CarShareClientError.notConnected` if the connection has yet to be established
      - Throws: `TokenTransformerError.tokenDecodingFailed` if decoding carShareToken fails
+     - Throws: 'ProtobufDeviceCommandTransformerError.transformFailed(error: error)' if encoding fails
      
      ### Usage Example: ###
      ````
@@ -163,27 +182,26 @@ public class CarShareClient: CommandProtocolDelegate {
      */
 
     public func execute(_ operations: Set<CarOperation>, with carShareToken: String) throws {
-        do {
-            let tokenData = try tokenTransformer.transform(carShareToken)
-            let commandProto = try deviceCommandTransformer.transform(operations)
-            let message = OperationMessageStrategy(operations: operations)
-            outgoingMessage = message
-            commandProtocol.send(OutgoingCommand(deviceCommandMessage: commandProto,
-                                                 carShareTokenInfo: tokenData,
-                                                 state: .requestingToSendMessage))
-        } catch {
-            print("Failed to decode reservation token")
-            throw error
+        guard isConnected else {
+            throw CarShareClientError.notConnected
         }
+        let tokenData = try tokenTransformer.transform(carShareToken)
+        let commandProto = try deviceCommandTransformer.transform(operations)
+        let message = OperationMessageStrategy(operations: operations)
+        outgoingMessage = message
+        commandProtocol.send(OutgoingCommand(deviceCommandMessage: commandProto,
+                                             carShareTokenInfo: tokenData,
+                                             state: .requestingToSendMessage))
     }
 
     func protocolDidOpen(_ protocol: CommandProtocol) {
+        isConnected = true
         delegate?.clientDidConnect(self)
     }
 
     func protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error) {
-        delegate?.clientDidDisconnectUnexpectedly(self, error: error)
         disconnect()
+        delegate?.clientDidDisconnectUnexpectedly(self, error: error)
     }
 
     func `protocol`(_ protocol: CommandProtocol, didSucceed response: Data) {

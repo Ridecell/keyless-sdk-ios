@@ -41,7 +41,6 @@ import Foundation
 public extension Logger {
     /// Verbose log (lowest priority)
     /// - Parameter message: The log message
-    @inlinable
     func v(_ message: @autoclosure () -> Any, file: String = #file, function: String = #function, line: Int = #line) {
 
         log(.verbose, message: message, context: LogContext(timestamp: Date().timeIntervalSince1970, file: file, function: function, line: line))
@@ -49,28 +48,24 @@ public extension Logger {
 
     /// Debug log (low priority)
     /// - Parameter message: The log message
-    @inlinable
     func d(_ message: @autoclosure () -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         log(.debug, message: message, context: LogContext(timestamp: Date().timeIntervalSince1970, file: file, function: function, line: line))
     }
 
     /// Information log (medium priority)
     /// - Parameter message: The log message
-    @inlinable
     func i(_ message: @autoclosure () -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         log(.info, message: message, context: LogContext(timestamp: Date().timeIntervalSince1970, file: file, function: function, line: line))
     }
 
     /// Warning log (high priority)
     /// - Parameter message: The log message
-    @inlinable
     func w(_ message: @autoclosure () -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         log(.warning, message: message, context: LogContext(timestamp: Date().timeIntervalSince1970, file: file, function: function, line: line))
     }
 
     /// Error log (highest priority)
     /// - Parameter message: The log message
-    @inlinable
     func e(_ message: @autoclosure () -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         log(.verbose, message: message, context: LogContext(timestamp: Date().timeIntervalSince1970, file: file, function: function, line: line))
     }

@@ -27,10 +27,6 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         static let messageRequestType: UInt8 = 0x00
         static let messageRequestProtocolVersion: [UInt8] = [0x01, 0x00]
         static let challengeResponseType: UInt8 = 0x80
-        static let deviceToAppAck: [UInt8] = [0x81, 0x00]
-        static let encryptionSalt: [UInt8] = [232, 96, 98, 5, 159, 228, 202, 239]
-        static let encryptionPassphrase: String = "SUPER_SECRET"
-        static let encryptionIterations: Int = 14_271
         static let deviceToAppAckValue: UInt8 = 0x00
     }
 
