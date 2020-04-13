@@ -155,7 +155,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         let badHandshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
         socket.delegate?.socket(socket, didReceive: Data(bytes: badHandshake, count: 6))
 
-        XCTAssertEqual(socket.dataToSend, validConfirmation())
+        XCTAssertEqual(socket.dataToSend, validHandshakeConfirmation())
 
         let error = NSError(domain: "", code: 0, userInfo: nil)
         socket.delegate?.socketDidFailToSend(socket, error: error)
@@ -231,6 +231,15 @@ class DefaultTransportProtocolTests: XCTestCase {
         XCTAssert(socket.didClose)
     }
     
+    func testReceivingSubsequentHandshake() {
+        sutOpen()
+        syncAndShake()
+        confirmAndSend()
+        socket.delegate?.socket(socket, didReceive: validHandshakeAck())
+        socket.delegate?.socket(socket, didReceive: validHandshakeRequest())
+        XCTAssertEqual(socket.dataToSend, validHandshakeConfirmation())
+    }
+    
     private func openSocket() {
         sutOpen()
         syncAndShake()
@@ -253,15 +262,15 @@ class DefaultTransportProtocolTests: XCTestCase {
         socket.delegate?.socketDidOpen(socket)
         XCTAssertEqual(socket.dataToSend, validSyncByte())
         socket.delegate?.socketDidSend(socket)
-        socket.delegate?.socket(socket, didReceive: validHandshakeData())
+        socket.delegate?.socket(socket, didReceive: validHandshakeRequest())
     }
     
     private func confirmAndSend() {
-        XCTAssertEqual(socket.dataToSend, validConfirmation())
+        XCTAssertEqual(socket.dataToSend, validHandshakeConfirmation())
         socket.delegate?.socketDidSend(socket)
     }
     
-    private func validHandshakeData() -> Data {
+    private func validHandshakeRequest() -> Data {
         let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
         return Data(bytes: handshake, count: 6)
     }
@@ -281,7 +290,7 @@ class DefaultTransportProtocolTests: XCTestCase {
         return Data(bytes: binaryDataResponse, count: binaryDataResponse.count)
     }
     
-    private func validConfirmation() -> Data {
+    private func validHandshakeConfirmation() -> Data {
         let confirmation: [UInt8] = [0x02, 0x81, 0x04, 0x5F, 0x10, 0x01, 0x00, 247, 214, 0x03]
         return Data(bytes: confirmation, count: 10)
     }
