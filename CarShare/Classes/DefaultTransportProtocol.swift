@@ -207,27 +207,47 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     }
 
     func socket(_ socket: Socket, didReceive data: Data) {
-        if incoming != nil {
-            self.incoming?.data.append(data)
-        } else if data.count >= 7 && data[1] == 0x24 {
-            let length = Int(data[3]) << 8 + Int(data[2]) + 7
-            self.incoming = (data, length)
-        } else if data.count == 6 && (data[1] == 0x01 || data[1] == 0x02) {
-            self.incoming = (data, data.count)
-        } else if data.count == Constants.binaryDataResponseAckSize && data[1] == Constants.binaryDataResponseAckMsgType {
-            self.incoming = (data, data.count)
-        } else {
-            // some kind of error?
-        }
+        mapIncomingData(data)
         guard let incoming = incoming else {
             return
         }
         if incoming.data.count > incoming.dataLength {
-            // error
+            delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
         } else if incoming.data.count == incoming.dataLength {
             self.incoming = nil
             handleReceived(incoming.data)
         }
+    }
+
+    private func mapIncomingData(_ data: Data) {
+        if incoming != nil {
+            self.incoming?.data.append(data)
+        } else if isIncomingExtendedAppDataMessage(data) {
+            let length = Int(data[3]) << 8 + Int(data[2]) + 7
+            self.incoming = (data, length)
+        } else if isHandshakeRequest(data) || isThirdPartyDataAck(data) {
+            self.incoming = (data, data.count)
+        } else if isBinaryDataResponse(data) {
+            self.incoming = (data, data.count)
+        } else {
+            print("Unknown incoming data structure")
+        }
+    }
+
+    private func isIncomingExtendedAppDataMessage(_ data: Data) -> Bool {
+        return data.count >= 7 && data[1] == 0x24
+    }
+
+    private func isHandshakeRequest(_ data: Data) -> Bool {
+        return data[1] == 0x01 && data.count == 6
+    }
+
+    private func isThirdPartyDataAck(_ data: Data) -> Bool {
+        return data[1] == 0x02 && data.count == 6
+    }
+
+    private func isBinaryDataResponse(_ data: Data) -> Bool {
+        return data.count == Constants.binaryDataResponseAckSize && data[1] == Constants.binaryDataResponseAckMsgType
     }
 
     private func handleReceived(_ data: Data) {
@@ -237,35 +257,45 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         case .connecting:
             return
         case .syncing:
-            let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
-            if data == Data(bytes: handshake, count: 6) {
-                connectionState = .handshaking
-                send(HandshakeConfirmationMessage())
-            } else {
-                closeUnexpectedly(with: DefaultTransportProtocolError.invalidHandshake)
-            }
+            handleSyncing(data)
         case .handshaking:
-            let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
-            if data == Data(bytes: ack, count: ack.count) {
-                connectionState = .connected
-                delegate?.protocolDidOpen(self)
-            } else {
-                closeUnexpectedly(with: DefaultTransportProtocolError.invalidHandshake)
-            }
+            handleHandshaking(data)
         case .connected:
-            if let binaryDataResponse = BinaryDataResponse(data: data) {
-                if binaryDataResponse.transmissionSuccess {
-                    delegate?.protocolDidSend(self)
-                } else {
-                    delegate?.protocolDidFailToSend(self, error: DefaultTransportProtocolError.binaryDataAckFailed)
-                }
+            handleConnected(data)
+        }
+    }
+
+    private func handleSyncing(_ data: Data) {
+        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
+        if data == Data(bytes: handshake, count: 6) {
+            connectionState = .handshaking
+            send(HandshakeConfirmationMessage())
+        } else {
+            closeUnexpectedly(with: DefaultTransportProtocolError.invalidHandshake)
+        }
+    }
+
+    private func handleHandshaking(_ data: Data) {
+        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
+        if data == Data(bytes: ack, count: ack.count) {
+            connectionState = .connected
+            delegate?.protocolDidOpen(self)
+        } else {
+            closeUnexpectedly(with: DefaultTransportProtocolError.invalidHandshake)
+        }
+    }
+
+    private func handleConnected(_ data: Data) {
+        if let binaryDataResponse = BinaryDataResponse(data: data) {
+            if binaryDataResponse.transmissionSuccess {
+                delegate?.protocolDidSend(self)
             } else {
-                if let message = IncomingExtendedAppDataMessage(messageData: data) {
-                    delegate?.protocol(self, didReceive: Data(bytes: message.body, count: message.body.count))
-                } else {
-                    delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
-                }
+                delegate?.protocolDidFailToSend(self, error: DefaultTransportProtocolError.binaryDataAckFailed)
             }
+        } else if let message = IncomingExtendedAppDataMessage(messageData: data) {
+            delegate?.protocol(self, didReceive: Data(bytes: message.body, count: message.body.count))
+        } else {
+            delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
         }
     }
 
