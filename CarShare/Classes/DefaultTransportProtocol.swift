@@ -143,6 +143,10 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     private enum Constants {
         static let binaryDataResponseAckSize = 10
         static let binaryDataResponseAckMsgType: UInt8 = 0x22
+        static let handshakeRequest: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
+        static let handshakeRequestData = Data(bytes: Constants.handshakeRequest, count: Constants.handshakeRequest.count)
+        static let handshakeAck: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
+        static let handshakeAckData = Data(bytes: Constants.handshakeAck, count: Constants.handshakeAck.count)
     }
 
     private let socket: Socket
@@ -230,7 +234,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
         } else if isBinaryDataResponse(data) {
             self.incoming = (data, data.count)
         } else {
-            print("Unknown incoming data structure")
+            print("Received unknown data")
         }
     }
 
@@ -266,8 +270,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     }
 
     private func handleSyncing(_ data: Data) {
-        let handshake: [UInt8] = [0x02, 0x01, 0x00, 0x03, 0x08, 0x03]
-        if data == Data(bytes: handshake, count: 6) {
+        if data == Constants.handshakeRequestData {
             connectionState = .handshaking
             send(HandshakeConfirmationMessage())
         } else {
@@ -276,8 +279,7 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
     }
 
     private func handleHandshaking(_ data: Data) {
-        let ack: [UInt8] = [0x02, 0x02, 0x00, 0x04, 0x0A, 0x03]
-        if data == Data(bytes: ack, count: ack.count) {
+        if data == Constants.handshakeAckData {
             connectionState = .connected
             delegate?.protocolDidOpen(self)
         } else {
@@ -294,8 +296,19 @@ class DefaultTransportProtocol: TransportProtocol, SocketDelegate {
             }
         } else if let message = IncomingExtendedAppDataMessage(messageData: data) {
             delegate?.protocol(self, didReceive: Data(bytes: message.body, count: message.body.count))
+        } else if data == Constants.handshakeAckData || data == Constants.handshakeRequestData {
+            handleReShaking(data)
         } else {
             delegate?.protocolDidFailToReceive(self, error: DefaultTransportProtocolError.malformedData)
+        }
+    }
+
+    private func handleReShaking(_ data: Data) {
+        if data == Constants.handshakeRequestData {
+            //stay in connected state, send confirmation message
+            send(HandshakeConfirmationMessage())
+        } else if data == Constants.handshakeAckData {
+            // do nothing
         }
     }
 
