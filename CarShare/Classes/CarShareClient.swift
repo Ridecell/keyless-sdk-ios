@@ -49,6 +49,7 @@ public class CarShareClient: CommandProtocolDelegate {
     private let commandProtocol: CommandProtocol
     private let tokenTransformer: TokenTransformer
     private let deviceCommandTransformer: DeviceCommandTransformer
+    private let deviceToAppMessageTransformer: DeviceToAppMessageTransformer
 
     private var outgoingMessage: MessageStrategy?
 
@@ -61,13 +62,20 @@ public class CarShareClient: CommandProtocolDelegate {
      */
 
     public convenience init(logger: Logger = NoopLogger()) {
-        self.init(commandProtocol: DefaultCommandProtocol(logger: logger), tokenTransformer: DefaultCarShareTokenTransformer(), deviceCommandTransformer: ProtobufDeviceCommandTransformer())
+        self.init(commandProtocol: DefaultCommandProtocol(logger: logger),
+                  tokenTransformer: DefaultCarShareTokenTransformer(),
+                  deviceCommandTransformer: ProtobufDeviceCommandTransformer(),
+                  deviceToAppMessageTransformer: ProtobufDeviceToAppMessageTransformer())
     }
 
-    init(commandProtocol: CommandProtocol, tokenTransformer: TokenTransformer, deviceCommandTransformer: DeviceCommandTransformer) {
+    init(commandProtocol: CommandProtocol,
+         tokenTransformer: TokenTransformer,
+         deviceCommandTransformer: DeviceCommandTransformer,
+         deviceToAppMessageTransformer: DeviceToAppMessageTransformer) {
         self.commandProtocol = commandProtocol
         self.tokenTransformer = tokenTransformer
         self.deviceCommandTransformer = deviceCommandTransformer
+        self.deviceToAppMessageTransformer = deviceToAppMessageTransformer
     }
 
     /**
@@ -204,12 +212,17 @@ public class CarShareClient: CommandProtocolDelegate {
         delegate?.clientDidDisconnectUnexpectedly(self, error: error)
     }
 
-    func `protocol`(_ protocol: CommandProtocol, didSucceed response: Data) {
+    func `protocol`(_ protocol: CommandProtocol, didReceive response: Data) {
         guard let outgoingMessage = outgoingMessage else {
             return
         }
         self.outgoingMessage = nil
-        outgoingMessage.didSucceed(self)
+        switch deviceToAppMessageTransformer.transform(response) {
+        case .success:
+            outgoingMessage.didSucceed(self)
+        case .failure(let error):
+            outgoingMessage.didFail(self, error: error)
+        }
     }
 
     func `protocol`(_ protocol: CommandProtocol, didFail error: Error) {

@@ -23,7 +23,6 @@ class DefaultCommandProtocolTests: XCTestCase {
         byteGenerator = DefaultByteGenerator()
         let defaultCommandProtocol = DefaultCommandProtocol(
             transportProtocol: transportProtocol,
-            deviceToAppMessageTransformer: ProtobufDeviceToAppMessageTransformer(),
             challengeSigner: challengeSigner)
         let delegate = CommandDelegate()
         defaultCommandProtocol.delegate = delegate
@@ -72,54 +71,11 @@ class DefaultCommandProtocolTests: XCTestCase {
         let ack: [UInt8] = [0x81, 0x00]
         sut.protocol(transportProtocol, didReceive: Data(bytes: ack, count: ack.count))
         
-        guard let deviceAck = deviceToAppMessage(success: true) else {
-            XCTFail()
-            return
-        }
-        sut.protocol(transportProtocol, didReceive: deviceAck)
+        sut.protocol(transportProtocol, didReceive: Data(bytes: [0x00], count: 1))
         
-        XCTAssertTrue(delegate.didSucceedCalled)
-        XCTAssertTrue(delegate.didSucceedData != nil)
-        XCTAssertTrue(delegate.didSucceedData == deviceAck)
-    }
-    
-    func testSendingCommandDeviceAckFailure() {
-        openAndSend()
-        XCTAssertTrue(transportProtocol.sendCalled)
-        XCTAssertTrue(transportProtocol.sentData != nil)
-        XCTAssertTrue([UInt8](transportProtocol.sentData!) == [0x00, 0x01, 0x00])
-        sut.protocolDidSend(transportProtocol)
-        let randomBytes = byteGenerator.generate(32)
-        var challenge: [UInt8] = [0x01, 0x01, 0x00]
-        challenge.append(contentsOf: randomBytes)
-        sut.protocol(transportProtocol, didReceive: Data(bytes: challenge, count: challenge.count))
-        
-        sut.protocolDidSend(transportProtocol)
-        let ack: [UInt8] = [0x81, 0x00]
-        sut.protocol(transportProtocol, didReceive: Data(bytes: ack, count: ack.count))
-        
-        guard let deviceAck = deviceToAppMessage(success: false) else {
-            XCTFail()
-            return
-        }
-        sut.protocol(transportProtocol, didReceive: deviceAck)
-        
-        XCTAssertFalse(delegate.didSucceedCalled)
-        XCTAssertTrue(delegate.didSucceedData == nil)
-    }
-    
-    private func deviceToAppMessage(success: Bool) -> Data? {
-        let deviceToAppMessage = DeviceToAppMessage.with { populator in
-            let resultMessage = ResultMessage.with { populator in
-                populator.success = success
-            }
-            populator.message = DeviceToAppMessage.OneOf_Message.result(resultMessage)
-        }
-        do {
-            return try deviceToAppMessage.serializedData()
-        } catch {
-            return nil
-        }
+        XCTAssertTrue(delegate.didReceiveCalled)
+        XCTAssertTrue(delegate.didReceiveData != nil)
+        XCTAssertTrue(delegate.didReceiveData == Data(bytes: [0x00], count: 1))
     }
     
     func testCommandFailsIfSigningFails() {
@@ -136,8 +92,8 @@ class DefaultCommandProtocolTests: XCTestCase {
         let ack: [UInt8] = [0x81, 0x00]
         
         sut.protocol(transportProtocol, didReceive: Data(bytes: ack, count: ack.count))
-        XCTAssertFalse(delegate.didSucceedCalled)
-        XCTAssertTrue(delegate.didSucceedData == nil)
+        XCTAssertFalse(delegate.didReceiveCalled)
+        XCTAssertTrue(delegate.didReceiveData == nil)
         XCTAssertTrue(delegate.didFailCalled)
     }
 
@@ -145,8 +101,8 @@ class DefaultCommandProtocolTests: XCTestCase {
         
         let randomBytes = byteGenerator.generate(32)
         sut.protocol(transportProtocol, didReceive: Data(bytes: randomBytes, count: randomBytes.count))
-        XCTAssertFalse(delegate.didSucceedCalled)
-        XCTAssertTrue(delegate.didSucceedData == nil)
+        XCTAssertFalse(delegate.didReceiveCalled)
+        XCTAssertTrue(delegate.didReceiveData == nil)
         XCTAssertFalse(delegate.didFailCalled)
         XCTAssertFalse(transportProtocol.sendCalled)
     }
@@ -334,11 +290,11 @@ extension DefaultCommandProtocolTests {
             didCloseUnexpectedlyCalled = true
         }
 
-        var didSucceedCalled: Bool = false
-        var didSucceedData: Data? = nil
-        func `protocol`(_ protocol: CommandProtocol, didSucceed response: Data) {
-            didSucceedCalled = true
-            didSucceedData = response
+        var didReceiveCalled: Bool = false
+        var didReceiveData: Data? = nil
+        func `protocol`(_ protocol: CommandProtocol, didReceive response: Data) {
+            didReceiveCalled = true
+            didReceiveData = response
         }
 
         var didFailCalled: Bool = false

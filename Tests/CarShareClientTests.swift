@@ -15,6 +15,7 @@ class CarShareClientTests: XCTestCase {
     private var delegate: FakeCarShareClientDelegate!
     private var tokenTransformer: FakeTokenTransformer!
     private var deviceCommandTransformer: FakeDeviceCommandTransformer!
+    private var deviceToAppMessageTransformer: FakeDeviceToAppMessageTransformer!
     private var commandProtocol: FakeCommandProtocol!
 
     override func setUp() {
@@ -22,15 +23,18 @@ class CarShareClientTests: XCTestCase {
         let commandProtocol = FakeCommandProtocol()
         let tokenTransformer = FakeTokenTransformer()
         let deviceCommandTransformer = FakeDeviceCommandTransformer()
+        let deviceToAppMessageTransformer = FakeDeviceToAppMessageTransformer()
         let delegate = FakeCarShareClientDelegate()
         let client = CarShareClient(commandProtocol: commandProtocol,
                                     tokenTransformer: tokenTransformer,
-                                    deviceCommandTransformer: deviceCommandTransformer)
+                                    deviceCommandTransformer: deviceCommandTransformer,
+                                    deviceToAppMessageTransformer: deviceToAppMessageTransformer)
         client.delegate = delegate
         self.sut = client
         self.delegate = delegate
         self.tokenTransformer = tokenTransformer
         self.deviceCommandTransformer = deviceCommandTransformer
+        self.deviceToAppMessageTransformer = deviceToAppMessageTransformer
         self.commandProtocol = commandProtocol
     }
 
@@ -39,28 +43,20 @@ class CarShareClientTests: XCTestCase {
         self.delegate = nil
         self.tokenTransformer = nil
         self.deviceCommandTransformer = nil
+        self.deviceToAppMessageTransformer = nil
         self.commandProtocol = nil
     }
     
     func testConnectingWithValidTokenSendsMessageToCommandLayer() {
         let validToken = "VALID_TOKEN"
-        do {
-            try sut.connect(validToken)
-        } catch {
-            XCTFail()
-        }
+        connect(validToken)
         XCTAssertTrue(tokenTransformer.transformCalled)
         XCTAssertTrue(commandProtocol.openCalled)
     }
     
     func testProperNotifyAndWriteCharacteristicsUsed() {
         let validToken = "VALID_TOKEN"
-        do {
-            try sut.connect(validToken)
-        } catch {
-            XCTFail()
-        }
-        
+        connect(validToken)
         let config = BLeSocketConfiguration(
             serviceID: "SERVICE_ID",
             notifyCharacteristicID: "430F2EA3-C765-4051-9134-A341254CFD00",
@@ -74,8 +70,12 @@ class CarShareClientTests: XCTestCase {
         let validToken = "VALID_TOKEN"
         connect(validToken)
         try? sut.execute(.checkIn, with: validToken)
-        let bytes: [UInt8] = [0x01]
-        sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
+        deviceToAppMessageTransformer.stubResponse = true
+        guard let deviceAck = deviceToAppMessage(success: true) else {
+                   XCTFail()
+                   return
+               }
+        sut.protocol(commandProtocol, didReceive: deviceAck)
         
         XCTAssertTrue(delegate.commandDidSucceedCalled)
         XCTAssertEqual(delegate.successfulCommand, Command.checkIn)
@@ -87,7 +87,8 @@ class CarShareClientTests: XCTestCase {
         connect(validToken)
         try? sut.execute([.checkIn], with: validToken)
         let bytes: [UInt8] = [0x01]
-        sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
+        deviceToAppMessageTransformer.stubResponse = true
+        sut.protocol(commandProtocol, didReceive: Data(bytes: bytes, count: bytes.count))
         
         XCTAssertTrue(delegate.operationsDidSucceedCalled)
         XCTAssertEqual(delegate.successfulOperations, [CarOperation.checkIn])
@@ -118,6 +119,7 @@ class CarShareClientTests: XCTestCase {
     
     func testExecuteCommandFailsIfCommandTransformFails() {
         let validToken = "VALID_TOKEN"
+        connect(validToken)
         deviceCommandTransformer.stubbedTransformSuccess = false
         try? sut.execute(.checkIn, with: validToken)
         XCTAssertFalse(commandProtocol.sendCalled)
@@ -133,16 +135,47 @@ class CarShareClientTests: XCTestCase {
     func testDidSucceedFailsIfDisconnected() {
         let validToken = "VALID_TOKEN"
         try? sut.connect(validToken)
+        sut.protocolDidOpen(commandProtocol)
         let bytes: [UInt8] = [0x01]
         sut.disconnect()
-        sut.protocol(commandProtocol, didSucceed: Data(bytes: bytes, count: bytes.count))
+        sut.protocol(commandProtocol, didReceive: Data(bytes: bytes, count: bytes.count))
         XCTAssertFalse(delegate.commandDidSucceedCalled)
         XCTAssertFalse(sut.isConnected)
+    }
+    
+    func testDidSucceedFailsIfNack() {
+        let validToken = "VALID_TOKEN"
+        try? sut.connect(validToken)
+        sut.protocolDidOpen(commandProtocol)
+        try? sut.execute(.checkIn, with: validToken)
+        deviceCommandTransformer.stubbedTransformSuccess = true
+        deviceToAppMessageTransformer.stubResponse = false
+        guard let deviceAck = deviceToAppMessage(success: false) else {
+            XCTFail()
+            return
+        }
+        sut.protocol(commandProtocol, didReceive: deviceAck)
+        XCTAssertFalse(delegate.commandDidSucceedCalled)
+    }
+    
+    private func deviceToAppMessage(success: Bool) -> Data? {
+        let deviceToAppMessage = DeviceToAppMessage.with { populator in
+            let resultMessage = ResultMessage.with { populator in
+                populator.success = success
+            }
+            populator.message = DeviceToAppMessage.OneOf_Message.result(resultMessage)
+        }
+        do {
+            return try deviceToAppMessage.serializedData()
+        } catch {
+            return nil
+        }
     }
     
     func testDidFailFailsIfDisconnected() {
         let validToken = "VALID_TOKEN"
         try? sut.connect(validToken)
+        sut.protocolDidOpen(commandProtocol)
         sut.disconnect()
         sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         XCTAssertFalse(delegate.commandDidFail)
@@ -242,6 +275,19 @@ extension CarShareClientTests {
                 return Data(repeating: 0x01, count: 1)
             } else {
                throw TestError()
+            }
+        }
+        
+        
+    }
+    
+    class FakeDeviceToAppMessageTransformer: DeviceToAppMessageTransformer {
+        var stubResponse: Bool = false
+        func transform(_ data: Data) -> Result<Bool, Error> {
+            if stubResponse {
+                return .success(true)
+            } else {
+                return .failure(TestError())
             }
         }
         
