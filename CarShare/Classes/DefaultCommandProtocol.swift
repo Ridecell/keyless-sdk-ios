@@ -33,21 +33,18 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
     private var outgoingCommand: OutgoingCommand?
 
     private let transportProtocol: TransportProtocol
-    private let deviceToAppMessageTransformer: DeviceToAppMessageTransformer
     private let challengeSigner: ChallengeSigner
 
     weak var delegate: CommandProtocolDelegate?
 
-    init(transportProtocol: TransportProtocol, deviceToAppMessageTransformer: DeviceToAppMessageTransformer, challengeSigner: ChallengeSigner) {
+    init(transportProtocol: TransportProtocol, challengeSigner: ChallengeSigner) {
         self.transportProtocol = transportProtocol
-        self.deviceToAppMessageTransformer = deviceToAppMessageTransformer
         self.challengeSigner = challengeSigner
     }
 
     convenience init(logger: Logger) {
         self.init(
             transportProtocol: DefaultTransportProtocol(logger: logger),
-            deviceToAppMessageTransformer: ProtobufDeviceToAppMessageTransformer(),
             challengeSigner: DefaultChallengeSigner())
     }
 
@@ -80,7 +77,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
     func protocolDidOpen(_ protocol: TransportProtocol) {
         delegate?.protocolDidOpen(self)
     }
-    //swiftlint:disable:next cyclomatic_complexity
+
     func `protocol`(_ protocol: TransportProtocol, didReceive data: Data) {
         guard let outgoingCommand = outgoingCommand else {
             return
@@ -115,12 +112,7 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
             }
         case .awaitingDeviceAck:
             self.outgoingCommand = nil
-            switch handleDeviceAck(data) {
-            case .success:
-                delegate?.protocol(self, didSucceed: data)
-            case .failure(let error):
-                delegate?.protocol(self, didFail: error)
-            }
+            delegate?.protocol(self, didReceive: data)
         }
     }
 
@@ -203,7 +195,4 @@ class DefaultCommandProtocol: CommandProtocol, TransportProtocolDelegate {
         transportProtocol.send(Data(bytes: response, count: response.count))
     }
 
-    private func handleDeviceAck(_ result: Data) -> Result<Bool, Error> {
-        return deviceToAppMessageTransformer.transform(result)
-    }
 }

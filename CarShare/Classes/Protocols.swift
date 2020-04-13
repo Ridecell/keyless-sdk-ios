@@ -101,7 +101,7 @@ enum CommandState {
 protocol CommandProtocolDelegate: AnyObject {
     func protocolDidOpen(_ protocol: CommandProtocol)
     func protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error)
-    func `protocol`(_ protocol: CommandProtocol, didSucceed response: Data)
+    func `protocol`(_ protocol: CommandProtocol, didReceive response: Data)
     func `protocol`(_ protocol: CommandProtocol, didFail error: Error)
 }
 
