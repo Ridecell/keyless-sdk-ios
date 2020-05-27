@@ -50,13 +50,15 @@ The **CarShareClient** class provides a set of functions that can be used to int
 public func connect(_ carShareToken: String) throws
 ```
 
-To communicate with a carshare device, the connect function must first be invoked with a valid **CarShareToken**.The **carShareToken** parameter represents a valid reservation key which the carshare device authenticates against. Once the connection has been established, the delegate method ```protocolDidOpen(_ protocol: CommandProtocol)``` is called. Should the connection close suddenly, the delegate method ```protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error)``` is invoked.
+To communicate with a carshare device, the connect function must first be invoked with a valid **CarShareToken**.The **carShareToken** parameter represents a valid reservation key which the carshare device authenticates against. Once the connection has been established, the delegate method ```func clientDidConnect(_ client: CarShareClient)``` is called. Should the connection close suddenly, the delegate method ```func clientDidDisconnectUnexpectedly(_ client: CarShareClient, error: Error)``` is invoked.
 
 ```swift
 public func execute(_ command: Command, with carShareToken: String) throws
 ```
 
-With an established connection to the carshare device, commands can be executed with the command passed in and valid a carshareToken. The execution of the command will result in either the ```protocol(_ protocol: CommandProtocol, command: Command, didSucceed response: Data)``` or ```protocol(_ protocol: CommandProtocol, command: Command, didFail error: Error)``` being called.
+With an established connection to the carshare device, commands can be executed with the command passed in and valid a carshareToken. The execution of the command will result in either the ```func clientCommandDidSucceed(_ client: CarShareClient, command: Command)``` or ```func clientCommandDidFail(_ client: CarShareClient, command: Command, error: Error)``` CarShareClientDelegate method being called.
+
+You can also have more granular control over the vehicle by passing in a set of CarOperations. The execution of the set of CarOperations will result in either the ```func clientOperationsDidSucceed(_ client: CarShareClient, operations: Set<CarOperation>)``` or ```func clientOperationsDidFail(_ client: CarShareClient, operations: Set<CarOperation>, error: Error)``` CarShareClientDelegate method being called.
 
 **Command Enum**
 
@@ -81,7 +83,7 @@ class ViewController: UIViewController, CarShareClientDelegate {
         client.delegate = self
     }
     
-    @IBAction func didTapConnect(_ sender: Any) {
+    @IBAction private func didTapConnect(_ sender: Any) {
     //Pass in a CarShareToken from the signing service
         do {
             try client.connect(reservation)
@@ -90,9 +92,9 @@ class ViewController: UIViewController, CarShareClientDelegate {
         }
     }
     
-    @IBAction func didTapCheckIn() {
+    @IBAction private func didTapCheckIn() {
         do {
-            try client.execute(.unlockAll, with: reservation)
+            try client.execute(.checkIn, with: reservation)
         } catch {
             print(error)
         }
