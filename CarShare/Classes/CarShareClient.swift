@@ -129,11 +129,11 @@ public class CarShareClient: CommandProtocolDelegate {
     }
 
     /**
-     With a connection established to the carshare device, commands can be executed with the
+     With a connection established to the carshare device, a command can be executed with the
      command passed in and a valid carShareToken. The execution of the command will result in
      either the CarShareClientDelegate method
-     `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) or
-     `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error) being called.
+     func clientCommandDidSucceed(_ client: CarShareClient, command: Command) or
+     func clientCommandDidFail(_ client: CarShareClient, command: Command, error: Error) being called.
 
      - Parameter command: An executable command.
      - Parameter carShareToken: A valid, signed, reservation.
@@ -166,11 +166,11 @@ public class CarShareClient: CommandProtocolDelegate {
     }
 
     /**
-     With a connection established to the carshare device, commands can be executed with the
-     command set passed in and a valid carShareToken. The execution of the command will result in
+     With a connection established to the carshare device, operations can be executed with the
+     operation set passed in and a valid carShareToken. The execution of the operations will result in
      either the CarShareClientDelegate method
-     `protocol`(_ protocol: CommandProtocol, command: Command, didSucceed response: Data) or
-     `protocol`(_ protocol: CommandProtocol, command: Command, didFail error: Error) being called.
+     func clientOperationsDidSucceed(_ client: CarShareClient, operations: Set<CarOperation>) or
+     func clientOperationsDidFail(_ client: CarShareClient, operations: Set<CarOperation>, error: Error) being called.
 
      - Parameter [commands]: Executable commands.
      - Parameter carShareToken: A valid, signed, reservation.
