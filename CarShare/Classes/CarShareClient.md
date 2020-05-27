@@ -33,4 +33,40 @@ func protocolDidOpen(_ protocol: CommandProtocol) {
 
 ## Class Diagrams
 
-![CarShareClient](CarShareClientClassDiagram.svg)
+```mermaid
+classDiagram
+	class CarShareClientDelegate {
+    <<interface>>
+    clientDidConnect(client)
+    clientCommandDidSucceed(client, command)
+    clientOperationsDidSucceed(client, operations)
+    clientCommandDidFail(client, command, error)
+    clientOperationsDidFail(client, command, error)
+    clientDidDisconnectUnexpectedly(client, error)
+}
+class CommandProtocolDelegate {
+    <<interface>>
+    protocolDidOpen(protocol)
+    protocol(protocol, didReceive)
+    protocol(protocol, didFail)
+    protocolDidCloseUnexpectedly(protocol, error)
+}
+class CarShareClient {
+
+    -commandProtocol: CommandProtocol
+    -tokenTransformer: CarShareTokenTransformer
+    -deviceCommandTransformer: DeviceCommandTransformer
+    -deviceToAppMessageTransformer: DeviceToAppMessageTransformer
+    -outgoingMessage: MessageStrategy?
+
+    +delegate: CarShareClientDelegate
+    +isConnected: Bool
+    
+    +connect(carShareToken)
+    +execute(command, carShareToken)
+    +execute(operations, carShareToken)
+    +disconnect()
+}
+
+CommandProtocolDelegate <|-- CarShareClient : implements
+```
