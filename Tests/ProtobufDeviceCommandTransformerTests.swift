@@ -116,6 +116,8 @@ class ProtobufDeviceCommandTransformerTests: XCTestCase {
         transform(operation: .locate, into: .locate)
         transform(operation: .mobilize, into: .mobilize)
         transform(operation: .immobilize, into: .immobilize)
+        transform(operation: .ignitionEnable, into: .mobilize)
+        transform(operation: .ignitionInhibit, into: .immobilize)
         transform(operation: .openTrunk, into: .openTrunk)
         transform(operation: .closeTrunk, into: .closeTrunk)
         

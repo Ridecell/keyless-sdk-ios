@@ -31,6 +31,8 @@ public enum CarOperation {
     case locate
     case mobilize
     case immobilize
+    case ignitionInhibit
+    case ignitionEnable
     case openTrunk
     case closeTrunk
 }
