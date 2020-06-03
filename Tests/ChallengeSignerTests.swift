@@ -1,6 +1,6 @@
 //
 //  ChallengeSignerTests.swift
-//  CarShare_Tests
+//  Keyless_Tests
 //
 //  Created by Marc Maguire on 2019-10-21.
 //  Copyright © 2019 CocoaPods. All rights reserved.
@@ -8,7 +8,7 @@
 
 import CommonCrypto
 import XCTest
-@testable import CarShare
+@testable import Keyless
 
 class ChallengeSignerTests: XCTestCase {
     

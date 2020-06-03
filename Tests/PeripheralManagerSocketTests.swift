@@ -1,6 +1,6 @@
 //
 //  PeripheralManagerSocketTests.swift
-//  CarShare_Tests
+//  Keyless_Tests
 //
 //  Created by Marc Maguire on 2019-11-11.
 //  Copyright © 2019 CocoaPods. All rights reserved.
@@ -8,7 +8,7 @@
 
 import CoreBluetooth
 import XCTest
-@testable import CarShare
+@testable import Keyless
 
 class PeripheralManagerSocketTests: XCTestCase {
     

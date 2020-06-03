@@ -1,0 +1,36 @@
+{
+  "name": "Keyless",
+  "version": "0.0.12",
+  "summary": "An iOS framework for keyless clients.",
+  "description": "An iOS framework that communicates with Geotab Go9 devices for keyless clients.",
+  "homepage": "https://github.com/Geotab/keyless-sdk-ios",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "matthewsnow": "matthewsnow@geotab.com"
+  },
+  "source": {
+    "git": "git@github.com:Geotab/keyless-sdk-ios.git",
+    "tag": "v0.0.12"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "swift_versions": "5.0",
+  "source_files": [
+    "Source/*.swift",
+    "Source/**/*.swift"
+  ],
+  "frameworks": [
+    "Foundation",
+    "CoreBluetooth"
+  ],
+  "dependencies": {
+    "SwiftProtobuf": [
+      "~> 1.9"
+    ]
+  },
+  "swift_version": "5.0"
+}
