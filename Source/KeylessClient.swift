@@ -182,7 +182,7 @@ public class KeylessClient: CommandProtocolDelegate {
      ### Usage Example: ###
      ````
      do {
-        try client.execute([.unlock, .mobilize, .locate], with: "CiQwNTc0NTgzQi0wRDh...")
+        try client.execute([.unlock, .ignitionEnable, .locate], with: "CiQwNTc0NTgzQi0wRDh...")
      } catch {
         print(error)
      }

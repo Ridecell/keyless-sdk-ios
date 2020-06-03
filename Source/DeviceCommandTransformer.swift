@@ -69,7 +69,7 @@ class ProtobufDeviceCommandTransformer: DeviceCommandTransformer {
             return [.unlockAll, .mobilize]
         }
     }
-
+    //swiftlint:disable:next cyclomatic_complexity
     private func transform(_ operations: Set<CarOperation>) -> Set<DeviceCommandMessage.Command> {
 
         var deviceCommands: Set<DeviceCommandMessage.Command> = []
@@ -90,7 +90,13 @@ class ProtobufDeviceCommandTransformer: DeviceCommandTransformer {
                 deviceCommands.insert(.locate)
             case .mobilize:
                 deviceCommands.insert(.mobilize)
+                print("Mobilize is a deprecated operation. Use IgnitionEnable instead.")
             case .immobilize:
+                deviceCommands.insert(.immobilize)
+                print("Immobilize is a deprecated operation. Use IgnitionInhibit instead.")
+            case .ignitionEnable:
+                deviceCommands.insert(.mobilize)
+            case .ignitionInhibit:
                 deviceCommands.insert(.immobilize)
             case .openTrunk:
                 deviceCommands.insert(.openTrunk)
