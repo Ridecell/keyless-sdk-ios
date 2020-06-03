@@ -9,7 +9,7 @@
 import UIKit
 import Keyless
 
-class ViewController: UIViewController, KeylessClientDelegate {
+class ViewController: UIViewController {
 
     private let client = KeylessClient(logger: ConsoleLogger())
 
@@ -20,37 +20,41 @@ class ViewController: UIViewController, KeylessClientDelegate {
         client.delegate = self
     }
     
-    @IBAction func didTapConnect(_ sender: Any) {
+    @IBAction private func didTapConnect(_ sender: Any) {
         //Pass in a KeylessToken from the signing service
         try? client.connect(reservation)
     }
     
-    @IBAction func didTapDisconnect(_ sender: Any) {
+    @IBAction private func didTapDisconnect(_ sender: Any) {
         client.disconnect()
         let alert = UIAlertController(title: "Disconnected", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func didTapCheckIn() {
-        try? client.execute(.checkIn, with: reservation)
+    @IBAction private func didTapCheckIn() {
+        try? client.execute([.checkIn, .ignitionEnable, .locate], with: reservation)
     }
     
-    @IBAction func didTapCheckOut(_ sender: Any) {
-        try? client.execute(.checkOut, with: reservation)
+    @IBAction private func didTapCheckOut(_ sender: Any) {
+        try? client.execute([.checkOut, .ignitionInhibit, .lock], with: reservation)
     }
 
-    @IBAction func didTapLocate(_ sender: Any) {
-        try? client.execute(.locate, with: reservation)
+    @IBAction private func didTapLocate(_ sender: Any) {
+        try? client.execute([.locate], with: reservation)
     }
 
-    @IBAction func didTapLock(_ sender: Any) {
-        try? client.execute(.lock, with: reservation)
+    @IBAction private func didTapLock(_ sender: Any) {
+        try? client.execute([.lock], with: reservation)
     }
 
-    @IBAction func didTapUnlockAll(_ sender: Any) {
-        try? client.execute(.unlockAll, with: reservation)
+    @IBAction private func didTapUnlockAll(_ sender: Any) {
+        try? client.execute([.unlockAll], with: reservation)
     }
+    
+}
+    
+    extension ViewController: KeylessClientDelegate {
 
     func clientDidConnect(_ client: KeylessClient) {
         let alert = UIAlertController(title: "Connected", message: nil, preferredStyle: .alert)
@@ -95,6 +99,5 @@ class ViewController: UIViewController, KeylessClientDelegate {
         self.present(alert, animated: true, completion: nil)
         print("Command: \(String(describing: operations))  Failed with error: \(error)")
     }
-
+        
 }
-
