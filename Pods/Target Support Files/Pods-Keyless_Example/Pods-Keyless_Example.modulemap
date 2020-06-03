@@ -1,0 +1,6 @@
+framework module Pods_Keyless_Example {
+  umbrella header "Pods-Keyless_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

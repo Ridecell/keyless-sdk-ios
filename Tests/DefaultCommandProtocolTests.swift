@@ -1,13 +1,13 @@
 //
 //  DefaultCommandProtocolTests.swift
-//  CarShare_Tests
+//  Keyless_Tests
 //
 //  Created by Marc Maguire on 2019-11-06.
 //  Copyright © 2019 CocoaPods. All rights reserved.
 //
 
 import XCTest
-@testable import CarShare
+@testable import Keyless
 
 class DefaultCommandProtocolTests: XCTestCase {
     
@@ -108,8 +108,8 @@ class DefaultCommandProtocolTests: XCTestCase {
     }
     
     func testSendingCommandFailsOnTwoSends() {
-        let carShareTokenInfo = getCarShareTokenInfo()
-        let outgoingCommand = OutgoingCommand(deviceCommandMessage: Data(bytes: [0x00], count: 1), carShareTokenInfo: carShareTokenInfo, state: .requestingToSendMessage)
+        let keylessTokenInfo = getKeylessTokenInfo()
+        let outgoingCommand = OutgoingCommand(deviceCommandMessage: Data(bytes: [0x00], count: 1), keylessTokenInfo: keylessTokenInfo, state: .requestingToSendMessage)
         sut.send(outgoingCommand)
         transportProtocol.sendCalled = false
         sut.send(outgoingCommand)
@@ -193,12 +193,12 @@ class DefaultCommandProtocolTests: XCTestCase {
         XCTAssertTrue(delegate.didFailCalled)
     }
     
-    private func getCarShareTokenInfo() -> CarShareTokenInfo {
+    private func getKeylessTokenInfo() -> KeylessTokenInfo {
         let reservationTokenSignature: [UInt8] = [0x01, 0x02, 0x03, 0x04, 0x05]
         let reservationToken: [UInt8] = [0x06, 0x07, 0x08, 0x09, 0x10]
         let reservationModulusHash: [UInt8] = [0x11, 0x12, 0x13, 0x14, 0x15]
         let tenantModulusHash: [UInt8] = [0x16, 017, 0x18, 0x19, 0x20]
-        return CarShareTokenInfo(bleServiceUuid: "SERVICE_ID",
+        return KeylessTokenInfo(bleServiceUuid: "SERVICE_ID",
                                  reservationPrivateKey: "iaxGDZGroFXYvzbYRnS5TEPJkHwPIrUSaqKIPLt6eq5lpgL2fBGgbhM3gXF78cvsS30C5bGWMvdXOJP1fZNQmJtPUlqMRnciHgLQDzFLdbEDeUsctYMOlWOCSsGDkD4GAEbTS4ptKNiuH2AugbjTrQi61Z7Slp514KWgFfJxLMckchmyW2IYtUbCgcoXx22K6xZILU2CJfn4jelcf0k4ZKnsy9NcuMysIecMkLKP23TRGqiQVWFN0Rqw4SGUEUrW",
                                  reservationModulusHash: Data(bytes: reservationModulusHash, count: reservationModulusHash.count),
                                  tenantModulusHash: Data(bytes: tenantModulusHash, count: tenantModulusHash.count),
@@ -218,8 +218,8 @@ class DefaultCommandProtocolTests: XCTestCase {
                                             notifyCharacteristicID: "NOTIFY_ID",
                                             writeCharacteristicID: "WRITE_ID")
         sut.open(config)
-        let carShareTokenInfo = getCarShareTokenInfo()
-        let outgoingCommand = OutgoingCommand(deviceCommandMessage: Data(bytes: [0x00], count: 1), carShareTokenInfo: carShareTokenInfo, state: .requestingToSendMessage)
+        let keylessTokenInfo = getKeylessTokenInfo()
+        let outgoingCommand = OutgoingCommand(deviceCommandMessage: Data(bytes: [0x00], count: 1), keylessTokenInfo: keylessTokenInfo, state: .requestingToSendMessage)
         sut.send(outgoingCommand)
     }
     

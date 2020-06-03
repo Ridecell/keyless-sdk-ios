@@ -1,8 +1,8 @@
 included: # paths to include during linting. `--path` is ignored if present.
-  - CarShare
+  - Source
 excluded:
-  - CarShare/Classes/carshare_messaging.pb.swift
-  - CarShare/Classes/CarshareToken.pb.swift
+  - Source/carshare_messaging.pb.swift
+  - Source/CarshareToken.pb.swift
 line_length: 200
 warning_threshold: 1
 nesting:
