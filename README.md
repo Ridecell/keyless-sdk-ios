@@ -9,7 +9,7 @@ Maintainers should update the version in the Keyless.podspec file to the appropr
 ```ruby
   s.version = '2.4.7'
 ```
-The maintainer must then push the `v2.4.7` tag, which will trigger [Bitrise](https://app.bitrise.io/app/d92098b0096b1157) to publish a new pod version of the [`Keyless` framework](https://github.com/Geotab/podspecs/blob/master/Keyless).
+The maintainer must then push the `v2.4.7` tag, which will trigger [Bitrise](https://app.bitrise.io/app/d92098b0096b1157) to publish a new pod version of the [`Keyless` framework](https://github.com/Geotab/podspecs).
 
 ## Example
 
@@ -21,7 +21,7 @@ Keyless is available through [CocoaPods](https://cocoapods.org). To install it, 
 
 ```ruby
 
-source 'git@github.com:Geotab/podspecs/keyless.git'
+source 'git@github.com:Geotab/podspecs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 # add the pod to your target
