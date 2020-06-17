@@ -23,6 +23,7 @@
 		BB5CCA9B23735ED6006408AC /* DefaultCommandProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */; };
 		BB7A81922395B750005B1E4B /* BinaryResponseDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A81912395B750005B1E4B /* BinaryResponseDataTests.swift */; };
 		BBB9D56E23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9D56D23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift */; };
+		BBDF09B72497C09B00B85743 /* VehicleStatusDataTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDF09B52497C09200B85743 /* VehicleStatusDataTransformer.swift */; };
 		CE34881E2DD8E74EDF777647 /* Pods_Keyless_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6775204C995CB379B2513231 /* Pods_Keyless_Tests.framework */; };
 		F4CFF2000DB7830EA6FA6BEF /* Pods_Keyless_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB68C140D4CE7D5AB70BD4E /* Pods_Keyless_Example.framework */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCommandProtocolTests.swift; sourceTree = "<group>"; };
 		BB7A81912395B750005B1E4B /* BinaryResponseDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryResponseDataTests.swift; sourceTree = "<group>"; };
 		BBB9D56D23C513B1009A60D2 /* ProtobufDeviceCommandTransformerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtobufDeviceCommandTransformerTests.swift; sourceTree = "<group>"; };
+		BBDF09B52497C09200B85743 /* VehicleStatusDataTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleStatusDataTransformer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				BB4159012378B2EC0075350F /* IncomingChallengeTests.swift */,
 				BB5CCA9A23735ED6006408AC /* DefaultCommandProtocolTests.swift */,
 				BB4159032378D9670075350F /* TokenTransformerTests.swift */,
+				BBDF09B52497C09200B85743 /* VehicleStatusDataTransformer.swift */,
 				BB1837B1235E0D5800513851 /* ChallengeSignerTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
@@ -410,6 +413,7 @@
 				BB4159042378D9670075350F /* TokenTransformerTests.swift in Sources */,
 				BB7A81922395B750005B1E4B /* BinaryResponseDataTests.swift in Sources */,
 				BB5CCA9B23735ED6006408AC /* DefaultCommandProtocolTests.swift in Sources */,
+				BBDF09B72497C09B00B85743 /* VehicleStatusDataTransformer.swift in Sources */,
 				BB1837B2235E0D5800513851 /* ChallengeSignerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

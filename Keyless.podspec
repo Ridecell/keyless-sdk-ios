@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name = 'Keyless'
-  s.version = '0.0.12'
+  s.version = '0.0.13'
   s.summary = 'An iOS framework for keyless clients.'
   s.description = <<~DESC
     An iOS framework that communicates with Geotab Go9 devices for keyless clients.

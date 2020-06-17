@@ -50,6 +50,7 @@ public class KeylessClient: CommandProtocolDelegate {
     private let tokenTransformer: TokenTransformer
     private let deviceCommandTransformer: DeviceCommandTransformer
     private let deviceToAppMessageTransformer: DeviceToAppMessageTransformer
+    private let vehicleStatusDataTransformer: StatusDataTransformer
 
     private var outgoingMessage: MessageStrategy?
 
@@ -65,17 +66,22 @@ public class KeylessClient: CommandProtocolDelegate {
         self.init(commandProtocol: DefaultCommandProtocol(logger: logger),
                   tokenTransformer: DefaultKeylessTokenTransformer(),
                   deviceCommandTransformer: ProtobufDeviceCommandTransformer(),
-                  deviceToAppMessageTransformer: ProtobufDeviceToAppMessageTransformer())
+                  deviceToAppMessageTransformer: ProtobufDeviceToAppMessageTransformer(),
+                  vehicleStatusDataTransformer: VehicleStatusDataTransformer()
+        )
     }
 
     init(commandProtocol: CommandProtocol,
          tokenTransformer: TokenTransformer,
          deviceCommandTransformer: DeviceCommandTransformer,
-         deviceToAppMessageTransformer: DeviceToAppMessageTransformer) {
+         deviceToAppMessageTransformer: DeviceToAppMessageTransformer,
+         vehicleStatusDataTransformer: StatusDataTransformer
+    ) {
         self.commandProtocol = commandProtocol
         self.tokenTransformer = tokenTransformer
         self.deviceCommandTransformer = deviceCommandTransformer
         self.deviceToAppMessageTransformer = deviceToAppMessageTransformer
+        self.vehicleStatusDataTransformer = vehicleStatusDataTransformer
     }
 
     /**
@@ -111,7 +117,7 @@ public class KeylessClient: CommandProtocolDelegate {
     }
 
     /// can be queried to determine if the SDK considers itself connected to a GO9.
-    private(set) var isConnected: Bool = false
+    public private(set) var isConnected: Bool = false
 
     /**
      Must be called to disconnect / cancel the Bluetooth connection between the SDK and the GO9 device.
@@ -209,7 +215,7 @@ public class KeylessClient: CommandProtocolDelegate {
 
     func protocolDidCloseUnexpectedly(_ protocol: CommandProtocol, error: Error) {
         disconnect()
-        delegate?.clientDidDisconnectUnexpectedly(self, error: error)
+        delegate?.clientDidDisconnectUnexpectedly(self, error: KeylessError(errors: [error]))
     }
 
     func `protocol`(_ protocol: CommandProtocol, didReceive response: Data) {
@@ -221,7 +227,12 @@ public class KeylessClient: CommandProtocolDelegate {
         case .success:
             outgoingMessage.didSucceed(self)
         case .failure(let error):
-            outgoingMessage.didFail(self, error: error)
+            switch error {
+            case .ackFailed(let statusData):
+                outgoingMessage.didFail(self, error: vehicleStatusDataTransformer.transform(statusData))
+            case .protobufSerialization:
+                outgoingMessage.didFail(self, error: KeylessError(errors: [error]))
+            }
         }
     }
 
@@ -230,7 +241,7 @@ public class KeylessClient: CommandProtocolDelegate {
             return
         }
         self.outgoingMessage = nil
-        outgoingMessage.didFail(self, error: error)
+        outgoingMessage.didFail(self, error: KeylessError(errors: [error]))
     }
 
     private func generateConfig(bleServiceUUID: String) -> BLeSocketConfiguration {
