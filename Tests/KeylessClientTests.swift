@@ -16,6 +16,7 @@ class KeylessClientTests: XCTestCase {
     private var tokenTransformer: FakeTokenTransformer!
     private var deviceCommandTransformer: FakeDeviceCommandTransformer!
     private var deviceToAppMessageTransformer: FakeDeviceToAppMessageTransformer!
+    private var vehicleStatusDataTransformer: FakeVehicleStatusDataTransformer!
     private var commandProtocol: FakeCommandProtocol!
 
     override func setUp() {
@@ -24,17 +25,20 @@ class KeylessClientTests: XCTestCase {
         let tokenTransformer = FakeTokenTransformer()
         let deviceCommandTransformer = FakeDeviceCommandTransformer()
         let deviceToAppMessageTransformer = FakeDeviceToAppMessageTransformer()
+        let vehicleStatusDataTransformer = FakeVehicleStatusDataTransformer()
         let delegate = FakeKeylessClientDelegate()
         let client = KeylessClient(commandProtocol: commandProtocol,
                                     tokenTransformer: tokenTransformer,
                                     deviceCommandTransformer: deviceCommandTransformer,
-                                    deviceToAppMessageTransformer: deviceToAppMessageTransformer)
+                                    deviceToAppMessageTransformer: deviceToAppMessageTransformer,
+                                    vehicleStatusDataTransformer: vehicleStatusDataTransformer)
         client.delegate = delegate
         self.sut = client
         self.delegate = delegate
         self.tokenTransformer = tokenTransformer
         self.deviceCommandTransformer = deviceCommandTransformer
         self.deviceToAppMessageTransformer = deviceToAppMessageTransformer
+        self.vehicleStatusDataTransformer = vehicleStatusDataTransformer
         self.commandProtocol = commandProtocol
     }
 
@@ -282,16 +286,23 @@ extension KeylessClientTests {
     }
     
     class FakeDeviceToAppMessageTransformer: DeviceToAppMessageTransformer {
+        
         var stubResponse: Bool = false
-        func transform(_ data: Data) -> Result<Bool, Error> {
+        func transform(_ data: Data) -> Result<Void, OperationFailureError> {
             if stubResponse {
-                return .success(true)
+                return .success(())
             } else {
-                return .failure(TestError())
+                return .failure(OperationFailureError.protobufSerialization)
             }
         }
+    }
+    
+    class FakeVehicleStatusDataTransformer: StatusDataTransformer {
         
-        
+        var stubResponse: KeylessError = KeylessError(errors: [])
+        func transform(_ statusData: [StatusDataRecord]) -> KeylessError {
+            return stubResponse
+        }
     }
     
     class FakeCommandProtocol: CommandProtocol {

@@ -160,7 +160,7 @@ public protocol KeylessClientDelegate: AnyObject {
      
      - Parameter client: The KeylessClient instance that called the method.
      - Parameter operations: The set of operations that failed.
-     - Parameter error: The error that caused the failure.
+     - Parameter error: A KeylessError object.
      */
 
     func clientOperationsDidFail(_ client: KeylessClient, operations: Set<CarOperation>, error: Error)

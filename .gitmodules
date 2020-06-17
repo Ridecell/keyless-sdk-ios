@@ -1,0 +1,3 @@
+[submodule "Proto/carshare-messaging"]
+	path = Proto/carshare-messaging
+	url = git@git.geotab.com:carshare/carshare-messaging.git

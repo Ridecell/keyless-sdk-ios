@@ -54,7 +54,7 @@ class ViewController: UIViewController {
     
 }
     
-    extension ViewController: KeylessClientDelegate {
+extension ViewController: KeylessClientDelegate {
 
     func clientDidConnect(_ client: KeylessClient) {
         let alert = UIAlertController(title: "Connected", message: nil, preferredStyle: .alert)
@@ -90,14 +90,14 @@ class ViewController: UIViewController {
         let alert = UIAlertController(title: String(describing: operations), message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-        print("Command Succeded: \(String(describing: operations))")
+        print("Operation Succeded: \(String(describing: operations))")
     }
 
     func clientOperationsDidFail(_ client: KeylessClient, operations: Set<CarOperation>, error: Error) {
         let alert = UIAlertController(title: "\(String(describing: operations)) failed", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-        print("Command: \(String(describing: operations))  Failed with error: \(error)")
+        print("Operations: \(String(describing: operations))  Failed with error: \(error)")
     }
         
 }
