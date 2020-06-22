@@ -29,13 +29,13 @@ class ProtobufDeviceToAppMessageTransformer: DeviceToAppMessageTransformer {
     func transform(_ data: Data) -> Result<Void, OperationFailureError> {
         do {
             let deviceToAppMessage = try DeviceToAppMessage(serializedData: data)
-            let statusData: [StatusDataRecord] = deviceToAppMessage.result.statusData.map { result in
-                StatusDataRecord(code: Int(result.id),
-                                 value: Int(result.value))
-            }
             if deviceToAppMessage.result.success {
                 return .success(())
             } else {
+                let statusData: [StatusDataRecord] = deviceToAppMessage.result.statusData.map { result in
+                    StatusDataRecord(code: Int(result.id),
+                                     value: Int(result.value))
+                }
                 return .failure(.ackFailed(statusData))
             }
         } catch {
