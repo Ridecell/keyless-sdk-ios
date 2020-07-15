@@ -39,7 +39,11 @@ class PeripheralManagerSocket: NSObject, Socket {
 
     var state: SocketState = Noop() {
         didSet {
-            log.v("State: \(state)")
+            var message = "State: \(String(describing: type(of: state)))"
+            if let failed = state as? Failed {
+                message.append(": \(failed.error)")
+            }
+            log.v(message)
             peripheral.delegate = state
             state.transition()
         }
