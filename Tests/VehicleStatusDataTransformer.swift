@@ -29,7 +29,8 @@ class VehicleStatusDataTransformerTests: XCTestCase {
             testTransform(StatusDataRecord(code: 3346, value: 4), to: CheckInError(rawValue: 4)),
             testTransform(StatusDataRecord(code: 3346, value: 5), to: CheckInError(rawValue: 5)),
             testTransform(StatusDataRecord(code: 3346, value: 6), to: CheckInError(rawValue: 6)),
-            testTransform(StatusDataRecord(code: 3346, value: 7), to: CheckInError(rawValue: 7))
+            testTransform(StatusDataRecord(code: 3346, value: 7), to: CheckInError(rawValue: 7)),
+            testTransform(StatusDataRecord(code: 3346, value: 8), to: CheckInError(rawValue: 8))
             ].map { XCTAssertNotNil($0.errors.first as? CheckInError) }
     }
 
@@ -81,7 +82,8 @@ class VehicleStatusDataTransformerTests: XCTestCase {
         let _ = [
             testTransform(StatusDataRecord(code: 3351, value: 1), to: LocateError(rawValue: 1)),
             testTransform(StatusDataRecord(code: 3351, value: 2), to: LocateError(rawValue: 2)),
-            testTransform(StatusDataRecord(code: 3351, value: 3), to: LocateError(rawValue: 3))
+            testTransform(StatusDataRecord(code: 3351, value: 3), to: LocateError(rawValue: 3)),
+            testTransform(StatusDataRecord(code: 3351, value: 4), to: LocateError(rawValue: 4))
             ].map { XCTAssertNotNil($0.errors.first as? LocateError) }
     }
 

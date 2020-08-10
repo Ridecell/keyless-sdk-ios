@@ -20,9 +20,9 @@ public enum CheckOutError: Int, StatusDataError, CustomStringConvertible {
     public var description: String {
         switch self {
         case .endbookConditions:
-            return "Check-Out failed due to End Book Conditions"
+            return "Check-Out failed due to: End Book Conditions"
         case .unknown:
-            return "Check-Out failed due to unknown error"
+            return "Check-Out failed due to: Unknown error"
         }
     }
 }

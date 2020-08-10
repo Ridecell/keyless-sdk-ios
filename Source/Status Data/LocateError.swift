@@ -15,6 +15,8 @@ public enum LocateError: Int, StatusDataError, CustomStringConvertible {
     case vehicleError = 2
     /// Keyfob error.
     case keyfobError = 3
+    /// Reservation in progress
+    case reservationInProgress = 4
 
     public var code: Int { return 3_351 }
     public var value: Int { return self.rawValue }
@@ -27,6 +29,8 @@ public enum LocateError: Int, StatusDataError, CustomStringConvertible {
             return "Locate failed due to: Vehicle Error"
         case .keyfobError:
             return "Locate failed due to: Keyfob Error"
+        case .reservationInProgress:
+            return "Located failed due to: Another Reservation is in progress"
         }
     }
 }

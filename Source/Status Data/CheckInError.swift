@@ -23,6 +23,8 @@ public enum CheckInError: Int, StatusDataError, CustomStringConvertible {
     case noPublicKeysOnDevice = 6
     /// Reservation already in progress.
     case reservationAlreadyInProgress = 7
+    /// Reservation has expired.
+    case reservationExpired = 8
 
     public var code: Int { return 3_346 }
     public var value: Int { return self.rawValue }
@@ -32,17 +34,19 @@ public enum CheckInError: Int, StatusDataError, CustomStringConvertible {
         case .couldNotAuthenticate:
             return "Check-In failed - could not authenticate"
         case .noDeviceTime:
-            return "Check-In failed due to no device time"
+            return "Check-In failed due to: No device time"
         case .startOrEndTimeInvalid:
-            return "Check-In failed due to invalid start or end time"
+            return "Check-In failed due to: Invalid start or end time"
         case .invalidDeviceID:
-            return "Check-In failed due to invalid Device ID"
+            return "Check-In failed due to: Invalid Device ID"
         case .invalidDeviceSerialNumber:
-            return "Check-In failed due to invalid device serial number"
+            return "Check-In failed due to: Invalid device serial number"
         case .noPublicKeysOnDevice:
-            return "Check-In failed due to no public keys on device"
+            return "Check-In failed due to: No public keys on device"
         case .reservationAlreadyInProgress:
-            return "Check-In failed due to reservation already in progress"
+            return "Check-In failed due to: Reservation already in progress"
+        case .reservationExpired:
+            return "Check-In failed due to: Reservation has expired."
         }
     }
 }
