@@ -29,8 +29,6 @@ public enum CarOperation {
     case unlockAll
     case unlockDriver
     case locate
-    case mobilize
-    case immobilize
     case ignitionInhibit
     case ignitionEnable
     case openTrunk
@@ -126,25 +124,6 @@ public protocol KeylessClientDelegate: AnyObject {
      */
 
     func clientDidDisconnectUnexpectedly(_ client: KeylessClient, error: Error)
-
-    /**
-     This is the delegate callback that is called once a `execute(_ command: Command, with keylessToken: String)' call has succeeded.
-     
-     - Parameter client: The KeylessClient instance that called the method.
-     - Parameter command: The command that succeeded.
-     */
-
-    func clientCommandDidSucceed(_ client: KeylessClient, command: Command)
-
-    /**
-     This is the delegate callback that is called if a `execute(_ command: Command, with keylessToken: String)' call has failed.
-     
-     - Parameter client: The KeylessClient instance that called the method.
-     - Parameter command: The command that failed.
-     - Parameter error: The error that caused the failure.
-     */
-
-    func clientCommandDidFail(_ client: KeylessClient, command: Command, error: Error)
 
     /**
      This is the delegate callback that is called once a `execute(_ operations: Set<CarOperation>, with keylessToken: String)' call has succeeded.

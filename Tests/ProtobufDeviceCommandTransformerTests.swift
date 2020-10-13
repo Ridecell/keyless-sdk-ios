@@ -20,92 +20,6 @@ class ProtobufDeviceCommandTransformerTests: XCTestCase {
     override func tearDown() {
         sut = nil
     }
-
-    func testTransformCheckinCommand() {
-        let expectedSubcommandFlags = UInt32(DeviceCommandMessage.Command.checkin.rawValue) |
-                UInt32(DeviceCommandMessage.Command.mobilize.rawValue) |
-                UInt32(DeviceCommandMessage.Command.locate.rawValue)
-
-        guard let actualData = try? sut.transform(Command.checkIn) else {
-            XCTFail()
-            return
-        }
-
-        do {
-            let actualMessage = try DeviceCommandMessage(serializedData: actualData)
-            XCTAssertEqual(expectedSubcommandFlags, actualMessage.command)
-        } catch {
-            XCTFail()
-        }
-    }
-
-    func testTransformCheckoutCommand() {
-        let expectedSubcommandFlags = UInt32(DeviceCommandMessage.Command.checkout.rawValue) |
-                UInt32(DeviceCommandMessage.Command.immobilize.rawValue) |
-                UInt32(DeviceCommandMessage.Command.lock.rawValue)
-
-        guard let actualData = try? sut.transform(Command.checkOut) else {
-            XCTFail()
-            return
-        }
-
-        do {
-            let actualMessage = try DeviceCommandMessage(serializedData: actualData)
-            XCTAssertEqual(expectedSubcommandFlags, actualMessage.command)
-        } catch {
-            XCTFail()
-        }
-    }
-
-    func testTransformLockCommand() {
-        let expectedSubcommandFlags = UInt32(DeviceCommandMessage.Command.lock.rawValue) |
-                UInt32(DeviceCommandMessage.Command.immobilize.rawValue)
-
-        guard let actualData = try? sut.transform(Command.lock) else {
-            XCTFail()
-            return
-        }
-
-        do {
-            let actualMessage = try DeviceCommandMessage(serializedData: actualData)
-            XCTAssertEqual(expectedSubcommandFlags, actualMessage.command)
-        } catch {
-            XCTFail()
-        }
-    }
-
-    func testTransformUnlockCommand() {
-        let expectedSubcommandFlags = UInt32(DeviceCommandMessage.Command.unlockAll.rawValue) |
-                UInt32(DeviceCommandMessage.Command.mobilize.rawValue)
-
-        guard let actualData = try? sut.transform(Command.unlockAll) else {
-            XCTFail()
-            return
-        }
-
-        do {
-            let actualMessage = try DeviceCommandMessage(serializedData: actualData)
-            XCTAssertEqual(expectedSubcommandFlags, actualMessage.command)
-        } catch {
-            XCTFail()
-        }
-    }
-    
-    func testTransformLocateCommand() {
-        let expectedSubcommandFlags = UInt32(DeviceCommandMessage.Command.locate.rawValue)
-
-        guard let actualData = try? sut.transform(Command.locate) else {
-            XCTFail()
-            return
-        }
-
-        do {
-            let actualMessage = try DeviceCommandMessage(serializedData: actualData)
-            XCTAssertEqual(expectedSubcommandFlags, actualMessage.command)
-        } catch {
-            XCTFail()
-        }
-    }
     
     func testTransformAllOperation() {
         transform(operation: .checkIn, into: .checkin)
@@ -114,8 +28,6 @@ class ProtobufDeviceCommandTransformerTests: XCTestCase {
         transform(operation: .unlockAll, into: .unlockAll)
         transform(operation: .unlockDriver, into: .unlockDriver)
         transform(operation: .locate, into: .locate)
-        transform(operation: .mobilize, into: .mobilize)
-        transform(operation: .immobilize, into: .immobilize)
         transform(operation: .ignitionEnable, into: .mobilize)
         transform(operation: .ignitionInhibit, into: .immobilize)
         transform(operation: .openTrunk, into: .openTrunk)
@@ -139,10 +51,10 @@ class ProtobufDeviceCommandTransformerTests: XCTestCase {
         }
     }
     
-    func testTransformUnlockAllLocateMobilize() {
+    func testTransformUnlockAllLocateIgnitionEnable() {
        let expectedSubcommandFlags = UInt32(DeviceCommandMessage.Command.unlockAll.rawValue) | UInt32(DeviceCommandMessage.Command.locate.rawValue) | UInt32(DeviceCommandMessage.Command.mobilize.rawValue)
 
-        guard let actualData = try? sut.transform([.unlockAll, .locate, .mobilize]) else {
+        guard let actualData = try? sut.transform([.unlockAll, .locate, .ignitionEnable]) else {
             XCTFail()
             return
         }
