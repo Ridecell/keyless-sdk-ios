@@ -113,6 +113,12 @@ class VehicleStatusDataTransformerTests: XCTestCase {
             testTransform(StatusDataRecord(code: 190290390, value: 43431231), to: UnknownStatusData(code: 190290390, value: 43431231))
             ].map { XCTAssertNotNil($0.errors.first as? UnknownStatusData) }
     }
+    
+    func testTransformNoPermissionError() {
+           let _ = [
+           testTransform(StatusDataRecord(code: 3344, value: 2113), to: NoPermissionError(code: 3344, value: 2113))
+           ].map { XCTAssertNotNil($0.errors.first as? NoPermissionError) }
+       }
 
     private func testTransform(_ from: StatusDataRecord, to: StatusDataError?) -> KeylessError {
         let actual = sut.transform([from])
