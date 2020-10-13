@@ -135,43 +135,6 @@ public class KeylessClient: CommandProtocolDelegate {
     }
 
     /**
-     With a connection established to the Keyless device, a command can be executed with the
-     command passed in and a valid keylessToken. The execution of the command will result in
-     either the KeylessClientDelegate method
-     func clientCommandDidSucceed(_ client: KeylessClient, command: Command) or
-     func clientCommandDidFail(_ client: KeylessClient, command: Command, error: Error) being called.
-
-     - Parameter command: An executable command.
-     - Parameter keylessToken: A valid, signed, reservation.
-     
-     - Throws: `KeylessClientError.notConnected` if the connection has yet to be established
-     - Throws: `TokenTransformerError.tokenDecodingFailed` if decoding keylessToken fails
-     - Throws: 'ProtobufDeviceCommandTransformerError.transformFailed(error: error)' if encoding fails
-     
-     ### Usage Example: ###
-     ````
-     do {
-        try client.execute(.checkIn, with: "CiQwNTc0NTgzQi0wRDh...")
-     } catch {
-        print(error)
-     }
-     ````
-     */
-
-    @available(*, deprecated, message: "This function will be removed in the next release. Use execute(_ operations: Set<CarOperation>, with keylessToken: String) instead.")
-    public func execute(_ command: Command, with keylessToken: String) throws {
-        guard isConnected else {
-            throw KeylessClientError.notConnected
-        }
-        let tokenData = try tokenTransformer.transform(keylessToken)
-        let commandProto = try deviceCommandTransformer.transform(command)
-        outgoingMessage = CommandMessageStrategy(command: command)
-        commandProtocol.send(OutgoingCommand(deviceCommandMessage: commandProto,
-                                             keylessTokenInfo: tokenData,
-                                             state: .requestingToSendMessage))
-    }
-
-    /**
      With a connection established to the Keyless device, operations can be executed with the
      operation set passed in and a valid keylessToken. The execution of the operations will result in
      either the KeylessClientDelegate method
@@ -253,18 +216,6 @@ public class KeylessClient: CommandProtocolDelegate {
 }
 
 extension KeylessClient {
-    struct CommandMessageStrategy: MessageStrategy {
-
-        let command: Command
-
-        func didFail(_ keylessClient: KeylessClient, error: Swift.Error) {
-            keylessClient.delegate?.clientCommandDidFail(keylessClient, command: command, error: error)
-        }
-
-        func didSucceed(_ keylessClient: KeylessClient) {
-            keylessClient.delegate?.clientCommandDidSucceed(keylessClient, command: command)
-        }
-    }
 
     struct OperationMessageStrategy: MessageStrategy {
 

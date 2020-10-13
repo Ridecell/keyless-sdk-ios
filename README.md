@@ -53,20 +53,22 @@ public func connect(_ keylessToken: String) throws
 To communicate with a Keyless device, the connect function must first be invoked with a valid **KeylessToken**.The **keylessToken** parameter represents a valid reservation key which the Keyless device authenticates against. Once the connection has been established, the delegate method ```func clientDidConnect(_ client: KeylessClient)``` is called. Should the connection close suddenly, the delegate method ```func clientDidDisconnectUnexpectedly(_ client: KeylessClient, error: Error)``` is invoked.
 
 ```swift
-public func execute(_ command: Command, with keylessToken: String) throws
+public func execute(_ operations: Set<CarOperation>, with keylessToken: String) throws
 ```
 
-With an established connection to the Keyless device, commands can be executed with the command passed in and valid a keylessToken. The execution of the command will result in either the ```func clientCommandDidSucceed(_ client: KeylessClient, command: Command)``` or ```func clientCommandDidFail(_ client: KeylessClient, command: Command, error: Error)``` KeylessClientDelegate method being called.
+With an established connection to the Keyless device, operations can be executed by passing in a set of CarOperations and a valid KeylessToken. The execution of the set of CarOperations will result in either the ```func clientOperationsDidSucceed(_ client: KeylessClient, operations: Set<CarOperation>)``` or ```func clientOperationsDidFail(_ client: KeylessClient, operations: Set<CarOperation>, error: Error)``` KeylessClientDelegate method being called.
 
-You can also have more granular control over the vehicle by passing in a set of CarOperations. The execution of the set of CarOperations will result in either the ```func clientOperationsDidSucceed(_ client: KeylessClient, operations: Set<CarOperation>)``` or ```func clientOperationsDidFail(_ client: KeylessClient, operations: Set<CarOperation>, error: Error)``` KeylessClientDelegate method being called.
-
-**Command Enum**
+**CarOperation Enum**
 
 * .checkIn
 * .checkOut
 * .lock
 * .unlockAll
 * .locate
+* .ignitionInhibit
+* .ignitionEnable
+* .openTrunk
+* .closeTrunk
 
 ### Swift
 
@@ -86,7 +88,7 @@ class ViewController: UIViewController, KeylessClientDelegate {
     @IBAction private func didTapConnect(_ sender: Any) {
     //Pass in a KeylessToken from the signing service
         do {
-            try client.connect(reservation)
+            try client.connect(keylessToken)
         } catch {
             print(error)
         }
@@ -94,7 +96,7 @@ class ViewController: UIViewController, KeylessClientDelegate {
     
     @IBAction private func didTapCheckIn() {
         do {
-            try client.execute(.checkIn, with: reservation)
+            try client.execute([.checkIn, .ignitionEnable], with: keylessToken)
         } catch {
             print(error)
         }
@@ -104,7 +106,7 @@ class ViewController: UIViewController, KeylessClientDelegate {
 
     }
     
-    func clientCommandDidSucceed(_ client: KeylessClient, command: Command) {
+    func clientOperationsDidSucceed(_ client: KeylessClient, operations: Set<CarOperation>) {
 
     }
 }

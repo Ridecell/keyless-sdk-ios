@@ -38,9 +38,7 @@ classDiagram
 	class KeylessClientDelegate {
     <<interface>>
     clientDidConnect(client)
-    clientCommandDidSucceed(client, command)
     clientOperationsDidSucceed(client, operations)
-    clientCommandDidFail(client, command, error)
     clientOperationsDidFail(client, command, error)
     clientDidDisconnectUnexpectedly(client, error)
 }
@@ -63,7 +61,6 @@ class KeylessClient {
     +isConnected: Bool
     
     +connect(keylessToken)
-    +execute(command, keylessToken)
     +execute(operations, keylessToken)
     +disconnect()
 }

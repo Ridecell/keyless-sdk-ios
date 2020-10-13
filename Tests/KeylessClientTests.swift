@@ -70,22 +70,6 @@ class KeylessClientTests: XCTestCase {
         XCTAssertEqual(commandProtocol.configeUsed?.writeCharacteristicID, config.writeCharacteristicID)
     }
     
-    func testSuccessfulCommandPropagates() {
-        let validToken = "VALID_TOKEN"
-        connect(validToken)
-        try? sut.execute(.checkIn, with: validToken)
-        deviceToAppMessageTransformer.stubResponse = true
-        guard let deviceAck = deviceToAppMessage(success: true) else {
-                   XCTFail()
-                   return
-               }
-        sut.protocol(commandProtocol, didReceive: deviceAck)
-        
-        XCTAssertTrue(delegate.commandDidSucceedCalled)
-        XCTAssertEqual(delegate.successfulCommand, Command.checkIn)
-        XCTAssertTrue(sut.isConnected)
-    }
-    
     func testSuccessfulOperationsPropagates() {
         let validToken = "VALID_TOKEN"
         connect(validToken)
@@ -107,25 +91,10 @@ class KeylessClientTests: XCTestCase {
         XCTAssertFalse(sut.isConnected)
     }
 
-    func testExecuteCommandFailsWithInvalidToken() {
-        
-        let invalidToken = "INVALID_TOKEN"
-        try? sut.execute(.checkIn, with: invalidToken)
-        XCTAssertFalse(commandProtocol.sendCalled)
-    }
-
     func testExecuteOperationFailsWithInvalidToken() {
         
         let invalidToken = "INVALID_TOKEN"
         try? sut.execute([.checkIn], with: invalidToken)
-        XCTAssertFalse(commandProtocol.sendCalled)
-    }
-    
-    func testExecuteCommandFailsIfCommandTransformFails() {
-        let validToken = "VALID_TOKEN"
-        connect(validToken)
-        deviceCommandTransformer.stubbedTransformSuccess = false
-        try? sut.execute(.checkIn, with: validToken)
         XCTAssertFalse(commandProtocol.sendCalled)
     }
     
@@ -151,7 +120,7 @@ class KeylessClientTests: XCTestCase {
         let validToken = "VALID_TOKEN"
         try? sut.connect(validToken)
         sut.protocolDidOpen(commandProtocol)
-        try? sut.execute(.checkIn, with: validToken)
+        try? sut.execute([.checkIn], with: validToken)
         deviceCommandTransformer.stubbedTransformSuccess = true
         deviceToAppMessageTransformer.stubResponse = false
         guard let deviceAck = deviceToAppMessage(success: false) else {
@@ -184,16 +153,6 @@ class KeylessClientTests: XCTestCase {
         sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
         XCTAssertFalse(delegate.commandDidFail)
         XCTAssertFalse(sut.isConnected)
-    }
-    
-    func testUnsuccessfulCommandPropagates() {
-        let validToken = "VALID_TOKEN"
-        connect(validToken)
-        try? sut.execute(.checkIn, with: validToken)
-        sut.protocol(commandProtocol, didFail: DefaultCommandProtocol.DefaultCommandProtocolError.malformedData)
-        
-        XCTAssertTrue(delegate.commandDidFail)
-        XCTAssertEqual(delegate.failedCommand, Command.checkIn)
     }
     
     func testUnsuccessfulOperationsPropagates() {
