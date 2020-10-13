@@ -2,10 +2,10 @@
 
 Pod::Spec.new do |s|
   s.name = 'Keyless'
-  s.version = '0.0.13'
+  s.version = '1.0.0'
   s.summary = 'An iOS framework for keyless clients.'
   s.description = <<~DESC
-    An iOS framework that communicates with Geotab Go9 devices for keyless clients.
+    An iOS framework that communicates with the Geotab GO9 devices for Keyless clients.
   DESC
   s.homepage = 'https://github.com/Geotab/keyless-sdk-ios'
   s.license = { type: 'MIT', file: 'LICENSE' }
