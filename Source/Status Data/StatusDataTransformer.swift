@@ -15,8 +15,11 @@ class VehicleStatusDataTransformer: StatusDataTransformer {
 
     func transform(_ statusData: [StatusDataRecord]) -> KeylessError {
         let statusDataErrors: [StatusDataError] = statusData.map { error in
-            let unknownError = UnknownStatusData(code: error.code, value: error.value)
-            return transform(error) ?? unknownError
+            if error.code == 3_344 {
+                return NoPermissionError(code: error.code, value: error.value)
+            } else {
+                return transform(error) ?? UnknownStatusData(code: error.code, value: error.value)
+            }
         }
         return KeylessError(errors: statusDataErrors)
     }

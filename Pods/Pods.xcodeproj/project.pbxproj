@@ -136,6 +136,7 @@
 		BBB6170124996E73008E2B40 /* StatusDataRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB616F324996E73008E2B40 /* StatusDataRecord.swift */; };
 		BBB6170224996E73008E2B40 /* EndbookConditionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB616F424996E73008E2B40 /* EndbookConditionsError.swift */; };
 		BBB6170424996ED7008E2B40 /* KeylessError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6170324996ED7008E2B40 /* KeylessError.swift */; };
+		BBC493CE25361EE400958044 /* NoPermissionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC493CD25361EE300958044 /* NoPermissionError.swift */; };
 		BE26FD636EA52B0379FE80507F46F1C7 /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3393C44E503B660A2D80FA9EAD1CE569 /* Decoder.swift */; };
 		BE74EAFF4ED8C06AA9AD0BFBBF657320 /* DeviceCommandTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC4F84F34ACB1769129A6FC1B864E /* DeviceCommandTransformer.swift */; };
 		BEA4652EB1413E9D964EC9905C3C2F48 /* FieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB68FCD0BD5ECE97F1F338051F6161A2 /* FieldTypes.swift */; };
@@ -343,6 +344,7 @@
 		BBB616F324996E73008E2B40 /* StatusDataRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StatusDataRecord.swift; path = "../Source/Status Data/StatusDataRecord.swift"; sourceTree = "<group>"; };
 		BBB616F424996E73008E2B40 /* EndbookConditionsError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EndbookConditionsError.swift; path = "../Source/Status Data/EndbookConditionsError.swift"; sourceTree = "<group>"; };
 		BBB6170324996ED7008E2B40 /* KeylessError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeylessError.swift; path = Source/KeylessError.swift; sourceTree = "<group>"; };
+		BBC493CD25361EE300958044 /* NoPermissionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoPermissionError.swift; path = "../Source/Status Data/NoPermissionError.swift"; sourceTree = "<group>"; };
 		BEBCB26BCE4217320BA219C3439965C3 /* ExtensibleMessage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtensibleMessage.swift; path = Sources/SwiftProtobuf/ExtensibleMessage.swift; sourceTree = "<group>"; };
 		C08EC4F84F34ACB1769129A6FC1B864E /* DeviceCommandTransformer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceCommandTransformer.swift; path = Source/DeviceCommandTransformer.swift; sourceTree = "<group>"; };
 		C10370048A8D08A31C54B10976320C83 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -605,6 +607,7 @@
 				BBB616EB24996E72008E2B40 /* StatusDataTransformer.swift */,
 				BBB616EF24996E73008E2B40 /* UnknownStatusData.swift */,
 				BBB616ED24996E73008E2B40 /* UnlockAllError.swift */,
+				BBC493CD25361EE300958044 /* NoPermissionError.swift */,
 				BBB616EE24996E73008E2B40 /* UnlockDriverError.swift */,
 			);
 			path = "Status Data";
@@ -1072,6 +1075,7 @@
 				4E6738CBE9F988A14DC33A62489F98D6 /* KeylessClient.swift in Sources */,
 				2DD7EE1AA24AED6C393645F46CA1869E /* KeylessTokenInfo.swift in Sources */,
 				24B275A306C00AB3858AD7C057270A0B /* Logger.swift in Sources */,
+				BBC493CE25361EE400958044 /* NoPermissionError.swift in Sources */,
 				3E637831FAA9B5831289FD218E381E76 /* Noop.swift in Sources */,
 				30C7752776B955FAF7D83CC86817F181 /* NoopLogger.swift in Sources */,
 				F4C455079F8F551A73203497FA77F811 /* Opened.swift in Sources */,
